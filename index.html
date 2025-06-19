@@ -16,11 +16,15 @@
       color: #222;
     }
     header {
+      position: fixed;
+      top: 0;
+      width: 100%;
       background: #111;
       padding: 15px 0;
+      z-index: 1000;
     }
     nav {
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
       display: flex;
       justify-content: space-between;
@@ -30,20 +34,23 @@
     nav a {
       color: #fff;
       text-decoration: none;
-      margin: 0 10px;
+      margin: 0 15px;
       font-weight: bold;
+      transition: 0.2s;
     }
     nav a:hover {
-      text-decoration: underline;
+      color: #4CAF50;
     }
     .container {
-      max-width: 800px;
-      margin: auto;
+      max-width: 1000px;
+      margin: 100px auto 40px auto;
       padding: 20px;
       background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     section {
-      margin-bottom: 40px;
+      margin-bottom: 60px;
     }
     h1, h2 {
       text-align: center;
@@ -57,11 +64,13 @@
       padding: 10px;
       border: 1px solid #ddd;
       background: #fafafa;
+      border-radius: 5px;
     }
     .trainer img {
       max-width: 100%;
       height: auto;
       border: 1px solid #ccc;
+      border-radius: 5px;
     }
     .links a {
       display: inline-block;
@@ -84,63 +93,24 @@
 <body>
   <header>
     <nav>
-      <div><a href="#home">Home</a></div>
+      <div><a href="index.html">Home</a></div>
       <div>
-        <a href="#stock">Stock</a>
-        <a href="#info">Info</a>
-        <a href="#contact">Contact</a>
+        <a href="stock.html">Stock</a>
+        <a href="info.html">Info</a>
+        <a href="contact.html">Contact</a>
       </div>
     </nav>
   </header>
 
   <div class="container">
-    <section id="home">
-      <h1>Brand New Trainers — UK Only</h1>
-      <p>
-        We offer high-quality, brand new trainers at fair prices — all boxed, all authentic. Every pair is shipped from within England and carefully inspected before listing. Stock is updated regularly and typically sells out fast, so grab your size while it’s available.
-      </p>
+    <section>
+      <h1>Welcome to the Trainer Store</h1>
+      <p>This is the homepage. Use the menu to explore our stock, learn more about us, or get in touch.</p>
     </section>
+  </div>
 
-    <section id="stock">
-      <h2>Current Stock</h2>
-      <div class="trainer">
-        <h3>Nike Dunk Low “Panda” – UK 6 – Brand New</h3>
-        <img src="shoe1.jpg" alt="Nike Dunk Panda">
-        <p>Status: In Stock</p>
-      </div>
-
-      <div class="trainer">
-        <h3>Nike Dunk Low Twist – UK 5.5 – Brand New with Box</h3>
-        <img src="shoe2.jpg" alt="Nike Dunk Twist">
-        <p>Status: In Stock</p>
-      </div>
-
-      <div class="trainer">
-        <h3>Nike SB Chron 2 – UK 6 – Sold</h3>
-        <img src="shoe3.jpg" alt="Nike SB Chron">
-        <p>Status: Sold</p>
-      </div>
-    </section>
-
-    <section id="info">
-      <h2>Info</h2>
-      <p><strong>Shipping:</strong> UK only — Tracked. 2–4 working days.</p>
-      <p><strong>Returns:</strong> Currently not accepted unless the item arrives not as described.</p>
-      <p><strong>Condition:</strong> All items are brand new with box unless listed otherwise.</p>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Have a question? Contact us on:</p>
-      <div class="links">
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank">My Vinted Profile</a>
-        <a href="#">My eBay (coming soon)</a>
-      </div>
-    </section>
-
-    <div class="footer">
-      This site is for display only. All orders handled through Vinted or eBay.
-    </div>
+  <div class="footer">
+    This site is for display only. All orders handled through Vinted or eBay.
   </div>
 </body>
 </html>
