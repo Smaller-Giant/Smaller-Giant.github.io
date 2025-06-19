@@ -58,9 +58,11 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 24px;
+      align-items: stretch;
     }
+
     .card {
       background: #1a1a1a;
       border-radius: 10px;
@@ -96,6 +98,17 @@
     @media (max-width: 768px) {
       .menu-toggle { display: block; }
       nav { display: none; }
+    }
+
+    @media (max-width: 500px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .card img {
+        height: 130px;
+        object-fit: cover;
+      }
     }
 
     @keyframes fadeInDown {
