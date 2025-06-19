@@ -11,9 +11,10 @@
       padding: 0;
     }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f6f6f6;
-      color: #222;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+      line-height: 1.6;
     }
     header {
       position: fixed;
@@ -22,6 +23,7 @@
       background: #111;
       padding: 15px 0;
       z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     nav {
       max-width: 1000px;
@@ -35,51 +37,69 @@
       color: #fff;
       text-decoration: none;
       margin: 0 15px;
-      font-weight: bold;
-      transition: 0.2s;
+      font-weight: 600;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
     }
     nav a:hover {
       color: #4CAF50;
+    }
+    nav a.active {
+      color: #4CAF50;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 2px;
     }
     .container {
       max-width: 1000px;
       margin: 100px auto 40px auto;
       padding: 20px;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
     section {
       margin-bottom: 60px;
     }
-    h1, h2 {
+    h1, h2, h3 {
       text-align: center;
       margin-bottom: 15px;
+      color: #222;
     }
     p {
-      margin: 10px 0;
+      margin: 12px 0;
+      font-size: 1.05em;
     }
-    .trainer {
-      margin: 20px 0;
-      padding: 10px;
-      border: 1px solid #ddd;
-      background: #fafafa;
-      border-radius: 5px;
+    ul {
+      max-width: 600px;
+      margin: 20px auto;
+      list-style-type: disc;
+      padding-left: 20px;
+      font-size: 1.05em;
+      color: #555;
     }
-    .trainer img {
-      max-width: 100%;
-      height: auto;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    .highlight {
+      background: #4caf50;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 600;
     }
-    .links a {
-      display: inline-block;
-      margin: 10px;
-      padding: 10px 15px;
-      background-color: #000;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .feature-item {
+      flex: 1 1 250px;
+      background: #e8f5e9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,128,0,0.15);
+      text-align: center;
+      color: #2e7d32;
+      font-weight: 600;
     }
     .footer {
       text-align: center;
@@ -87,13 +107,14 @@
       font-size: 0.9em;
       color: #888;
       padding-bottom: 20px;
+      user-select: none;
     }
   </style>
 </head>
 <body>
   <header>
     <nav>
-      <div><a href="index.html">Home</a></div>
+      <div><a href="index.html" class="active">Home</a></div>
       <div>
         <a href="stock.html">Stock</a>
         <a href="info.html">Info</a>
@@ -104,9 +125,46 @@
 
   <div class="container">
     <section>
-      <h1>Welcome to the Trainer Store</h1>
-      <p>This is the homepage. Use the menu to explore our stock, learn more about us, or get in touch.</p>
+      <h1>Welcome to the <span class="highlight">Trainer Store</span></h1>
+      <p>Your go-to place for the latest and greatest trainers, handpicked for quality and style.</p>
+      <p>Whether you're a casual wearer or a dedicated sneakerhead, we have something perfect for you.</p>
     </section>
+
+    <section>
+      <h2>Why Choose Us?</h2>
+      <ul>
+        <li>Wide selection of popular brands and exclusive releases.</li>
+        <li>Authenticity guaranteed - we only sell genuine trainers.</li>
+        <li>Competitive prices through trusted marketplaces like Vinted and eBay.</li>
+        <li>Fast and reliable shipping directly to your door.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Our Featured Services</h2>
+      <div class="features">
+        <div class="feature-item">
+          Easy Browsing<br />Find your perfect pair in minutes.
+        </div>
+        <div class="feature-item">
+          Secure Payments<br />Orders handled safely through Vinted & eBay.
+        </div>
+        <div class="feature-item">
+          Customer Support<br />Friendly help whenever you need it.
+        </div>
+        <div class="feature-item">
+          Regular Stock Updates<br />Fresh trainers added weekly.
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>What Our Customers Say</h2>
+      <p><em>"Great service and fast shipping! Found exactly what I wanted."</em> – Jamie</p>
+      <p><em>"Love the quality and the prices are unbeatable."</em> – Alex</p>
+      <p><em>"Super easy to use site and the support team is amazing."</em> – Taylor</p>
+    </section>
+
   </div>
 
   <div class="footer">
