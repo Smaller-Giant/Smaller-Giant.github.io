@@ -3,75 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trainer Store | Stock</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>Trainer Store | Stock</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-height: 100vh; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
 
-    header {
-      position: fixed; top: 0; width: 100%; z-index: 1000;
-      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    header{
+      position:fixed;top:0;width:100%;z-index:1000;
+      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
-    header h1 { font-size: 1.4rem; color: #fff; }
+    header h1{font-size:1.4rem;color:#fff}
 
-    a { color: inherit; text-decoration: none; transition: color 0.3s; }
-    nav { display: flex; gap: 18px; }
-    nav a {
-      color: #ccc; font-size: 0.95rem; position: relative; padding-bottom: 2px;
-    }
-    nav a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
-      background: #4caf50; transition: width 0.3s;
-    }
-    nav a:hover, nav a.active { color: #fff; }
-    nav a:hover::after, nav a.active::after { width: 100%; }
+    a{color:inherit;text-decoration:none;transition:color .3s}
+    a:visited{color:inherit}
 
-    .menu-toggle { display: none; font-size: 1.5rem; color: #ccc; background: none; border: none; cursor: pointer; }
+    nav{display:flex;gap:18px}
+    nav a{
+      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
+    }
+    nav a::after{
+      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+      background:#4caf50;transition:width .3s
+    }
+    nav a:hover,nav a.active{color:#fff}
+    nav a:hover::after,nav a.active::after{width:100%}
 
-    .dropdown {
-      position: absolute; top: 100%; left: 0; right: 0;
-      background: #222; display: none; flex-direction: column; padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7); animation: fadeInDown 0.3s ease-out forwards;
-    }
-    .dropdown a {
-      padding: 12px 0; border-bottom: 1px solid #333;
-      color: #eee; font-size: 1rem;
-    }
-    .dropdown a:last-child { border-bottom: none; }
-    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
+    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
 
-    .hero {
-      height: 40vh; min-height: 220px;
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
-      display: flex; align-items: center; justify-content: center;
+    .dropdown{
+      position:absolute;top:100%;left:0;right:0;
+      background:#222;display:none;flex-direction:column;padding:10px 20px;
+      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
     }
-    .hero-content { text-align: center; color: #fff; }
-    .hero-content h1 { font-size: 2.2rem; animation: fadeInUp 1s forwards; }
-    .hero-content p { font-size: 1.1rem; animation: fadeInUp 1s 0.3s forwards; }
+    .dropdown a{
+      padding:12px 0;border-bottom:1px solid #333;
+      color:#eee;font-size:1rem
+    }
+    .dropdown a:last-child{border-bottom:none}
+    .dropdown a:hover,.dropdown a.active{color:#4caf50}
 
-    .container { max-width: 900px; margin: 60px auto; padding: 0 20px; }
-    section { margin-bottom: 60px; opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
-    section.visible { opacity: 1; transform: translateY(0); }
+    .hero{
+      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
+      position:relative;display:flex;align-items:center;justify-content:center
+    }
+    .hero-content{position:relative;text-align:center;color:#fff}
+    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
+    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
 
-    .stock-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px;
-    }
-    .stock-item {
-      background: #222; border-radius: 12px; overflow: hidden;
-      text-align: center; padding: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    }
-    .stock-item img {
-      width: 100%; height: auto; border-radius: 10px; margin-bottom: 10px;
-    }
-    .stock-item h3 { font-size: 1.1rem; color: #4caf50; margin-bottom: 6px; }
-    .stock-item p { font-size: 0.9rem; color: #ccc; }
+    .container{max-width:1000px;margin:60px auto;padding:0 20px}
+    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+    section.visible{opacity:1;transform:translateY(0)}
 
-    footer {
-      text-align: center; padding: 20px 0; font-size: 0.9rem; color: #aaa; border-top: 1px solid #333;
+    .stock-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:20px;
     }
+    .item-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      transition:.3s;
+      backdrop-filter:blur(8px);
+    }
+    .item-card:hover{transform:translateY(-5px)}
+    .item-card img{
+      width:100%;
+      border-radius:10px;
+      margin-bottom:8px;
+    }
+    .item-card h3{font-size:1rem;color:#4caf50}
+    .item-card p{font-size:.85rem;color:#ccc}
+
+    /* MODAL */
+    .modal-bg{
+      display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;
+    }
+    .modal{
+      background:#222;padding:20px;border-radius:14px;max-width:400px;width:90%;
+      text-align:center;position:relative;animation:fadeInUp .4s;
+    }
+    .modal img{width:100%;border-radius:10px;margin-bottom:12px}
+    .modal h2{color:#4caf50;margin-bottom:10px}
+    .modal p{color:#ccc;font-size:.95rem;margin-bottom:16px}
+    .modal button{
+      background:#4caf50;color:#111;font-weight:600;padding:10px 20px;
+      border:none;border-radius:8px;cursor:pointer;font-size:1rem
+    }
+    .close-btn{
+      position:absolute;top:10px;right:14px;font-size:1.4rem;color:#aaa;
+      background:none;border:none;cursor:pointer
+    }
+
+    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
 
     @media(max-width:768px){
       .menu-toggle{display:block}
@@ -83,68 +114,114 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Trainer Store</h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Available Stock</h1>
-      <p>Browse our current listings</p>
+<header>
+  <h1>Trainer Store</h1>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Our Current Stock</h1>
+    <p>Tap a product to learn more and buy.</p>
+  </div>
+</section>
+
+<div class="container">
+  <section>
+    <div class="stock-grid">
+      <div class="item-card" onclick="openModal(0)">
+        <img src="https://via.placeholder.com/300x200" alt="Sneaker 1" />
+        <h3>Air Max 90</h3>
+        <p>£85</p>
+      </div>
+      <div class="item-card" onclick="openModal(1)">
+        <img src="https://via.placeholder.com/300x200" alt="Sneaker 2" />
+        <h3>Yeezy Boost 350</h3>
+        <p>£150</p>
+      </div>
+      <div class="item-card" onclick="openModal(2)">
+        <img src="https://via.placeholder.com/300x200" alt="Sneaker 3" />
+        <h3>Dunk Low Panda</h3>
+        <p>£110</p>
+      </div>
     </div>
   </section>
+</div>
 
-  <div class="container">
-    <section>
-      <div class="stock-grid">
-        <div class="stock-item">
-          <img src="https://via.placeholder.com/300x200" alt="Sneaker 1">
-          <h3>Nike Air Max</h3>
-          <p>Size: UK 9<br>Price: £80</p>
-        </div>
-        <div class="stock-item">
-          <img src="https://via.placeholder.com/300x200" alt="Sneaker 2">
-          <h3>Adidas Yeezy</h3>
-          <p>Size: UK 8<br>Price: £150</p>
-        </div>
-        <div class="stock-item">
-          <img src="https://via.placeholder.com/300x200" alt="Sneaker 3">
-          <h3>Jordan 1 Low</h3>
-          <p>Size: UK 10<br>Price: £120</p>
-        </div>
-      </div>
-    </section>
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modalBox">
+    <button class="close-btn" onclick="closeModal()">×</button>
+    <img id="modalImg" src="" alt="">
+    <h2 id="modalTitle">Product Name</h2>
+    <p id="modalDesc">Product description and details here.</p>
+    <button onclick="window.open('https://www.vinted.co.uk/member/233654539', '_blank')">Buy Now</button>
   </div>
+</div>
 
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <script>
-    function toggleMenu() {
-      const d = document.getElementById('dropdownMenu');
-      d.style.display = d.style.display === 'flex' ? 'none' : 'flex';
+<script>
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu(){ dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex'; }
+
+  document.querySelectorAll('section').forEach(sec=>{
+    const obs = new IntersectionObserver(e=>{
+      if(e[0].isIntersecting){
+        sec.classList.add('visible');
+        obs.disconnect();
+      }
+    },{threshold:.2});
+    obs.observe(sec);
+  });
+
+  const modalBg = document.getElementById('modalBg');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+
+  const stockItems = [
+    {
+      title: 'Air Max 90',
+      img: 'https://via.placeholder.com/300x200',
+      desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.'
+    },
+    {
+      title: 'Yeezy Boost 350',
+      img: 'https://via.placeholder.com/300x200',
+      desc: 'Lightly worn, UK 10. Includes original box.'
+    },
+    {
+      title: 'Dunk Low Panda',
+      img: 'https://via.placeholder.com/300x200',
+      desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.'
     }
-    document.querySelectorAll('section').forEach(sec => {
-      const obs = new IntersectionObserver(e => {
-        if (e[0].isIntersecting) {
-          sec.classList.add('visible');
-          obs.disconnect();
-        }
-      }, { threshold: .2 });
-      obs.observe(sec);
-    });
-  </script>
+  ];
+
+  function openModal(index){
+    const item = stockItems[index];
+    modalImg.src = item.img;
+    modalTitle.textContent = item.title;
+    modalDesc.textContent = item.desc;
+    modalBg.style.display = 'flex';
+  }
+  function closeModal(){
+    modalBg.style.display = 'none';
+  }
+</script>
+
 </body>
 </html>
