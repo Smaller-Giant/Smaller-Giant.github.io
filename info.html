@@ -1,201 +1,156 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trainer Store | Info</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ffe259, #ffa751);
-      color: #3a1c00;
-      min-height: 100vh;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; }
 
     header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(58, 28, 0, 0.9);
-      padding: 15px 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10000;
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
     }
+    header h1 { font-size: 1.4rem; color: #fff; }
 
-    header h1 {
-      font-weight: 600;
-      font-size: 1.8rem;
-      color: #fff9d9;
-      letter-spacing: 1.8px;
-      user-select: none;
-    }
-
+    nav { display: flex; gap: 18px; }
     nav a {
-      color: #fff9d9;
-      margin-left: 25px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.05rem;
-      padding-bottom: 4px;
-      position: relative;
-      transition: color 0.3s ease;
-      user-select: none;
+      color: #ccc; text-decoration: none; font-size: 0.95rem;
+      position: relative; padding-bottom: 2px; transition: color 0.3s;
     }
-
     nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: #3a1c00;
-      border-radius: 3px;
-      transition: width 0.3s ease;
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 2px; background: #4caf50; transition: width 0.3s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    nav a:hover::after, nav a.active::after { width: 100%; }
+
+    .menu-toggle {
+      display: none; font-size: 1.5rem; color: #ccc; cursor: pointer;
+      background: none; border: none;
     }
 
-    nav a:hover, nav a.active {
-      color: #3a1c00;
-      font-weight: 700;
+    .dropdown {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: #222; display: none; flex-direction: column; padding: 10px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      animation: fadeInDown 0.3s ease-out forwards;
     }
-
-    nav a:hover::after, nav a.active::after {
-      width: 100%;
-      background: #3a1c00;
+    .dropdown a {
+      padding: 12px 0; border-bottom: 1px solid #333;
+      color: #eee; font-size: 1rem;
     }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
 
-    main {
+    .container {
       max-width: 900px;
-      margin: 110px auto 60px auto;
-      padding: 30px 40px;
-      background: #fff3d9cc;
-      border-radius: 18px;
-      box-shadow: 0 12px 30px rgba(58, 28, 0, 0.3);
-      user-select: text;
+      margin: 100px auto 40px auto;
+      padding: 20px;
     }
-
     h2 {
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 18px;
-      border-bottom: 3px solid #3a1c00;
-      padding-bottom: 8px;
-      user-select: text;
-    }
-
-    p {
-      margin-bottom: 20px;
-      font-weight: 400;
-      font-size: 1.1rem;
-      color: #4a2c00;
-      line-height: 1.6;
-    }
-
-    ul {
-      margin-left: 20px;
+      text-align: center;
       margin-bottom: 30px;
-      list-style-type: disc;
-      color: #5c3e00;
-      font-size: 1.1rem;
+      color: #4caf50;
+    }
+    h3 {
+      margin-bottom: 8px;
+      color: #ddd;
+    }
+    p {
+      color: #ccc;
+      line-height: 1.5;
+      margin-bottom: 16px;
     }
 
-    ul li {
-      margin-bottom: 12px;
+    .info-section {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      transition: background 0.3s;
     }
-
-    .faq {
-      margin-top: 30px;
-      user-select: text;
-    }
-
-    .faq dt {
-      font-weight: 700;
-      margin-top: 15px;
-      cursor: pointer;
-      color: #3a1c00;
-      user-select: text;
-    }
-
-    .faq dd {
-      margin-left: 15px;
-      margin-bottom: 15px;
-      user-select: text;
+    .info-section:hover {
+      background: #2a2a2a;
     }
 
     footer {
       text-align: center;
-      padding: 35px 20px;
-      font-weight: 600;
-      color: #3a1c00cc;
+      padding: 30px 0 15px;
       font-size: 0.9rem;
-      background: rgba(255, 235, 180, 0.7);
-      user-select: none;
-      box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+      color: #aaa;
     }
 
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      nav { display: none; }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Trainer Store</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html">Stock</a>
-      <a href="info.html" class="active">Info</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
 
-  <main>
-    <h2>Our Story</h2>
-    <p>Founded in 2020 by passionate sneaker enthusiasts, Trainer Store was created to bring the best trainers to customers with unmatched authenticity and quality assurance.</p>
-    <p>We scour the market daily for the freshest releases, exclusive drops, and classic styles so you don’t have to.</p>
+<header>
+  <h1>Trainer Store</h1>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html" class="active">Info</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html" class="active">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
 
-    <h2>Our Mission</h2>
-    <p>To provide the most reliable, stylish, and competitively priced trainers with a customer-first approach.</p>
+<div class="container">
+  <h2>About Trainer Store</h2>
 
-    <h2>What We Offer</h2>
-    <ul>
-      <li>Only 100% authentic trainers, verified by experts.</li>
-      <li>Wide range of sizes and brands for all tastes.</li>
-      <li>Competitive pricing by partnering with trusted marketplaces.</li>
-      <li>Fast, trackable shipping and safe payment options.</li>
-      <li>Dedicated customer support to ensure satisfaction.</li>
-    </ul>
+  <div class="info-section">
+    <h3>Our Mission</h3>
+    <p>We are passionate about connecting sneaker lovers with authentic trainers. Our mission is to provide a seamless shopping experience with verified products and fast delivery.</p>
+  </div>
 
-    <h2>Shipping & Returns</h2>
-    <p>We ship via reliable couriers and strive for speedy delivery (3-5 days typical). Return policies follow the guidelines of the marketplace where you purchase, whether Vinted or eBay.</p>
+  <div class="info-section">
+    <h3>Shipping & Delivery</h3>
+    <p>Orders are shipped quickly via trusted carriers. Estimated delivery times range between 3-7 working days, depending on your location. You will receive tracking details once your order is dispatched.</p>
+  </div>
 
-    <h2>FAQs</h2>
-    <dl class="faq">
-      <dt>Are the trainers authentic?</dt>
-      <dd>Yes! All trainers are authenticated by our team before listing.</dd>
-      <dt>How can I track my order?</dt>
-      <dd>Tracking details are provided via the marketplace you purchased from.</dd>
-      <dt>What if I receive a faulty or wrong item?</dt>
-      <dd>Please contact us immediately via the Contact page. We will help you resolve it quickly.</dd>
-      <dt>Can I cancel my order?</dt>
-      <dd>Cancellations depend on the marketplace policies. Contact us ASAP for help.</dd>
-    </dl>
+  <div class="info-section">
+    <h3>Authenticity Guarantee</h3>
+    <p>All trainers listed are 100% authentic. We verify each pair carefully before listing to ensure you receive genuine products you can trust.</p>
+  </div>
 
-    <h2>Contact Us</h2>
-    <p>Have more questions? Reach out via the <a href="contact.html" style="color:#3a1c00; font-weight:700; text-decoration: underline;">Contact page</a>.</p>
-  </main>
+  <div class="info-section">
+    <h3>Payment & Security</h3>
+    <p>Payments are processed securely via Vinted or eBay. We never store your payment details on our website and provide buyer protection for your peace of mind.</p>
+  </div>
 
-  <footer>
-    This site is for display only. All orders handled through Vinted or eBay.
-  </footer>
+  <div class="info-section">
+    <h3>Returns & Refunds</h3>
+    <p>If you're not satisfied with your purchase, please contact the seller on the platform where you made your order (Vinted or eBay) to discuss return options.</p>
+  </div>
+</div>
+
+<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+
+<script>
+  function toggleMenu() {
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+  }
+</script>
 </body>
 </html>
