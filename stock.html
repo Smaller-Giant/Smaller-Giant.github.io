@@ -1,206 +1,219 @@
-from pathlib import Path
-
-# Create the full HTML page using the stock_items
-html_output = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trainer Store | Stock</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; padding-top: 60px; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
 
-    header {
-      position: fixed; top: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 20px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    header{
+      position:fixed;top:0;width:100%;z-index:1000;
+      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
-    header h1 { font-size: 1.4rem; color: #fff; }
-    nav a {
-      color: #ccc; text-decoration: none; margin-left: 18px;
-      font-size: 0.95rem; position: relative;
+    header h1{font-size:1.4rem;color:#fff}
+
+    a{color:inherit;text-decoration:none;transition:color .3s}
+    a:visited{color:inherit}
+
+    nav{display:flex;gap:18px}
+    nav a{
+      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
     }
-    nav a:hover, nav a.active { color: #4caf50; }
-    nav a.active::after, nav a:hover::after {
-      content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px;
-      background: #4caf50;
+    nav a::after{
+      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+      background:#4caf50;transition:width .3s
+    }
+    nav a:hover,nav a.active{color:#fff}
+    nav a:hover::after,nav a.active::after{width:100%}
+
+    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+
+    .dropdown{
+      position:absolute;top:100%;left:0;right:0;
+      background:#222;display:none;flex-direction:column;padding:10px 20px;
+      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
+    }
+    .dropdown a{
+      padding:12px 0;border-bottom:1px solid #333;
+      color:#eee;font-size:1rem
+    }
+    .dropdown a:last-child{border-bottom:none}
+    .dropdown a:hover,.dropdown a.active{color:#4caf50}
+
+    .hero{
+      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
+      position:relative;display:flex;align-items:center;justify-content:center
+    }
+    .hero-content{position:relative;text-align:center;color:#fff}
+    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
+    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
+
+    .container{max-width:1000px;margin:60px auto;padding:0 20px}
+    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+    section.visible{opacity:1;transform:translateY(0)}
+
+    .stock-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:20px;
+    }
+    .item-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      transition:.3s;
+      backdrop-filter:blur(8px);
+    }
+    .item-card:hover{transform:translateY(-5px)}
+    .item-card img{
+      width:100%;
+      border-radius:10px;
+      margin-bottom:8px;
+    }
+    .item-card h3{font-size:1rem;color:#4caf50}
+    .item-card p{font-size:.85rem;color:#ccc}
+
+    /* MODAL */
+    .modal-bg{
+      display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;
+    }
+    .modal{
+      background:#222;padding:20px;border-radius:14px;max-width:400px;width:90%;
+      text-align:center;position:relative;animation:fadeInUp .4s;
+    }
+    .modal img{width:100%;border-radius:10px;margin-bottom:12px}
+    .modal h2{color:#4caf50;margin-bottom:10px}
+    .modal p{color:#ccc;font-size:.95rem;margin-bottom:16px}
+    .modal button{
+      background:#4caf50;color:#111;font-weight:600;padding:10px 20px;
+      border:none;border-radius:8px;cursor:pointer;font-size:1rem
+    }
+    .close-btn{
+      position:absolute;top:10px;right:14px;font-size:1.4rem;color:#aaa;
+      background:none;border:none;cursor:pointer
     }
 
-    .container {
-      max-width: 1000px; margin: auto; padding: 20px;
+    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
+
+    @media(max-width:768px){
+      .menu-toggle{display:block}
+      nav{display:none}
     }
 
-    .filter-bar {
-      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
-    }
-    .filter-bar input, .filter-bar select {
-      padding: 8px 12px; border-radius: 6px; border: none;
-      font-size: 0.9rem;
-    }
-
-    .stock-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 20px;
-    }
-
-    .item-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .item-card.expanded {
-      grid-column: span 2;
-      background: rgba(0,0,0,0.9);
-    }
-
-    .item-card img {
-      width: 100%;
-      display: block;
-    }
-
-    .info {
-      padding: 12px;
-    }
-    .info h3 {
-      font-size: 1rem;
-      color: #4caf50;
-      margin-bottom: 6px;
-    }
-    .info p {
-      font-size: 0.85rem;
-      color: #ccc;
-      margin: 2px 0;
-    }
-
-    .details {
-      display: none;
-      padding: 12px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .item-card.expanded .details {
-      display: block;
-    }
-
-    .slider {
-      display: flex; overflow-x: auto; gap: 10px; margin-top: 10px;
-    }
-    .slider img {
-      height: 100px; border-radius: 6px; flex-shrink: 0;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #aaa;
-      border-top: 1px solid #333;
-      margin-top: 40px;
-    }
-
-    @media (max-width: 768px) {
-      header { flex-direction: column; align-items: flex-start; }
-      nav { margin-top: 10px; }
-    }
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
   </style>
 </head>
 <body>
 
 <header>
   <h1>Trainer Store</h1>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
     <a href="info.html">Info</a>
     <a href="contact.html">Contact</a>
   </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </header>
 
-<div class="container">
-
-  <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search shoes...">
-    <select id="sortSelect">
-      <option value="">Sort by</option>
-      <option value="asc">Price: Low to High</option>
-      <option value="desc">Price: High to Low</option>
-    </select>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Our Current Stock</h1>
+    <p>Tap a product to learn more and buy.</p>
   </div>
+</section>
 
-  <div class="stock-grid" id="stockGrid">
-"""
-
-# Add each item
-for idx, item in enumerate(stock_items):
-    html_output += f"""
-    <div class="item-card" onclick="toggleExpand(this)">
-      <img src="{item['images'][0]}" alt="{item['title']}">
-      <div class="info">
-        <h3>{item['title']}</h3>
-        <p>{item['price']} - {item['size']}</p>
+<div class="container">
+  <section>
+    <div class="stock-grid">
+      <div class="item-card" onclick="toggleExpand(this)">
+        <img src="https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80" alt="Air Max 90" />
+        <h3>Air Max 90</h3>
+        <p>£85</p>
+        <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
+          Classic silhouette in great condition. UK 9. Ships in 1-2 days.
+          <br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
+        </div>
       </div>
-      <div class="details">
-        <p><strong>Condition:</strong> {item['condition']}</p>
-        <p><strong>Shipping:</strong> {item['shipping']}</p>
-        <div class="slider">
-          <img src="{item['images'][0]}" alt="">
-          <img src="{item['images'][1]}" alt="">
+      <div class="item-card" onclick="toggleExpand(this)">
+        <img src="https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80" alt="Yeezy Boost 350" />
+        <h3>Yeezy Boost 350</h3>
+        <p>£150</p>
+        <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
+          Lightly worn, UK 10. Includes original box.
+          <br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
+        </div>
+      </div>
+      <div class="item-card" onclick="toggleExpand(this)">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Dunk Low Panda" />
+        <h3>Dunk Low Panda</h3>
+        <p>£110</p>
+        <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
+          Brand new. UK 8. One of the cleanest looks in rotation right now.
+          <br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
         </div>
       </div>
     </div>
-    """
-
-# Close everything
-html_output += """
-  </div>
+  </section>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 <script>
-  function toggleExpand(el) {
-    document.querySelectorAll('.item-card').forEach(card => {
-      if (card !== el) card.classList.remove('expanded');
-    });
-    el.classList.toggle('expanded');
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu(){
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  const searchInput = document.getElementById('searchInput');
-  const sortSelect = document.getElementById('sortSelect');
-  const stockGrid = document.getElementById('stockGrid');
-
-  searchInput.addEventListener('input', () => {
-    const val = searchInput.value.toLowerCase();
-    document.querySelectorAll('.item-card').forEach(card => {
-      const title = card.querySelector('h3').textContent.toLowerCase();
-      card.style.display = title.includes(val) ? '' : 'none';
-    });
+  document.querySelectorAll('section').forEach(sec=>{
+    const obs = new IntersectionObserver(e=>{
+      if(e[0].isIntersecting){
+        sec.classList.add('visible');
+        obs.disconnect();
+      }
+    },{threshold:.2});
+    obs.observe(sec);
   });
 
-  sortSelect.addEventListener('change', () => {
-    const cards = Array.from(document.querySelectorAll('.item-card'));
-    cards.sort((a, b) => {
-      const priceA = parseFloat(a.querySelector('.info p').textContent.replace(/[^\\d.]/g, ''));
-      const priceB = parseFloat(b.querySelector('.info p').textContent.replace(/[^\\d.]/g, ''));
-      return sortSelect.value === 'asc' ? priceA - priceB : priceB - priceA;
-    });
-    stockGrid.innerHTML = '';
-    cards.forEach(card => stockGrid.appendChild(card));
-  });
+  function toggleExpand(card) {
+    const extra = card.querySelector('.extra-info');
+    if (extra.style.display === 'block') {
+      extra.style.display = 'none';
+      card.style.boxShadow = 'none';
+      card.style.background = 'rgba(255,255,255,0.04)';
+      card.style.transform = 'none';
+    } else {
+      // Close others
+      document.querySelectorAll('.extra-info').forEach(info => info.style.display = 'none');
+      document.querySelectorAll('.item-card').forEach(c=>{
+        c.style.boxShadow = 'none';
+        c.style.background = 'rgba(255,255,255,0.04)';
+        c.style.transform = 'none';
+      });
+
+      extra.style.display = 'block';
+      card.style.boxShadow = '0 4px 15px rgba(76, 175, 80, 0.5)';
+      card.style.background = 'rgba(76,175,80,0.1)';
+      card.style.transform = 'translateY(-5px)';
+    }
+  }
 </script>
 
 </body>
 </html>
-"""
-
-# Save to a file
-output_path = Path("/mnt/data/stock-expanded.html")
-output_path.write_text(html_output)
-
-output_path
