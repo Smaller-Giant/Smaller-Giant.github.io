@@ -1,283 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Trainer Store | Stock</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trainer Store | Stock</title>
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
-
-  header{
-    position:fixed;top:0;width:100%;z-index:1000;
-    background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
-    padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
-  }
-  header h1{font-size:1.4rem;color:#fff}
-
-  a{color:inherit;text-decoration:none;transition:color .3s}
-  a:visited{color:inherit}
-
-  nav{display:flex;gap:18px}
-  nav a{
-    color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
-  }
-  nav a::after{
-    content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
-    background:#4caf50;transition:width .3s
-  }
-  nav a:hover,nav a.active{color:#fff}
-  nav a:hover::after,nav a.active::after{width:100%}
-
-  .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
-
-  .dropdown{
-    position:absolute;top:100%;left:0;right:0;
-    background:#222;display:none;flex-direction:column;padding:10px 20px;
-    box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
-  }
-  .dropdown a{
-    padding:12px 0;border-bottom:1px solid #333;
-    color:#eee;font-size:1rem
-  }
-  .dropdown a:last-child{border-bottom:none}
-  .dropdown a:hover,.dropdown a.active{color:#4caf50}
-
-  .hero{
-    height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
-    position:relative;display:flex;align-items:center;justify-content:center
-  }
-  .hero-content{position:relative;text-align:center;color:#fff}
-  .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
-  .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
-
-  .container{max-width:1000px;margin:60px auto;padding:0 20px}
-  section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
-  section.visible{opacity:1;transform:translateY(0)}
-
-  .stock-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-    gap:20px;
-  }
-
-  .item-card{
-    position: relative;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:12px;
-    padding:10px;
-    text-align:center;
-    cursor:pointer;
-    transition:.3s;
-    backdrop-filter:blur(8px);
-    height: 280px; /* fixed height */
-    overflow: hidden;
-    user-select:none;
-  }
-  .item-card:hover{
-    transform:translateY(-5px);
-  }
-  .item-card img{
-    width:100%;
-    border-radius:10px;
-    margin-bottom:8px;
-    transition: transform 0.3s ease;
-  }
-  .item-card.expanded img{
-    transform: scale(1.05);
-  }
-  .item-card h3{
-    font-size:1rem;
-    color:#4caf50;
-    margin-bottom: 6px;
-  }
-  .item-card p.price{
-    font-size:.85rem;
-    color:#ccc;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-
-  /* Expanded details overlay inside card */
-  .item-details {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.8);
-    color: #ccc;
-    padding: 15px 10px;
-    font-size: 0.9rem;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.4s ease;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-  }
-  .item-card.expanded .item-details {
-    max-height: 180px;
-    opacity: 1;
-  }
-
-  .buy-btn {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 8px 20px;
-    background-color: #4caf50;
-    color: #111;
-    font-weight: 600;
-    border-radius: 8px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .buy-btn:hover {
-    background-color: #3a9a36;
-  }
-
-  footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
-
-  @media(max-width:768px){
-    .menu-toggle{display:block}
-    nav{display:none}
-  }
-
-  @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-</style>
+  <style>
+    /* Your existing CSS styles here */
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>Trainer Store</h1>
-  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </div>
-</header>
+  <header>
+    <h1>Trainer Store</h1>
+    <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stock.html" class="active">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html" class="active">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </header>
 
-<section class="hero">
-  <div class="hero-content">
-    <h1>Our Current Stock</h1>
-    <p>Tap a product to learn more and buy.</p>
-  </div>
-</section>
-
-<div class="container">
-  <section>
-    <div class="stock-grid" id="stockGrid">
-      <!-- JS will inject items here -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Our Current Stock</h1>
+      <p>Tap a product to learn more and buy.</p>
     </div>
   </section>
-</div>
 
-<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
-
-<script>
-  const dropdown = document.getElementById('dropdownMenu');
-  function toggleMenu() {
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
-
-  document.querySelectorAll('section').forEach(sec => {
-    const obs = new IntersectionObserver(e => {
-      if (e[0].isIntersecting) {
-        sec.classList.add('visible');
-        obs.disconnect();
-      }
-    }, { threshold: .2 });
-    obs.observe(sec);
-  });
-
-  const stockItems = [
-    {
-      title: 'Air Max 90',
-      img: 'https://via.placeholder.com/300x200',
-      price: '£85',
-      desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.',
-      buyLink: 'https://www.vinted.co.uk/member/233654539',
-    },
-    {
-      title: 'Yeezy Boost 350',
-      img: 'https://via.placeholder.com/300x200',
-      price: '£150',
-      desc: 'Lightly worn, UK 10. Includes original box.',
-      buyLink: 'https://www.vinted.co.uk/member/233654539',
-    },
-    {
-      title: 'Dunk Low Panda',
-      img: 'https://via.placeholder.com/300x200',
-      price: '£110',
-      desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.',
-      buyLink: 'https://www.vinted.co.uk/member/233654539',
-    }
-  ];
-
-  function createStockCard(item) {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.tabIndex = 0;
-    card.setAttribute('aria-expanded', 'false');
-    card.innerHTML = `
-      <img src="${item.img}" alt="${item.title}" />
-      <h3>${item.title}</h3>
-      <p class="price">${item.price}</p>
-      <div class="item-details" aria-hidden="true">
-        <p>${item.desc}</p>
-        <a href="${item.buyLink}" target="_blank" class="buy-btn" rel="noopener noreferrer">Buy Now</a>
+  <div class="container">
+    <section>
+      <div class="stock-grid" id="stockGrid">
+        <!-- JS will inject items here -->
       </div>
-    `;
+    </section>
+  </div>
 
-    card.addEventListener('click', () => {
-      const expanded = card.classList.contains('expanded');
-      // Close any other expanded cards
-      document.querySelectorAll('.item-card.expanded').forEach(c => {
-        if (c !== card) {
-          c.classList.remove('expanded');
-          c.setAttribute('aria-expanded', 'false');
-          c.querySelector('.item-details').setAttribute('aria-hidden', 'true');
+  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+
+  <script>
+    const stockItems = [
+      {
+        title: 'Nike Air Max 90',
+        img: 'https://www.nike.com/t/air-max-90-mens-shoes-bAZ6AeHT',
+        price: '£85',
+        desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.',
+        buyLink: 'https://www.vinted.co.uk/member/233654539',
+      },
+      {
+        title: 'Adidas Yeezy Boost 350 V2',
+        img: 'https://unsplash.com/photos/black-and-white-adidas-yeezy-boost-350-v-2-EEolvBD9gcc',
+        price: '£150',
+        desc: 'Lightly worn, UK 10. Includes original box.',
+        buyLink: 'https://www.vinted.co.uk/member/233654539',
+      },
+      {
+        title: 'Nike Dunk Low Panda',
+        img: 'https://www.nike.com/t/air-max-90-mens-shoes-bAZ6AeHT',
+        price: '£110',
+        desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.',
+        buyLink: 'https://www.vinted.co.uk/member/233654539',
+      }
+    ];
+
+    function createStockCard(item) {
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.tabIndex = 0;
+      card.setAttribute('aria-expanded', 'false');
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.title}" />
+        <h3>${item.title}</h3>
+        <p class="price">${item.price}</p>
+        <div class="item-details" aria-hidden="true">
+          <p>${item.desc}</p>
+          <a href="${item.buyLink}" target="_blank" class="buy-btn" rel="noopener noreferrer">Buy Now</a>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        const expanded = card.classList.contains('expanded');
+        // Close any other expanded cards
+        document.querySelectorAll('.item-card.expanded').forEach(c => {
+          if (c !== card) {
+            c.classList.remove('expanded');
+            c.setAttribute('aria-expanded', 'false');
+            c.querySelector('.item-details').setAttribute('aria-hidden', 'true');
+          }
+        });
+
+        if (!expanded) {
+          card.classList.add('expanded');
+          card.setAttribute('aria-expanded', 'true');
+          card.querySelector('.item-details').setAttribute('aria-hidden', 'false');
+        } else {
+          card.classList.remove('expanded');
+          card.setAttribute('aria-expanded', 'false');
+          card.querySelector('.item-details').setAttribute('aria-hidden', 'true');
         }
       });
 
-      if (!expanded) {
-        card.classList.add('expanded');
-        card.setAttribute('aria-expanded', 'true');
-        card.querySelector('.item-details').setAttribute('aria-hidden', 'false');
-      } else {
-        card.classList.remove('expanded');
-        card.setAttribute('aria-expanded', 'false');
-        card.querySelector('.item-details').setAttribute('aria-hidden', 'true');
-      }
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+
+      return card;
+    }
+
+    const stockGrid = document.getElementById('stockGrid');
+    stockItems.forEach(item => {
+      stockGrid.appendChild(createStockCard(item));
     });
-
-    card.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        card.click();
-      }
-    });
-
-    return card;
-  }
-
-  const stockGrid = document.getElementById('stockGrid');
-  stockItems.forEach(item => {
-    stockGrid.appendChild(createStockCard(item));
-  });
-</script>
+  </script>
 
 </body>
 </html>
