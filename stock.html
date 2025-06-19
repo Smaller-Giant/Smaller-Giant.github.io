@@ -1,212 +1,160 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trainer Store | Stock</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(120deg, #1c2331, #2b3a67);
-      color: #fafafa;
-      min-height: 100vh;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; }
 
     header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.85);
-      z-index: 10000;
-      padding: 15px 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
     }
+    header h1 { font-size: 1.4rem; color: #fff; }
 
-    header h1 {
-      font-weight: 600;
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      color: #ffcc33;
-      user-select: none;
-    }
-
+    nav { display: flex; gap: 18px; }
     nav a {
-      color: #d1d1ff;
-      margin-left: 25px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.05rem;
-      padding-bottom: 4px;
-      position: relative;
-      transition: color 0.3s ease;
-      user-select: none;
+      color: #ccc; text-decoration: none; font-size: 0.95rem;
+      position: relative; padding-bottom: 2px; transition: color 0.3s;
     }
-
     nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: #ffcc33;
-      transition: width 0.3s ease;
-      border-radius: 3px;
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 2px; background: #4caf50; transition: width 0.3s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    nav a:hover::after, nav a.active::after { width: 100%; }
+
+    .menu-toggle {
+      display: none; font-size: 1.5rem; color: #ccc; cursor: pointer;
+      background: none; border: none;
     }
 
-    nav a:hover, nav a.active {
-      color: #ffcc33;
+    .dropdown {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: #222; display: none; flex-direction: column; padding: 10px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      animation: fadeInDown 0.3s ease-out forwards;
     }
+    .dropdown a {
+      padding: 12px 0; border-bottom: 1px solid #333;
+      color: #eee; font-size: 1rem;
+    }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
 
-    nav a:hover::after, nav a.active::after {
-      width: 100%;
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 110px auto 60px auto;
-      padding: 0 20px;
-    }
-
-    h2 {
-      font-weight: 600;
-      font-size: 2rem;
-      margin-bottom: 30px;
-      text-align: center;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-      color: #fff;
-      user-select: none;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
-
-    .product-card {
-      background: #1f2a44;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      user-select: none;
-    }
-    .product-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 40px #ffcc33bb;
-    }
-
-    .product-image {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.4));
-      user-select: none;
-    }
-
-    .product-info {
+    .container {
+      max-width: 1000px;
+      margin: 100px auto 40px auto;
       padding: 20px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      color: #fffde7dd;
     }
-
-    .product-info h3 {
-      margin-bottom: 12px;
-      font-weight: 700;
-      color: #ffcc33;
-      user-select: text;
-    }
-
-    .product-info p {
-      flex-grow: 1;
-      font-weight: 300;
-      font-size: 1rem;
-      margin-bottom: 20px;
-      user-select: text;
-      line-height: 1.4;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 15px;
-    }
-
-    .btn {
-      flex: 1;
-      background-color: #ffcc33;
-      color: #222;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 12px;
+    h2 {
       text-align: center;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      cursor: pointer;
+      margin-bottom: 30px;
     }
-    .btn:hover {
-      background-color: #f5b800;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .card h3 {
+      color: #4caf50;
+      margin-bottom: 6px;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: #ccc;
     }
 
     footer {
       text-align: center;
-      padding: 35px 20px;
-      font-weight: 600;
-      color: #fafafacc;
+      padding: 30px 0 15px;
       font-size: 0.9rem;
-      background: rgba(0,0,0,0.8);
-      user-select: none;
-      box-shadow: inset 0 2px 10px rgba(255,255,255,0.05);
+      color: #aaa;
     }
 
-    @media (max-width: 650px) {
-      .btn-group {
-        flex-direction: column;
-      }
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      nav { display: none; }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Trainer Store</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="stock.html" class="active">Stock</a>
       <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html" class="active">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </header>
 
-  <main>
-    <h2>Our Current Stock</h2>
+  <div class="container">
+    <h2>Available Trainers</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Trainer 1">
+        <h3>Nike Air Max</h3>
+        <p>£85 - Size 9 UK - Brand New</p>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Trainer 2">
+        <h3>Yeezy Boost 350</h3>
+        <p>£120 - Size 10 UK - Lightly Worn</p>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Trainer 3">
+        <h3>Adidas Forum Low</h3>
+        <p>£65 - Size 8 UK - Brand New</p>
+      </div>
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Trainer 4">
+        <h3>Jordan 1 Retro</h3>
+        <p>£140 - Size 9.5 UK - Worn Once</p>
+      </div>
+    </div>
+  </div>
 
-    <div class="product-grid">
+  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-      <article class="product-card" tabindex="0" aria-label="Nike Air Max 90">
-        <img src="nike-air-max-90.jpg" alt="Nike Air Max 90 trainers" class="product-image" />
-        <div class="product-info">
-          <h3>Nike Air Max 90</h3>
-          <p>Iconic retro running shoes featuring comfortable air cushioning and durable leather upper. Sizes 6-12 available.</p>
-          <div class="btn-group">
-            <a href="https://www.ebay.co.uk/..." target="_blank" class="btn" rel
+  <script>
+    function toggleMenu() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+</body>
+</html>
