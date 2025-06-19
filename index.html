@@ -8,45 +8,63 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-height: 100vh; line-height: 1.6; }
+    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-height: 100vh; }
 
     header {
-      position: fixed; top: 0; width: 100%; padding: 12px 20px;
-      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
     }
-    header h1 { font-weight: 600; font-size: 1.4rem; color: #fff; }
+    header h1 { font-size: 1.4rem; color: #fff; }
+    .menu-toggle {
+      display: none; font-size: 1.5rem; color: #ccc; cursor: pointer;
+      background: none; border: none;
+    }
+    nav { display: flex; gap: 18px; }
     nav a {
-      margin-left: 16px; color: #ccc; text-decoration: none;
-      font-weight: 500; font-size: 0.95rem; position: relative;
-      transition: color 0.3s;
+      color: #ccc; text-decoration: none; font-size: 0.95rem;
+      position: relative; padding-bottom: 2px; transition: color 0.3s;
     }
     nav a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0;
+      content: ''; position: absolute; bottom: -2px; left: 0;
       width: 0; height: 2px; background: #4caf50; transition: width 0.3s;
     }
     nav a:hover, nav a.active { color: #fff; }
     nav a:hover::after, nav a.active::after { width: 100%; }
 
-    section { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; margin: 60px 0; }
+    /* Dropdown menu */
+    .dropdown {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: #222; display: none; flex-direction: column; padding: 10px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      animation: fadeInDown 0.3s ease-out forwards;
+    }
+    .dropdown a {
+      padding: 10px 0; border-bottom: 1px solid #333;
+    }
+    .dropdown a:last-child { border-bottom: none; }
 
-    section.visible { opacity: 1; transform: translateY(0); }
-
+    /* Page content */
     .hero {
+      height: 60vh; min-height: 280px;
       background: url('https://via.placeholder.com/1200x600') center/cover no-repeat;
-      height: 60vh; min-height: 300px; display: flex;
-      align-items: center; justify-content: center;
-      position: relative; color: #fff;
+      position: relative; display: flex; align-items: center; justify-content: center;
     }
     .hero::after {
       content: ''; position: absolute; inset: 0;
       background: rgba(0,0,0,0.6);
     }
-    .hero .hero-content {
-      position: relative; text-align: center; max-width: 800px;
-      animation: fadeInUp 1s ease-out forwards;
+    .hero-content {
+      position: relative; text-align: center; color: #fff;
     }
-    .hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
-    .hero p { font-size: 1.1rem; }
+    .hero-content h1 { font-size: 2.5rem; margin-bottom: 15px; opacity: 0; animation: fadeInUp 1s forwards; }
+    .hero-content p { font-size: 1.1rem; opacity: 0; animation: fadeInUp 1s 0.3s forwards; }
+
+    .container {
+      max-width: 900px; margin: 60px auto; padding: 0 20px;
+    }
+    section { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; margin-bottom: 60px; }
+    section.visible { opacity: 1; transform: translateY(0); }
 
     .features {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 24px;
@@ -56,9 +74,9 @@
       text-align: center; transition: transform 0.3s;
     }
     .feature:hover { transform: translateY(-8px); }
-    .feature img { width: 60px; height: 60px; margin-bottom: 12px; }
-    .feature h3 { font-size: 1.2rem; margin-bottom: 8px; color: #4caf50; }
-    .feature p { font-size: 0.95rem; color: #ccc; }
+    .feature img { width: 60px; height: 60px; margin-bottom: 12px; filter: invert(1); }
+    .feature h3 { color: #4caf50; margin-bottom: 8px; }
+    .feature p { color: #ccc; }
 
     .arrivals {
       display: flex; overflow-x: auto; gap: 16px; padding-bottom: 16px;
@@ -72,43 +90,54 @@
 
     .testimonial {
       background: #222; padding: 24px; border-radius: 12px;
-      max-width: 600px; margin: 0 auto; text-align: center;
-      color: #ccc;
+      max-width: 600px; margin: 0 auto;
+      text-align: center; color: #ccc;
     }
     .testimonial p { font-style: italic; margin-bottom: 14px; }
     .testimonial span { color: #4caf50; font-weight: 600; }
 
     footer {
       text-align: center; padding: 20px 0; font-size: 0.9rem; color: #aaa;
+      border-top: 1px solid #333;
     }
 
     @media (max-width: 768px) {
-      .hero h1 { font-size: 2rem; }
-      .hero p { font-size: 1rem; }
+      .menu-toggle { display: block; }
+      nav { display: none; }
     }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>Trainer Store</h1>
+    <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
     <nav>
       <a href="index.html" class="active">Home</a>
       <a href="stock.html">Stock</a>
       <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
     </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html" class="active">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </header>
 
   <section class="hero">
     <div class="hero-content">
       <h1>Discover Your Next Trainers</h1>
-      <p>Explore authentic, stylish trainers with fast shipping and trusted service.</p>
+      <p>Authentic. Stylish. Delivered fast.</p>
     </div>
   </section>
 
@@ -117,19 +146,16 @@
       <h2>Why We're Different</h2>
       <div class="features">
         <div class="feature">
-          <img src="https://via.placeholder.com/60?text=✓" alt="Authenticity Icon" />
-          <h3>100% Authentic</h3>
-          <p>Every pair is verified by sneaker experts—no fakes, ever.</p>
+          <img src="https://via.placeholder.com/60?text=✓" alt="Authenticity" />
+          <h3>100% Authentic</h3><p>Every pair is verified by sneaker experts.</p>
         </div>
         <div class="feature">
-          <img src="https://via.placeholder.com/60?text=🚚" alt="Fast Shipping Icon" />
-          <h3>Fast Shipping</h3>
-          <p>Quick dispatch via trusted carriers.</p>
+          <img src="https://via.placeholder.com/60?text=🚚" alt="Fast Shipping" />
+          <h3>Fast Shipping</h3><p>Quick dispatch via trusted carriers.</p>
         </div>
         <div class="feature">
-          <img src="https://via.placeholder.com/60?text=🔒" alt="Secure Payments Icon" />
-          <h3>Secure Payments</h3>
-          <p>Shop safely with eBay or Vinted buyer protection.</p>
+          <img src="https://via.placeholder.com/60?text=🔒" alt="Secure Payments" />
+          <h3>Secure Payments</h3><p>Shop safely with buyer protection.</p>
         </div>
       </div>
     </section>
@@ -145,28 +171,27 @@
     </section>
 
     <section>
-      <h2>What Our Customers Say</h2>
+      <h2>What Customers Say</h2>
       <div class="testimonial">
-        <p>"Quick delivery and the trainers were exactly as described. Awesome experience!"</p>
+        <p>"Quick delivery and exactly as described—awesome experience!"</p>
         <span>— Jamie P.</span>
       </div>
     </section>
   </div>
 
-  <footer>
-    This site is for display only. All orders handled through Vinted or eBay.
-  </footer>
+  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
   <script>
-    // Reveal on scroll
+    function toggleMenu() {
+      const dropdown = document.getElementById('dropdownMenu');
+      const nav = document.querySelector('nav');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
     document.querySelectorAll('section').forEach(s => {
-      const observer = new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) {
-          s.classList.add('visible');
-          observer.disconnect();
-        }
+      const o = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) s.classList.add('visible'), o.disconnect();
       }, { threshold: 0.2 });
-      observer.observe(s);
+      o.observe(s);
     });
   </script>
 </body>
