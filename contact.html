@@ -10,40 +10,98 @@
     body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; }
 
     header {
-      position: fixed; top: 0; width: 100%; z-index: 1000;
-      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      position: fixed; 
+      top: 0; 
+      width: 100%; 
+      z-index: 1000;
+      background: rgba(0,0,0,0.85); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 12px 20px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
     }
-    header h1 { font-size: 1.4rem; color: #fff; }
 
-    nav { display: flex; gap: 18px; }
-    nav a {
-      color: #ccc; text-decoration: none; font-size: 0.95rem;
-      position: relative; padding-bottom: 2px; transition: color 0.3s;
+    header h1 { 
+      font-size: 1.4rem; 
+      color: #fff; 
+      white-space: nowrap;  /* Prevent wrapping */
+      flex-shrink: 0;
     }
-    nav a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0;
-      width: 0; height: 2px; background: #4caf50; transition: width 0.3s;
-    }
-    nav a:hover, nav a.active { color: #fff; }
-    nav a:hover::after, nav a.active::after { width: 100%; }
 
     .menu-toggle {
-      display: none; font-size: 1.5rem; color: #ccc; cursor: pointer;
-      background: none; border: none;
+      display: none; 
+      font-size: 1.5rem; 
+      color: #ccc; 
+      cursor: pointer;
+      background: none; 
+      border: none;
+      flex-shrink: 0;
+      transition: color 0.3s;
+    }
+
+    .menu-toggle:hover, .menu-toggle:focus {
+      color: #ccc; /* Keep same color on hover */
+      outline: none;
+    }
+
+    nav {
+      display: flex; 
+      gap: 18px; 
+      flex-grow: 1;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      color: #ccc; 
+      text-decoration: none; 
+      font-size: 0.95rem;
+      position: relative; 
+      padding-bottom: 2px; 
+      transition: color 0.3s;
+    }
+
+    nav a::after {
+      content: ''; 
+      position: absolute; 
+      bottom: -2px; 
+      left: 0;
+      width: 0; 
+      height: 2px; 
+      background: #4caf50; 
+      transition: width 0.3s;
+    }
+
+    nav a:hover, nav a.active { 
+      color: #fff; 
+    }
+
+    nav a:hover::after, nav a.active::after { 
+      width: 100%; 
     }
 
     .dropdown {
-      position: absolute; top: 100%; left: 0; right: 0;
-      background: #222; display: none; flex-direction: column; padding: 10px 20px;
+      position: absolute; 
+      top: 100%; 
+      left: 0; 
+      right: 0;
+      background: #222; 
+      display: none; 
+      flex-direction: column; 
+      padding: 10px 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.7);
       animation: fadeInDown 0.3s ease-out forwards;
     }
+
     .dropdown a {
-      padding: 12px 0; border-bottom: 1px solid #333;
-      color: #eee; font-size: 1rem;
+      padding: 12px 0; 
+      border-bottom: 1px solid #333;
+      color: #eee; 
+      font-size: 1rem;
     }
+
     .dropdown a:last-child { border-bottom: none; }
+
     .dropdown a:hover, .dropdown a.active { color: #4caf50; }
 
     .container {
@@ -51,6 +109,7 @@
       margin: 100px auto 40px auto;
       padding: 20px;
     }
+
     h2 {
       text-align: center;
       margin-bottom: 30px;
@@ -65,12 +124,14 @@
       max-width: 600px;
       margin: 0 auto;
     }
+
     label {
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
       color: #ccc;
     }
+
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -83,10 +144,12 @@
       resize: vertical;
       transition: background 0.3s;
     }
+
     input:focus, textarea:focus {
       background: #444;
       outline: none;
     }
+
     button {
       background: #4caf50;
       color: #111;
@@ -99,6 +162,7 @@
       transition: background 0.3s;
       width: 100%;
     }
+
     button:hover {
       background: #3a9d3a;
     }
