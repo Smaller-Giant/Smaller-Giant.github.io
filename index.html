@@ -1,173 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Trainer Store | Home</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trainer Store | Home</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
-  * {
-    box-sizing: border-box;
-    margin: 0; padding: 0;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #2193b0, #6dd5ed);
-    color: #fff;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #2193b0, #6dd5ed);
+      color: #222;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
 
-  header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(0, 0, 50, 0.9);
-    padding: 15px 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10000;
-  }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 50, 0.9);
+      padding: 8px 20px; /* smaller vertical padding */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10000;
+      height: 50px; /* smaller height */
+    }
 
-  header h1 {
-    font-weight: 600;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    user-select: none;
-    color: #e0f7fa;
-  }
-
-  nav a {
-    color: #b3e5fc;
-    margin-left: 25px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.05rem;
-    padding-bottom: 4px;
-    position: relative;
-    transition: color 0.3s ease;
-    user-select: none;
-  }
-
-  nav a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0%;
-    height: 2px;
-    background: #e0f7fa;
-    border-radius: 3px;
-    transition: width 0.3s ease;
-  }
-
-  nav a:hover, nav a.active {
-    color: #e0f7fa;
-  }
-
-  nav a:hover::after, nav a.active::after {
-    width: 100%;
-  }
-
-  main {
-    max-width: 900px;
-    margin: 110px auto 60px auto;
-    padding: 30px 40px;
-    background: rgba(0,0,50,0.8);
-    border-radius: 18px;
-    box-shadow: 0 12px 30px rgba(0,0,50,0.7);
-    user-select: text;
-  }
-
-  h1, h2 {
-    font-weight: 700;
-    margin-bottom: 18px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    text-align: center;
-    color: #80deea;
-  }
-
-  h2 {
-    font-size: 2rem;
-    border-bottom: 3px solid #80deea;
-    padding-bottom: 8px;
-    color: #b3e5fc;
-  }
-
-  p {
-    margin-bottom: 20px;
-    font-weight: 400;
-    font-size: 1.1rem;
-    color: #cceeff;
-    line-height: 1.6;
-  }
-
-  ul {
-    margin-left: 20px;
-    margin-bottom: 30px;
-    list-style-type: disc;
-    color: #bbdefb;
-    font-size: 1.1rem;
-  }
-
-  ul li {
-    margin-bottom: 12px;
-  }
-
-  footer {
-    text-align: center;
-    padding: 35px 20px;
-    font-weight: 600;
-    color: #b3e5fccc;
-    font-size: 0.9rem;
-    background: rgba(0, 0, 50, 0.8);
-    user-select: none;
-    box-shadow: inset 0 2px 10px rgba(255,255,255,0.1);
-    margin-top: 40px;
-  }
-
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    nav {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px 20px;
+    header h1 {
+      font-weight: 600;
+      font-size: 1.3rem; /* smaller font */
+      letter-spacing: 2px;
+      color: #e0f7fa;
+      user-select: none;
     }
 
     nav a {
-      margin: 8px 0;
-      font-size: 1.2rem;
-      margin-left: 0;
+      color: #b3e5fc;
+      margin-left: 18px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem; /* smaller font */
+      padding-bottom: 3px;
+      position: relative;
+      transition: color 0.3s ease;
+      user-select: none;
     }
 
-    main {
-      margin: 90px 15px 30px 15px;
-      padding: 20px;
-      max-width: 100%;
-      border-radius: 10px;
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      background: #e0f7fa;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #e0f7fa;
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 70px auto 40px auto; /* less top margin to fit smaller header */
+      padding: 25px 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      color: #222;
+      user-select: text;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h1,
+    h2 {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1565c0;
     }
 
     h1 {
       font-size: 2rem;
+      text-align: center;
     }
 
     h2 {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+      border-bottom: 3px solid #2196f3;
+      padding-bottom: 6px;
     }
 
-    p, ul li {
+    p {
+      margin-bottom: 16px;
+      font-weight: 400;
+      font-size: 1rem;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 30px;
+      list-style-type: disc;
+      color: #555;
       font-size: 1rem;
     }
-  }
 
-</style>
+    ul li {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 15px;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.85rem;
+      background: rgba(0, 0, 50, 0.05);
+      user-select: none;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-top: 40px;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      header {
+        padding: 6px 15px;
+        height: 45px;
+      }
+
+      header h1 {
+        font-size: 1.1rem;
+      }
+
+      nav a {
+        font-size: 0.9rem;
+        margin-left: 12px;
+      }
+
+      .container {
+        margin: 65px 15px 30px 15px;
+        padding: 20px;
+        max-width: 100%;
+        border-radius: 10px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+        border-bottom-width: 2px;
+      }
+
+      p,
+      ul li {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -180,14 +192,19 @@
     </nav>
   </header>
 
-  <main>
-    <h1>Welcome to the Trainer Store</h1>
+  <div class="container">
+    <section>
+      <h1>Welcome to the Trainer Store</h1>
+      <p>
+        At Trainer Store, we're passionate about authentic, high-quality trainers from the best brands worldwide.
+        Discover the perfect mix of style, comfort, and value in our carefully curated collection.
+      </p>
+    </section>
 
     <section>
       <h2>Why Choose Us?</h2>
-      <p>At Trainer Store, we're passionate about bringing you authentic, high-quality trainers from the best brands around the world. Our carefully curated collection ensures that you get both style and comfort in every pair.</p>
       <ul>
-        <li>Authentic trainers guaranteed</li>
+        <li>Guaranteed 100% authentic trainers</li>
         <li>Competitive prices and exclusive deals</li>
         <li>Fast and reliable shipping</li>
         <li>Exceptional customer support</li>
@@ -197,14 +214,17 @@
 
     <section>
       <h2>Latest Releases & Trends</h2>
-      <p>Stay ahead of the sneaker game with our latest arrivals and trending models. We update our stock regularly with the freshest drops so you never miss out.</p>
-      <p>Check out popular models like Nike Air Max, Adidas Ultraboost, Puma RS-X Bold, and more.</p>
+      <p>
+        Stay ahead with fresh drops and trending styles including Nike Air Max, Adidas Ultraboost, Puma RS-X Bold, and more.
+      </p>
     </section>
 
     <section>
       <h2>How to Order</h2>
-      <p>Ordering is simple! Browse our <a href="stock.html" style="color:#80deea; text-decoration: underline;">stock page</a>, pick your favorite trainers, and purchase securely via trusted platforms like eBay or Vinted.</p>
-      <p>All orders are fulfilled through these marketplaces, ensuring buyer protection and smooth transactions.</p>
+      <p>
+        Browse our <a href="stock.html" style="color:#2196f3; text-decoration: underline;">stock page</a>, pick your favorite trainers, and purchase securely via trusted platforms like eBay or Vinted.
+        All orders are fulfilled through these marketplaces, ensuring buyer protection and smooth transactions.
+      </p>
     </section>
 
     <section>
@@ -216,12 +236,17 @@
 
     <section>
       <h2>Stay Connected</h2>
-      <p>Follow us on social media to get updates on new stock, special offers, and sneaker news.</p>
-      <p>Instagram: <a href="https://instagram.com/trainerstore" style="color:#80deea; text-decoration: underline;" target="_blank" rel="noopener">@trainerstore</a></p>
-      <p>Facebook: <a href="https://facebook.com/trainerstore" style="color:#80deea; text-decoration: underline;" target="_blank" rel="noopener">Trainer Store</a></p>
+      <p>
+        Follow us on social media to get updates on new stock, special offers, and sneaker news.
+      </p>
+      <p>
+        Instagram: <a href="https://instagram.com/trainerstore" style="color:#2196f3; text-decoration: underline;" target="_blank" rel="noopener">@trainerstore</a>
+      </p>
+      <p>
+        Facebook: <a href="https://facebook.com/trainerstore" style="color:#2196f3; text-decoration: underline;" target="_blank" rel="noopener">Trainer Store</a>
+      </p>
     </section>
-
-  </main>
+  </div>
 
   <footer>
     This site is for display only. All orders handled through Vinted or eBay.
