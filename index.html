@@ -1,227 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trainer Store | Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <title>Trainer Store | Home</title>
+
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
+    /* ---------------------------------  FONTS & RESET  */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
+
+    /* ---------------------------------  HEADER & NAV  */
+    header{
+      position:fixed;top:0;width:100%;z-index:1000;
+      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #eee;
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    header h1{font-size:1.4rem;color:#fff}
+
+    /* global link defaults */
+    a{color:inherit;text-decoration:none;transition:color .3s}
+    a:visited{color:inherit}
+
+    nav{display:flex;gap:18px}
+    nav a{
+      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
     }
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
-      z-index: 1000;
-      backdrop-filter: blur(8px);
+    nav a::after{
+      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+      background:#4caf50;transition:width .3s
     }
-    header h1 {
-      font-size: 1.4rem;
-      color: #fff;
-      white-space: nowrap;
-      flex-shrink: 0;
-      user-select: none;
+    nav a:hover,nav a.active{color:#fff}
+    nav a:hover::after,nav a.active::after{width:100%}
+
+    /* hamburger */
+    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+
+    /* ---------------------------------  DROPDOWN  */
+    .dropdown{
+      position:absolute;top:100%;left:0;right:0;
+      background:#222;display:none;flex-direction:column;padding:10px 20px;
+      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
     }
-    .menu-toggle {
-      display: none;
-      font-size: 1.6rem;
-      color: #ccc;
-      cursor: pointer;
-      background: none;
-      border: none;
-      flex-shrink: 0;
-      transition: color 0.3s;
-      -webkit-tap-highlight-color: transparent;
-      outline: none;
+    .dropdown a{
+      padding:12px 0;border-bottom:1px solid #333;
+      color:#eee;font-size:1rem
     }
-    .menu-toggle:hover,
-    .menu-toggle:focus,
-    .menu-toggle:active {
-      color: #4caf50 !important;
-      outline: none !important;
-      box-shadow: none !important;
-      -webkit-tap-highlight-color: transparent !important;
+    .dropdown a:last-child{border-bottom:none}
+    .dropdown a:hover,.dropdown a.active{color:#4caf50}
+
+    /* ---------------------------------  HERO  */
+    .hero{
+      height:60vh;min-height:280px;background:url('https://via.placeholder.com/1200x600') center/cover no-repeat;
+      position:relative;display:flex;align-items:center;justify-content:center
     }
-    nav {
-      display: flex;
-      gap: 18px;
-      flex-grow: 1;
-      justify-content: flex-end;
+    .hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.6)}
+    .hero-content{position:relative;text-align:center;color:#fff}
+    .hero-content h1{font-size:2.5rem;margin-bottom:15px;opacity:0;animation:fadeInUp 1s forwards}
+    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
+
+    /* ---------------------------------  MAIN SECTIONS  */
+    .container{max-width:900px;margin:60px auto;padding:0 20px}
+    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+    section.visible{opacity:1;transform:translateY(0)}
+
+    /* features grid */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+    .feature{
+      background:#222;padding:20px;border-radius:12px;text-align:center;transition:transform .3s
     }
-    nav a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 0.95rem;
-      position: relative;
-      padding-bottom: 2px;
-      transition: color 0.3s;
-      user-select: none;
+    .feature:hover{transform:translateY(-8px)}
+    .feature img{width:60px;height:60px;margin-bottom:12px;filter:invert(1)}
+    .feature h3{color:#4caf50;margin-bottom:8px;font-size:1.2rem}
+    .feature p{color:#ccc;font-size:.95rem}
+
+    /* arrivals strip */
+    .arrivals{display:flex;overflow-x:auto;gap:16px;padding-bottom:16px}
+    .arrivals img{height:180px;border-radius:10px;filter:brightness(.9);cursor:pointer;transition:filter .3s}
+    .arrivals img:hover{filter:brightness(1)}
+
+    /* testimonial */
+    .testimonial{
+      background:#222;padding:24px;border-radius:12px;max-width:600px;margin:0 auto;text-align:center;color:#ccc
     }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #4caf50;
-      transition: width 0.3s;
+    .testimonial p{font-style:italic;margin-bottom:14px}
+    .testimonial span{color:#4caf50;font-weight:600}
+
+    /* footer */
+    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
+
+    /* ---------------------------------  RESPONSIVE  */
+    @media(max-width:768px){
+      .menu-toggle{display:block}
+      nav{display:none}
     }
-    nav a:hover,
-    nav a.active {
-      color: #fff;
-    }
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
-    }
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: rgba(15,15,15,0.95);
-      display: none;
-      flex-direction: column;
-      padding: 10px 20px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.85);
-      animation: fadeInDown 0.3s ease-out forwards;
-      backdrop-filter: blur(12px);
-      border-radius: 0 0 12px 12px;
-    }
-    .dropdown a {
-      padding: 12px 0;
-      border-bottom: 1px solid #333;
-      color: #eee;
-      font-size: 1rem;
-      user-select: none;
-    }
-    .dropdown a:last-child {
-      border-bottom: none;
-    }
-    .dropdown a:hover,
-    .dropdown a.active {
-      color: #4caf50;
-    }
-    main {
-      flex: 1;
-      max-width: 900px;
-      margin: 100px auto 40px auto;
-      padding: 20px;
-      background: rgba(0,0,0,0.25);
-      border-radius: 15px;
-      box-shadow: 0 8px 30px rgba(0, 255, 70, 0.15);
-      backdrop-filter: blur(10px);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #4caf50;
-      user-select: none;
-    }
-    .intro {
-      font-size: 1.1rem;
-      color: #ccc;
-      margin-bottom: 40px;
-      text-align: center;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.5;
-      user-select: text;
-    }
-    .feature-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-bottom: 50px;
-    }
-    .feature {
-      background: rgba(0,0,0,0.4);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,255,112,0.2);
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-    .feature:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 28px rgba(0,255,112,0.45);
-    }
-    .feature img {
-      max-width: 100%;
-      height: 150px;
-      object-fit: contain;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      background: rgba(255 255 255 / 0.05);
-    }
-    .feature h3 {
-      color: #4caf50;
-      margin-bottom: 10px;
-      user-select: text;
-    }
-    .feature p {
-      color: #ddd;
-      font-size: 1rem;
-      line-height: 1.4;
-      user-select: text;
-    }
-    footer {
-      text-align: center;
-      padding: 30px 0 15px;
-      font-size: 0.9rem;
-      color: #aaa;
-      user-select: none;
-    }
-    @media (max-width: 768px) {
-      .menu-toggle {
-        display: block;
-      }
-      nav {
-        display: none;
-      }
-    }
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+
+    /* ---------------------------------  KEYFRAMES  */
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
   </style>
 </head>
 <body>
+
+  <!-- ---------- HEADER ---------- -->
   <header>
     <h1>Trainer Store</h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+
+    <!-- desktop links -->
     <nav>
       <a href="index.html" class="active">Home</a>
       <a href="stock.html">Stock</a>
       <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
     </nav>
+
+    <!-- mobile dropdown -->
     <div class="dropdown" id="dropdownMenu">
       <a href="index.html" class="active">Home</a>
       <a href="stock.html">Stock</a>
@@ -230,41 +125,77 @@
     </div>
   </header>
 
-  <main>
-    <h2>Welcome to Trainer Store</h2>
-    <p class="intro">
-      Your go-to online destination for authentic and stylish trainers. We curate quality sneakers to keep you looking fresh, with orders securely handled through trusted platforms like Vinted.
-    </p>
-
-    <div class="feature-section">
-      <div class="feature">
-        <img src="https://via.placeholder.com/280x150?text=Vinted+Profile" alt="Vinted Profile" />
-        <h3>Shop on Vinted</h3>
-        <p>Visit our <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer" style="color:#7efc7e;">Vinted profile</a> to browse and buy our latest trainers safely and securely.</p>
-      </div>
-      <div class="feature">
-        <img src="https://via.placeholder.com/280x150?text=Secure+Orders" alt="Secure Orders" />
-        <h3>Safe & Trusted</h3>
-        <p>All orders are processed through Vinted or eBay platforms to ensure secure payment and reliable delivery.</p>
-      </div>
-      <div class="feature">
-        <img src="https://via.placeholder.com/280x150?text=Stay+Informed" alt="Stay Informed" />
-        <h3>Stay Updated</h3>
-        <p>Check our Info page regularly for the latest news, FAQs, and contact details to stay connected with Trainer Store.</p>
-      </div>
+  <!-- ---------- HERO ---------- -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Discover Your Next Trainers</h1>
+      <p>Authentic. Stylish. Delivered fast.</p>
     </div>
-  </main>
+  </section>
 
-  <footer>
-    This site is for display only. All orders handled through Vinted or eBay.
-  </footer>
+  <!-- ---------- CONTENT ---------- -->
+  <div class="container">
 
+    <!-- features -->
+    <section>
+      <h2>Why We're Different</h2>
+      <div class="features">
+        <div class="feature">
+          <img src="https://via.placeholder.com/60?text=✓" alt="Authentic">
+          <h3>100% Authentic</h3>
+          <p>Every pair verified by sneaker experts.</p>
+        </div>
+        <div class="feature">
+          <img src="https://via.placeholder.com/60?text=🚚" alt="Shipping">
+          <h3>Fast Shipping</h3>
+          <p>Quick dispatch via trusted carriers.</p>
+        </div>
+        <div class="feature">
+          <img src="https://via.placeholder.com/60?text=🔒" alt="Secure">
+          <h3>Secure Payments</h3>
+          <p>Buyer‑protection on every order.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- arrivals -->
+    <section>
+      <h2>New Arrivals</h2>
+      <div class="arrivals">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 1">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 2">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 3">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 4">
+      </div>
+    </section>
+
+    <!-- testimonial -->
+    <section>
+      <h2>What Customers Say</h2>
+      <div class="testimonial">
+        <p>"Quick delivery and exactly as described—awesome experience!"</p>
+        <span>— Jamie P.</span>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ---------- FOOTER ---------- -->
+  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+
+  <!-- ---------- SCRIPTS ---------- -->
   <script>
-    function toggleMenu() {
-      const dropdown = document.getElementById('dropdownMenu');
-      dropdown.style.display =
-        dropdown.style.display === 'flex' ? 'none' : 'flex';
+    /* hamburger toggle */
+    function toggleMenu(){
+      const d=document.getElementById('dropdownMenu');
+      d.style.display = d.style.display==='flex'?'none':'flex';
     }
+    /* reveal sections on scroll */
+    document.querySelectorAll('section').forEach(sec=>{
+      const obs=new IntersectionObserver(e=>{
+        if(e[0].isIntersecting){sec.classList.add('visible');obs.disconnect()}
+      },{threshold:.2});obs.observe(sec)
+    });
   </script>
 </body>
 </html>
