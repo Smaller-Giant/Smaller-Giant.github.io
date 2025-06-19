@@ -1,293 +1,170 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trainer Store | Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
-      color: #e9f7ff;
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; }
 
     header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0, 50, 100, 0.9);
-      padding: 15px 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10000;
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
     }
+    header h1 { font-size: 1.4rem; color: #fff; }
 
-    header h1 {
-      font-weight: 600;
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      user-select: none;
-      color: #def1ff;
-    }
-
+    nav { display: flex; gap: 18px; }
     nav a {
-      color: #c0e7ff;
-      margin-left: 25px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.05rem;
-      padding-bottom: 4px;
-      position: relative;
-      transition: color 0.3s ease;
-      user-select: none;
+      color: #ccc; text-decoration: none; font-size: 0.95rem;
+      position: relative; padding-bottom: 2px; transition: color 0.3s;
     }
-
     nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0%;
-      height: 2px;
-      background: #def1ff;
-      border-radius: 3px;
-      transition: width 0.3s ease;
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 2px; background: #4caf50; transition: width 0.3s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    nav a:hover::after, nav a.active::after { width: 100%; }
+
+    .menu-toggle {
+      display: none; font-size: 1.5rem; color: #ccc; cursor: pointer;
+      background: none; border: none;
     }
 
-    nav a:hover, nav a.active {
-      color: #def1ff;
+    .dropdown {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: #222; display: none; flex-direction: column; padding: 10px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      animation: fadeInDown 0.3s ease-out forwards;
     }
-
-    nav a:hover::after, nav a.active::after {
-      width: 100%;
+    .dropdown a {
+      padding: 12px 0; border-bottom: 1px solid #333;
+      color: #eee; font-size: 1rem;
     }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
 
-    main {
+    .container {
       max-width: 900px;
-      margin: 110px auto 60px auto;
-      padding: 40px 45px;
-      background: rgba(0, 50, 100, 0.8);
-      border-radius: 18px;
-      box-shadow: 0 10px 40px rgba(0, 90, 255, 0.7);
-      user-select: text;
+      margin: 100px auto 40px auto;
+      padding: 20px;
     }
-
     h2 {
-      font-weight: 700;
-      font-size: 2.1rem;
-      margin-bottom: 25px;
       text-align: center;
-      color: #e9f7ff;
-      text-shadow: 0 2px 4px rgba(0,0,50,0.8);
-      user-select: none;
-    }
-
-    p {
-      font-size: 1.1rem;
       margin-bottom: 30px;
-      color: #b8d8ff;
-      text-align: center;
-      user-select: none;
-      font-weight: 300;
-    }
-
-    ul.contact-info {
-      list-style: none;
-      margin-bottom: 35px;
-      padding-left: 0;
-      color: #aaddffcc;
-      font-size: 1.1rem;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-      user-select: text;
-    }
-
-    ul.contact-info li {
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    ul.contact-info li svg {
-      fill: #def1ff;
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-      user-select: none;
-    }
-
-    a.contact-link {
-      color: #aaddffcc;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.25s ease;
-    }
-
-    a.contact-link:hover {
-      color: #def1ff;
-      text-decoration: underline;
+      color: #4caf50;
     }
 
     form {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
       max-width: 600px;
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
     }
-
     label {
+      display: block;
+      margin-bottom: 6px;
       font-weight: 600;
-      font-size: 1rem;
-      color: #cce7ff;
-      user-select: none;
+      color: #ccc;
     }
-
     input, textarea {
-      padding: 12px 15px;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: none;
+      background: #333;
+      color: #eee;
       font-size: 1rem;
-      border-radius: 10px;
-      border: none;
-      outline: none;
-      transition: box-shadow 0.3s ease;
       resize: vertical;
+      transition: background 0.3s;
     }
-
     input:focus, textarea:focus {
-      box-shadow: 0 0 8px #00afffcc;
-      background: #cce7ff11;
-      color: #004466;
+      background: #444;
+      outline: none;
     }
-
-    textarea {
-      min-height: 120px;
-    }
-
     button {
-      background-color: #00aaff;
+      background: #4caf50;
+      color: #111;
+      font-weight: 600;
+      padding: 12px 20px;
       border: none;
-      border-radius: 12px;
-      color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-      padding: 14px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
+      font-size: 1.1rem;
+      transition: background 0.3s;
+      width: 100%;
     }
-
     button:hover {
-      background-color: #007acc;
+      background: #3a9d3a;
     }
 
     footer {
       text-align: center;
-      padding: 35px 20px;
-      font-weight: 600;
-      color: #aaddffcc;
+      padding: 30px 0 15px;
       font-size: 0.9rem;
-      background: rgba(0, 20, 40, 0.8);
-      user-select: none;
-      box-shadow: inset 0 2px 10px rgba(255,255,255,0.05);
+      color: #aaa;
     }
 
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      nav { display: none; }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Trainer Store</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html" class="active">Contact</a>
-    </nav>
-  </header>
 
-  <main>
-    <h2>Contact Us</h2>
-    <p>Got questions? Need help? Send us a message or reach out through any of these channels.</p>
+<header>
+  <h1>Trainer Store</h1>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html" class="active">Contact</a>
+  </div>
+</header>
 
-    <ul class="contact-info">
-      <li>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.27 11.72 11.72 0 003.67.59 1 1 0 011 1v3.49a1 1 0 01-1 1A19 19 0 013 5a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.67 1 1 0 01-.27 1.11z"/>
-        </svg>
-        Phone: <a href="tel:+441234567890" class="contact-link">01234 567890</a>
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18v-8l8 5 8-5v8H4z"/>
-        </svg>
-        Email: <a href="mailto:contact@trainerstore.com" class="contact-link">contact@trainerstore.com</a>
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M21 7.5a2.5 2.5 0 00-2.5-2.5H6.5A2.5 2.5 0 004 7.5v9A2.5 2.5 0 006.5 19h12a2.5 2.5 0 002.5-2.5v-9zM6.5 9h9a.5.5 0 010 1h-9a.5.5 0 010-1zM6.5 12h9a.5.5 0 010 1h-9a.5.5 0 010-1z"/>
-        </svg>
-        Address: 123 Trainer St, Sneakerville, UK
-      </li>
-    </ul>
+<div class="container">
+  <h2>Contact Us</h2>
 
-    <form id="contactForm" novalidate>
-      <label for="name">Your Name</label>
-      <input type="text" id="name" name="name" placeholder="John Doe" required minlength="2" />
+  <form action="mailto:youremail@example.com" method="POST" enctype="text/plain" onsubmit="alert('Thank you for contacting us!');">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="Name" required placeholder="Your full name" />
 
-      <label for="email">Your Email</label>
-      <input type="email" id="email" name="email" placeholder="john@example.com" required />
+    <label for="email">Email</label>
+    <input type="email" id="email" name="Email" required placeholder="you@example.com" />
 
-      <label for="message">Message</label>
-      <textarea id="message" name="message" placeholder="Write your message here..." required minlength="10"></textarea>
+    <label for="message">Message</label>
+    <textarea id="message" name="Message" rows="5" required placeholder="Write your message here..."></textarea>
 
-      <button type="submit">Send Message</button>
-    </form>
-  </main>
+    <button type="submit">Send Message</button>
+  </form>
+</div>
 
-  <footer>
-    This site is for display only. All orders handled through Vinted or eBay.
-  </footer>
+<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <script>
-    const form = document.getElementById('contactForm');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const name = form.name.value.trim();
-      const email = form.email.value.trim();
-      const message = form.message.value.trim();
+<script>
+  function toggleMenu() {
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+  }
+</script>
 
-      if(name.length < 2) {
-        alert('Please enter a valid name with at least 2 characters.');
-        form.name.focus();
-        return;
-      }
-      if(!email.includes('@') || email.length < 5) {
-        alert('Please enter a valid email address.');
-        form.email.focus();
-        return;
-      }
-      if(message.length < 10) {
-        alert('Message must be at least 10 characters.');
-        form.message.focus();
-        return;
-      }
-
-      alert('Thanks for your message! We will get back to you shortly.');
-      form.reset();
-    });
-  </script>
 </body>
 </html>
