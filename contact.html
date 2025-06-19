@@ -30,22 +30,25 @@
     }
 
     .menu-toggle {
-      display: none; 
-      font-size: 1.5rem; 
-      color: #ccc; 
+      display: none;
+      font-size: 1.5rem;
+      color: #ccc;
       cursor: pointer;
-      background: none; 
+      background: none;
       border: none;
       flex-shrink: 0;
       transition: color 0.3s;
+      -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+      outline: none;
     }
 
-    /* Keep hamburger icon color consistent on hover, focus, and active */
     .menu-toggle:hover,
     .menu-toggle:focus,
     .menu-toggle:active {
       color: #ccc !important;
-      outline: none;
+      outline: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent !important;
     }
 
     nav {
