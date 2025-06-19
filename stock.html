@@ -1,12 +1,10 @@
-# Generate the HTML for stock.html with modal-based glassy product detail display
-
-stock_html = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trainer Store | Stock</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
     *{box-sizing:border-box;margin:0;padding:0}
@@ -18,9 +16,13 @@ stock_html = """
       padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
     header h1{font-size:1.4rem;color:#fff}
+
+    a{color:inherit;text-decoration:none;transition:color .3s}
+    a:visited{color:inherit}
+
     nav{display:flex;gap:18px}
     nav a{
-      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px;text-decoration:none;
+      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
     }
     nav a::after{
       content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
@@ -28,7 +30,9 @@ stock_html = """
     }
     nav a:hover,nav a.active{color:#fff}
     nav a:hover::after,nav a.active::after{width:100%}
+
     .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+
     .dropdown{
       position:absolute;top:100%;left:0;right:0;
       background:#222;display:none;flex-direction:column;padding:10px 20px;
@@ -41,40 +45,106 @@ stock_html = """
     .dropdown a:last-child{border-bottom:none}
     .dropdown a:hover,.dropdown a.active{color:#4caf50}
 
-    .container{max-width:1000px;margin:80px auto 40px;padding:20px}
-    .product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
-    .product{
-      background:rgba(255,255,255,0.05);border-radius:12px;padding:16px;text-align:center;
-      transition:transform .3s, box-shadow .3s;cursor:pointer;backdrop-filter:blur(6px)
+    .hero{
+      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
+      position:relative;display:flex;align-items:center;justify-content:center
     }
-    .product:hover{transform:translateY(-4px);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
-    .product img{max-width:100%;border-radius:8px;margin-bottom:12px}
-    .product h3{font-size:1.1rem;color:#fff}
-    .product p{font-size:.9rem;color:#aaa;margin-top:4px}
+    .hero-content{position:relative;text-align:center;color:#fff}
+    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
+    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
 
-    .modal{
+    .container{max-width:1000px;margin:60px auto;padding:0 20px}
+    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+    section.visible{opacity:1;transform:translateY(0)}
+
+    .stock-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:20px;
+    }
+    .item-card{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      transition:.3s;
+      backdrop-filter:blur(8px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .item-card:hover{transform:translateY(-5px); box-shadow: 0 6px 14px rgba(0,0,0,0.6);}
+    .item-card img{
+      width:100%;
+      border-radius:10px;
+      margin-bottom:8px;
+      filter: brightness(0.95);
+      transition: filter 0.3s ease;
+    }
+    .item-card img:hover {
+      filter: brightness(1);
+    }
+    .item-card h3{font-size:1rem;color:#4caf50;margin-bottom:4px;}
+    .item-card p{font-size:.85rem;color:#ccc;margin-top:0;}
+
+    /* MODAL */
+    .modal-bg{
       display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:10000
+      background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;
+      padding: 15px;
     }
-    .modal-content{
-      background:rgba(20,20,20,0.95);padding:24px;border-radius:12px;
-      max-width:400px;width:90%;color:#eee;text-align:center;position:relative;backdrop-filter:blur(10px)
+    .modal{
+      background:rgba(30,30,30,0.95);padding:25px;border-radius:14px;max-width:420px;width:100%;
+      text-align:center;position:relative;animation:fadeInUp .4s;
+      box-shadow: 0 8px 20px rgba(76,175,80,0.8);
+      color: #ddd;
+      font-weight: 300;
     }
-    .modal-content img{width:100%;border-radius:8px;margin-bottom:12px}
-    .modal-content h2{margin-bottom:8px}
-    .modal-content p{margin-bottom:12px;color:#ccc}
+    .modal img{
+      width:100%;border-radius:10px;margin-bottom:18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      transition: transform 0.3s ease;
+    }
+    .modal img:hover {
+      transform: scale(1.05);
+    }
+    .modal h2{
+      color:#4caf50;margin-bottom:12px;font-weight: 600;
+    }
+    .modal p{
+      font-size:1rem;margin-bottom:22px;line-height:1.4;
+      color:#bbb;
+    }
+    .modal button{
+      background:#4caf50;color:#111;font-weight:600;padding:12px 28px;
+      border:none;border-radius:10px;cursor:pointer;font-size:1rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(76,175,80,0.7);
+    }
+    .modal button:hover {
+      background-color: #43a047;
+      box-shadow: 0 6px 16px rgba(67,160,71,0.9);
+    }
     .close-btn{
-      position:absolute;top:10px;right:14px;font-size:1.5rem;color:#888;
-      cursor:pointer
+      position:absolute;top:12px;right:18px;font-size:1.6rem;color:#aaa;
+      background:none;border:none;cursor:pointer;
+      transition: color 0.3s ease;
+    }
+    .close-btn:hover {
+      color: #4caf50;
     }
 
-    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333;margin-top:40px}
+    footer{
+      text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333;
+      user-select:none;
+    }
 
     @media(max-width:768px){
       .menu-toggle{display:block}
       nav{display:none}
     }
 
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
   </style>
 </head>
@@ -82,7 +152,7 @@ stock_html = """
 
 <header>
   <h1>Trainer Store</h1>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
@@ -97,66 +167,123 @@ stock_html = """
   </div>
 </header>
 
+<section class="hero">
+  <div class="hero-content">
+    <h1>Our Current Stock</h1>
+    <p>Tap a product to learn more and buy.</p>
+  </div>
+</section>
+
 <div class="container">
-  <h2 style="margin-bottom:20px;text-align:center">Our Latest Trainers</h2>
-  <div class="product-grid" id="productGrid"></div>
+  <section>
+    <div class="stock-grid" id="stockGrid">
+      <!-- Items injected by JS -->
+    </div>
+  </section>
 </div>
 
-<div class="modal" id="productModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">×</span>
-    <img id="modalImg" src="" alt="Product image">
-    <h2 id="modalTitle"></h2>
-    <p id="modalDesc"></p>
-    <p id="modalPrice" style="color:#4caf50;font-weight:bold;"></p>
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" onclick="event.stopPropagation()">
+    <button class="close-btn" onclick="closeModal()" aria-label="Close modal">×</button>
+    <img id="modalImg" src="" alt="">
+    <h2 id="modalTitle">Product Name</h2>
+    <p id="modalDesc">Product description and details here.</p>
+    <button id="buyBtn">Buy Now</button>
   </div>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 <script>
-  function toggleMenu(){
-    const d=document.getElementById('dropdownMenu');
-    d.style.display = d.style.display==='flex'?'none':'flex';
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu() {
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  function openModal(product){
-    document.getElementById('modalImg').src = product.image;
-    document.getElementById('modalTitle').innerText = product.title;
-    document.getElementById('modalDesc').innerText = product.desc;
-    document.getElementById('modalPrice').innerText = product.price;
-    document.getElementById('productModal').style.display = 'flex';
-  }
+  document.querySelectorAll('section').forEach(sec => {
+    const obs = new IntersectionObserver(e => {
+      if(e[0].isIntersecting){
+        sec.classList.add('visible');
+        obs.disconnect();
+      }
+    }, {threshold: 0.2});
+    obs.observe(sec);
+  });
 
-  function closeModal(){
-    document.getElementById('productModal').style.display = 'none';
-  }
+  const modalBg = document.getElementById('modalBg');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const buyBtn = document.getElementById('buyBtn');
+  const stockGrid = document.getElementById('stockGrid');
 
-  fetch('products.json')
-    .then(res => res.json())
-    .then(data => {
-      const grid = document.getElementById('productGrid');
-      data.forEach(product => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.innerHTML = `
-          <img src="${product.image}" alt="${product.title}">
-          <h3>${product.title}</h3>
-          <p>${product.price}</p>
-        `;
-        div.onclick = () => openModal(product);
-        grid.appendChild(div);
+  const stockItems = [
+    {
+      title: 'Air Max 90',
+      img: 'https://via.placeholder.com/300x200?text=Air+Max+90',
+      desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.',
+      buyUrl: 'https://www.vinted.co.uk/member/233654539'
+    },
+    {
+      title: 'Yeezy Boost 350',
+      img: 'https://via.placeholder.com/300x200?text=Yeezy+Boost+350',
+      desc: 'Lightly worn, UK 10. Includes original box.',
+      buyUrl: 'https://www.vinted.co.uk/member/233654539'
+    },
+    {
+      title: 'Dunk Low Panda',
+      img: 'https://via.placeholder.com/300x200?text=Dunk+Low+Panda',
+      desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.',
+      buyUrl: 'https://www.vinted.co.uk/member/233654539'
+    }
+  ];
+
+  // Inject items into grid
+  function renderStock() {
+    stockGrid.innerHTML = '';
+    stockItems.forEach((item, i) => {
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-pressed', 'false');
+      card.addEventListener('click', () => openModal(i));
+      card.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(i);
+        }
       });
+
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.title}">
+        <h3>${item.title}</h3>
+        <p>£${item.price || 'TBD'}</p>
+      `;
+      stockGrid.appendChild(card);
     });
+  }
+
+  // Open modal with item data
+  function openModal(index) {
+    const item = stockItems[index];
+    modalImg.src = item.img;
+    modalImg.alt = item.title;
+    modalTitle.textContent = item.title;
+    modalDesc.textContent = item.desc;
+    buyBtn.onclick = () => window.open(item.buyUrl, '_blank');
+    modalBg.style.display = 'flex';
+    // Trap focus or accessibility improvements can be added here if needed
+  }
+
+  function closeModal(e) {
+    if(e && e.target !== modalBg && e.target !== document.querySelector('.close-btn')) return;
+    modalBg.style.display = 'none';
+  }
+
+  renderStock();
 </script>
 
 </body>
 </html>
-"""
-
-# Save the HTML to file
-stock_html_path = "/mnt/data/stock.html"
-with open(stock_html_path, "w") as f:
-    f.write(stock_html)
-
-stock_html_path
