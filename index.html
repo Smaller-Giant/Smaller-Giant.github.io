@@ -141,17 +141,17 @@
       <h2>Why We're Different</h2>
       <div class="features">
         <div class="feature">
-          <img src="https://via.placeholder.com/60?text=✓" alt="Authentic" />
+          <img src="https://via.placeholder.com/60?text=✓" alt="Authentic">
           <h3>100% Authentic</h3>
           <p>Every pair verified by sneaker experts.</p>
         </div>
         <div class="feature">
-          <img src="https://via.placeholder.com/60?text=🚚" alt="Shipping" />
+          <img src="https://via.placeholder.com/60?text=🚚" alt="Shipping">
           <h3>Fast Shipping</h3>
           <p>Quick dispatch via trusted carriers.</p>
         </div>
         <div class="feature">
-          <img src="https://via.placeholder.com/60?text=🔒" alt="Secure" />
+          <img src="https://via.placeholder.com/60?text=🔒" alt="Secure">
           <h3>Secure Payments</h3>
           <p>Buyer‑protection on every order.</p>
         </div>
@@ -160,11 +160,12 @@
 
     <!-- arrivals -->
     <section>
-      <h2>Find Us on Vinted</h2>
-      <div class="arrivals" style="justify-content:center;">
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer" style="color:#7efc7e; font-weight:600; font-size:1.1rem;">
-          https://www.vinted.co.uk/member/233654539
-        </a>
+      <h2>New Arrivals</h2>
+      <div class="arrivals">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 1">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 2">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 3">
+        <img src="https://via.placeholder.com/300x180" alt="Sneaker 4">
       </div>
     </section>
 
@@ -192,12 +193,8 @@
     /* reveal sections on scroll */
     document.querySelectorAll('section').forEach(sec=>{
       const obs=new IntersectionObserver(e=>{
-        if(e[0].isIntersecting){
-          sec.classList.add('visible');
-          obs.disconnect();
-        }
-      },{threshold:.2});
-      obs.observe(sec);
+        if(e[0].isIntersecting){sec.classList.add('visible');obs.disconnect()}
+      },{threshold:.2});obs.observe(sec)
     });
   </script>
 </body>
