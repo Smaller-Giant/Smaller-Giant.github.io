@@ -1,19 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trainer Store | Home</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    /* Same base styles and header/nav as other pages */
     * {
       box-sizing: border-box;
       margin: 0; padding: 0;
     }
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #111;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #eee;
       line-height: 1.6;
       min-height: 100vh;
@@ -24,23 +23,25 @@
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.7);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 12px 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.7);
       z-index: 1000;
+      backdrop-filter: blur(8px);
     }
     header h1 {
       font-size: 1.4rem;
       color: #fff;
       white-space: nowrap;
       flex-shrink: 0;
+      user-select: none;
     }
     .menu-toggle {
       display: none;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       color: #ccc;
       cursor: pointer;
       background: none;
@@ -53,7 +54,7 @@
     .menu-toggle:hover,
     .menu-toggle:focus,
     .menu-toggle:active {
-      color: #ccc !important;
+      color: #4caf50 !important;
       outline: none !important;
       box-shadow: none !important;
       -webkit-tap-highlight-color: transparent !important;
@@ -71,6 +72,7 @@
       position: relative;
       padding-bottom: 2px;
       transition: color 0.3s;
+      user-select: none;
     }
     nav a::after {
       content: '';
@@ -95,18 +97,21 @@
       top: 100%;
       left: 0;
       right: 0;
-      background: #222;
+      background: rgba(15,15,15,0.95);
       display: none;
       flex-direction: column;
       padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.85);
       animation: fadeInDown 0.3s ease-out forwards;
+      backdrop-filter: blur(12px);
+      border-radius: 0 0 12px 12px;
     }
     .dropdown a {
       padding: 12px 0;
       border-bottom: 1px solid #333;
       color: #eee;
       font-size: 1rem;
+      user-select: none;
     }
     .dropdown a:last-child {
       border-bottom: none;
@@ -120,11 +125,16 @@
       max-width: 900px;
       margin: 100px auto 40px auto;
       padding: 20px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 255, 70, 0.15);
+      backdrop-filter: blur(10px);
     }
     h2 {
       text-align: center;
       margin-bottom: 30px;
       color: #4caf50;
+      user-select: none;
     }
     .intro {
       font-size: 1.1rem;
@@ -135,6 +145,7 @@
       margin-left: auto;
       margin-right: auto;
       line-height: 1.5;
+      user-select: text;
     }
     .feature-section {
       display: grid;
@@ -143,39 +154,43 @@
       margin-bottom: 50px;
     }
     .feature {
-      background: #1a1a1a;
+      background: rgba(0,0,0,0.4);
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      box-shadow: 0 4px 20px rgba(0,255,112,0.2);
       text-align: center;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
     .feature:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.9);
+      transform: translateY(-6px);
+      box-shadow: 0 8px 28px rgba(0,255,112,0.45);
     }
     .feature img {
       max-width: 100%;
       height: 150px;
       object-fit: contain;
       margin-bottom: 15px;
-      border-radius: 8px;
-      background: #222;
+      border-radius: 10px;
+      background: rgba(255 255 255 / 0.05);
     }
     .feature h3 {
       color: #4caf50;
       margin-bottom: 10px;
+      user-select: text;
     }
     .feature p {
-      color: #bbb;
+      color: #ddd;
       font-size: 1rem;
       line-height: 1.4;
+      user-select: text;
     }
     footer {
       text-align: center;
       padding: 30px 0 15px;
       font-size: 0.9rem;
       color: #aaa;
+      user-select: none;
     }
     @media (max-width: 768px) {
       .menu-toggle {
@@ -218,25 +233,24 @@
   <main>
     <h2>Welcome to Trainer Store</h2>
     <p class="intro">
-      Your one-stop online shop for authentic, stylish trainers. Browse, discover, and keep up with the latest sneaker trends.
-      We carefully curate our collection to bring you quality and style, and handle orders through trusted platforms like Vinted.
+      Your go-to online destination for authentic and stylish trainers. We curate quality sneakers to keep you looking fresh, with orders securely handled through trusted platforms like Vinted.
     </p>
 
     <div class="feature-section">
       <div class="feature">
-        <img src="https://via.placeholder.com/280x150?text=New+Arrivals" alt="New Arrivals" />
-        <h3>New Arrivals</h3>
-        <p>Check out the freshest trainers added regularly. Stay ahead with the latest sneaker drops.</p>
+        <img src="https://via.placeholder.com/280x150?text=Vinted+Profile" alt="Vinted Profile" />
+        <h3>Shop on Vinted</h3>
+        <p>Visit our <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer" style="color:#7efc7e;">Vinted profile</a> to browse and buy our latest trainers safely and securely.</p>
       </div>
       <div class="feature">
-        <img src="https://via.placeholder.com/280x150?text=Shop+Securely" alt="Shop Securely" />
-        <h3>Shop Securely</h3>
-        <p>All transactions go through trusted platforms like Vinted, giving you peace of mind with every purchase.</p>
+        <img src="https://via.placeholder.com/280x150?text=Secure+Orders" alt="Secure Orders" />
+        <h3>Safe & Trusted</h3>
+        <p>All orders are processed through Vinted or eBay platforms to ensure secure payment and reliable delivery.</p>
       </div>
       <div class="feature">
-        <img src="https://via.placeholder.com/280x150?text=Stay+Updated" alt="Stay Updated" />
+        <img src="https://via.placeholder.com/280x150?text=Stay+Informed" alt="Stay Informed" />
         <h3>Stay Updated</h3>
-        <p>Follow our Info page to get the latest news, policies, and contact details to stay connected.</p>
+        <p>Check our Info page regularly for the latest news, FAQs, and contact details to stay connected with Trainer Store.</p>
       </div>
     </div>
   </main>
