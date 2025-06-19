@@ -5,8 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trainer Store - Info</title>
   <style>
-    /* Same CSS as index.html */
-    /* ... (same as above) ... */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7fafc;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #111;
+      padding: 15px 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    nav {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #4CAF50;
+    }
+    nav a.active {
+      color: #4CAF50;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 2px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 100px auto 40px auto;
+      padding: 30px 40px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #222;
+      margin-bottom: 25px;
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      color: #555;
+    }
+    ul {
+      margin-left: 20px;
+      margin-bottom: 25px;
+      font-size: 1.05em;
+      color: #555;
+      list-style-type: disc;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #888;
+      padding-bottom: 20px;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
@@ -15,19 +89,34 @@
       <div><a href="index.html">Home</a></div>
       <div>
         <a href="stock.html">Stock</a>
-        <a href="info.html" style="color:#4CAF50;">Info</a>
+        <a href="info.html" class="active">Info</a>
         <a href="contact.html">Contact</a>
       </div>
     </nav>
   </header>
 
   <div class="container">
-    <section>
-      <h1>About Us</h1>
-      <p>Welcome to the Trainer Store! We are passionate about trainers and aim to provide the best selection of high-quality shoes.</p>
-      <p>All orders are processed through trusted platforms like Vinted and eBay to ensure safe and secure transactions.</p>
-      <p>We offer fast shipping and excellent customer service to make sure you are happy with your purchase.</p>
-    </section>
+    <h1>About Trainer Store</h1>
+    <p>At Trainer Store, we’re passionate about footwear and committed to providing you with the best selection of high-quality trainers from trusted brands.</p>
+
+    <h2>Our Mission</h2>
+    <p>We aim to make buying trainers easy, enjoyable, and secure by offering handpicked selections and partnering with reputable platforms like Vinted and eBay.</p>
+
+    <h2>What We Offer</h2>
+    <ul>
+      <li>Authentic trainers from top brands</li>
+      <li>Competitive prices and great deals</li>
+      <li>Responsive customer support</li>
+      <li>Clear and honest product descriptions</li>
+      <li>Safe and convenient payment options</li>
+    </ul>
+
+    <h2>Shipping & Returns</h2>
+    <p>All orders are shipped promptly via trusted carriers. We strive for fast delivery, usually within 3-5 business days.</p>
+    <p>If you're not satisfied with your purchase, you can return items as per the policies of the platform (Vinted or eBay) you ordered from. We encourage customers to review the respective platform's return policies before purchase.</p>
+
+    <h2>Contact & Support</h2>
+    <p>We are here to help! Feel free to reach out with any questions or concerns via our Contact page.</p>
   </div>
 
   <div class="footer">
