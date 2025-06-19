@@ -8,8 +8,7 @@
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
     }
     body {
       font-family: 'Poppins', sans-serif;
@@ -44,7 +43,7 @@
       border: none;
       flex-shrink: 0;
       transition: color 0.3s;
-      -webkit-tap-highlight-color: transparent; /* remove tap highlight */
+      -webkit-tap-highlight-color: transparent;
       outline: none;
     }
     .menu-toggle:hover,
@@ -122,52 +121,13 @@
       margin-bottom: 30px;
       color: #4caf50;
     }
-    form {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    p {
       max-width: 600px;
-      margin: 0 auto;
-    }
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #ccc;
-    }
-    input,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      border: none;
-      background: #333;
-      color: #eee;
-      font-size: 1rem;
-      resize: vertical;
-      transition: background 0.3s;
-    }
-    input:focus,
-    textarea:focus {
-      background: #444;
-      outline: none;
-    }
-    button {
-      background: #4caf50;
-      color: #111;
-      font-weight: 600;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      margin: 0 auto 20px auto;
       font-size: 1.1rem;
-      transition: background 0.3s;
-      width: 100%;
-    }
-    button:hover {
-      background: #3a9d3a;
+      line-height: 1.5;
+      text-align: center;
+      color: #ccc;
     }
     footer {
       text-align: center;
@@ -215,41 +175,13 @@
 
   <div class="container">
     <h2>Contact Us</h2>
-    <form
-      action="mailto:youremail@example.com"
-      method="POST"
-      enctype="text/plain"
-      onsubmit="alert('Thank you for contacting us!');"
-    >
-      <label for="name">Name</label>
-      <input
-        type="text"
-        id="name"
-        name="Name"
-        required
-        placeholder="Your full name"
-      />
-
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="Email"
-        required
-        placeholder="you@example.com"
-      />
-
-      <label for="message">Message</label>
-      <textarea
-        id="message"
-        name="Message"
-        rows="5"
-        required
-        placeholder="Write your message here..."
-      ></textarea>
-
-      <button type="submit">Send Message</button>
-    </form>
+    <p>You can reach us by email at <a href="mailto:youremail@example.com" style="color:#4caf50; text-decoration:none;">youremail@example.com</a></p>
+    <p>Or connect with us on social media:</p>
+    <p>
+      <a href="#" style="color:#4caf50; text-decoration:none;">Instagram</a> |
+      <a href="#" style="color:#4caf50; text-decoration:none;">Facebook</a> |
+      <a href="#" style="color:#4caf50; text-decoration:none;">Twitter</a>
+    </p>
   </div>
 
   <footer>
