@@ -40,8 +40,11 @@
       transition: color 0.3s;
     }
 
-    .menu-toggle:hover, .menu-toggle:focus {
-      color: #ccc; /* Keep same color on hover */
+    /* Keep hamburger icon color consistent on hover, focus, and active */
+    .menu-toggle:hover,
+    .menu-toggle:focus,
+    .menu-toggle:active {
+      color: #ccc !important;
       outline: none;
     }
 
