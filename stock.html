@@ -81,25 +81,20 @@
     .item-card h3{font-size:1rem;color:#4caf50}
     .item-card p{font-size:.85rem;color:#ccc}
 
-    /* MODAL */
-    .modal-bg{
-      display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;
+    /* MODAL-like expanded info */
+    .extra-info {
+      display:none;
+      color:#ccc;
+      margin-top:10px;
+      font-size: 0.9rem;
     }
-    .modal{
-      background:#222;padding:20px;border-radius:14px;max-width:400px;width:90%;
-      text-align:center;position:relative;animation:fadeInUp .4s;
+    .extra-info a {
+      color:#4caf50;
+      text-decoration:none;
+      font-weight:600;
     }
-    .modal img{width:100%;border-radius:10px;margin-bottom:12px}
-    .modal h2{color:#4caf50;margin-bottom:10px}
-    .modal p{color:#ccc;font-size:.95rem;margin-bottom:16px}
-    .modal button{
-      background:#4caf50;color:#111;font-weight:600;padding:10px 20px;
-      border:none;border-radius:8px;cursor:pointer;font-size:1rem
-    }
-    .close-btn{
-      position:absolute;top:10px;right:14px;font-size:1.4rem;color:#aaa;
-      background:none;border:none;cursor:pointer
+    .extra-info a:hover {
+      text-decoration:underline;
     }
 
     footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
@@ -141,34 +136,8 @@
 
 <div class="container">
   <section>
-    <div class="stock-grid">
-      <div class="item-card" onclick="toggleExpand(this)">
-        <img src="https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80" alt="Air Max 90" />
-        <h3>Air Max 90</h3>
-        <p>£85</p>
-        <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
-          Classic silhouette in great condition. UK 9. Ships in 1-2 days.
-          <br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
-        </div>
-      </div>
-      <div class="item-card" onclick="toggleExpand(this)">
-        <img src="https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80" alt="Yeezy Boost 350" />
-        <h3>Yeezy Boost 350</h3>
-        <p>£150</p>
-        <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
-          Lightly worn, UK 10. Includes original box.
-          <br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
-        </div>
-      </div>
-      <div class="item-card" onclick="toggleExpand(this)">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Dunk Low Panda" />
-        <h3>Dunk Low Panda</h3>
-        <p>£110</p>
-        <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
-          Brand new. UK 8. One of the cleanest looks in rotation right now.
-          <br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
-        </div>
-      </div>
+    <div class="stock-grid" id="stockGrid">
+      <!-- Items will be inserted here by JS -->
     </div>
   </section>
 </div>
@@ -190,6 +159,72 @@
     },{threshold:.2});
     obs.observe(sec);
   });
+
+  // Stock data array with 10 items
+  const stockItems = [
+    {
+      title: 'Air Max 90',
+      price: '£85',
+      img: 'https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80',
+      desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.'
+    },
+    {
+      title: 'Yeezy Boost 350',
+      price: '£150',
+      img: 'https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80',
+      desc: 'Lightly worn, UK 10. Includes original box.'
+    },
+    {
+      title: 'Dunk Low Panda',
+      price: '£110',
+      img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80',
+      desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.'
+    },
+    {
+      title: 'Jordan 1 Retro',
+      price: '£130',
+      img: 'https://images.unsplash.com/photo-1512499617640-c2f99912f50a?auto=format&fit=crop&w=400&q=80',
+      desc: 'Retro vibes, UK 9. Perfect condition.'
+    },
+    {
+      title: 'Chuck Taylor All Star',
+      price: '£50',
+      img: 'https://images.unsplash.com/photo-1519741496417-c2df2a7c88f2?auto=format&fit=crop&w=400&q=80',
+      desc: 'Classic canvas, UK 11. Great for everyday wear.'
+    },
+    {
+      title: 'Vans Old Skool',
+      price: '£60',
+      img: 'https://images.unsplash.com/photo-1534282827827-42f36d5b741b?auto=format&fit=crop&w=400&q=80',
+      desc: 'Black and white, UK 9. Lightly used.'
+    },
+    {
+      title: 'Puma RS-X',
+      price: '£75',
+      img: 'https://images.unsplash.com/photo-1542293787937-2f03a34e89f8?auto=format&fit=crop&w=400&q=80',
+      desc: 'Sporty and stylish. UK 10.'
+    },
+    {
+      title: 'New Balance 990',
+      price: '£90',
+      img: 'https://images.unsplash.com/photo-1552346154-7e9258c35f82?auto=format&fit=crop&w=400&q=80',
+      desc: 'Comfort and performance. UK 9.5.'
+    },
+    {
+      title: 'Adidas Ultraboost',
+      price: '£140',
+      img: 'https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80',
+      desc: 'Responsive cushioning. UK 10.'
+    },
+    {
+      title: 'Reebok Classic',
+      price: '£70',
+      img: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=400&q=80',
+      desc: 'Timeless style. UK 9.'
+    }
+  ];
+
+  const stockGrid = document.getElementById('stockGrid');
 
   function toggleExpand(card) {
     const extra = card.querySelector('.extra-info');
@@ -213,6 +248,25 @@
       card.style.transform = 'translateY(-5px)';
     }
   }
+
+  // Populate grid
+  stockItems.forEach((item) => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.setAttribute('onclick', 'toggleExpand(this)');
+
+    card.innerHTML = `
+      <img src="${item.img}" alt="${item.title}" />
+      <h3>${item.title}</h3>
+      <p>${item.price}</p>
+      <div class="extra-info">
+        ${item.desc}<br />
+        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer">Buy now</a>
+      </div>
+    `;
+
+    stockGrid.appendChild(card);
+  });
 </script>
 
 </body>
