@@ -57,20 +57,27 @@
     section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
     section.visible{opacity:1;transform:translateY(0)}
 
-    /* stock message box */
-    .stock-message{
-      background:#222;
-      padding:30px 20px;
-      border-radius:12px;
-      text-align:center;
-      color:#ccc;
-      font-size:1.1rem;
-      box-shadow: 0 0 15px rgba(76,175,80,0.4);
-      margin-bottom:40px;
-      user-select:none;
+    /* how to shop section */
+    .shop-section {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: 0 6px 30px rgba(0,255,100,0.1);
+      backdrop-filter: blur(8px);
     }
-
-    /* Vinted button */
+    .shop-section h2 {
+      font-size: 1.8rem;
+      color: #4caf50;
+      margin-bottom: 14px;
+    }
+    .shop-section p {
+      color: #ccc;
+      font-size: 1.05rem;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
     .vinted-btn{
       display: inline-block;
       background: #4caf50;
@@ -88,7 +95,6 @@
       background:#75e475;
     }
 
-    /* FAQ styling */
     .faq{
       background:#222;
       border-radius:12px;
@@ -107,7 +113,6 @@
       line-height:1.5;
     }
 
-    /* testimonial */
     .testimonial{
       background:#222;padding:24px;border-radius:12px;max-width:600px;margin:0 auto;text-align:center;color:#ccc
     }
@@ -132,7 +137,6 @@
     <h1>Trainer Store</h1>
     <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
 
-    <!-- desktop nav -->
     <nav>
       <a href="index.html">Home</a>
       <a href="stock.html" class="active">Stock</a>
@@ -140,7 +144,6 @@
       <a href="contact.html">Contact</a>
     </nav>
 
-    <!-- mobile dropdown -->
     <div class="dropdown" id="dropdownMenu">
       <a href="index.html">Home</a>
       <a href="stock.html" class="active">Stock</a>
@@ -153,55 +156,49 @@
   <section class="hero">
     <div class="hero-content">
       <h1>Current Stock & Availability</h1>
-      <p>We update our listings frequently to keep you informed.</p>
+      <p>Find out where to shop our verified trainers.</p>
     </div>
   </section>
 
   <!-- ---------- CONTENT ---------- -->
   <div class="container">
 
-    <!-- stock status -->
-    <section>
-      <div class="stock-message">
-        <p>Currently, we do not hold physical stock. All items are sold exclusively through our Vinted profile.</p>
-        <p>Check there regularly for new listings and authentic trainers.</p>
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer" class="vinted-btn">
-          Visit Our Vinted Profile
-        </a>
-      </div>
+    <!-- HOW TO SHOP -->
+    <section class="shop-section">
+      <h2>How to Shop</h2>
+      <p>We don’t hold physical stock right now — instead, all our items are listed on Vinted. You can check out what's available there and purchase directly through the app.</p>
+      <a href="https://www.vinted.co.uk/member/233654539" target="_blank" class="vinted-btn">Visit Our Vinted Profile</a>
     </section>
 
-    <!-- refunds & FAQ -->
+    <!-- REFUNDS + FAQ -->
     <section class="faq">
       <h3>Refunds</h3>
-      <p>Refund policies depend on the app you purchased the item through (Vinted, eBay, etc.). Please check their guidelines for details.</p>
+      <p>Refunds depend on the app used to buy the item (e.g. Vinted). Check the platform’s policy for info.</p>
 
-      <h3>Frequently Asked Questions (FAQs)</h3>
-      <p><strong>Q:</strong> How do I know the trainers are authentic?<br />
-         <strong>A:</strong> Each pair is verified by sneaker experts before listing.</p>
+      <h3>FAQs</h3>
+      <p><strong>Q:</strong> How do I know it’s authentic?<br />
+         <strong>A:</strong> Everything is verified before it goes up for sale.</p>
 
-      <p><strong>Q:</strong> How fast is shipping?<br />
-         <strong>A:</strong> We ensure quick dispatch via trusted carriers once an order is placed.</p>
+      <p><strong>Q:</strong> How fast is delivery?<br />
+         <strong>A:</strong> We aim to dispatch quickly using trusted carriers.</p>
 
-      <p><strong>Q:</strong> What payment methods are accepted?<br />
-         <strong>A:</strong> Payments are handled securely through the sales platform used (Vinted, eBay).</p>
+      <p><strong>Q:</strong> Can I pay with a card?<br />
+         <strong>A:</strong> Yes — the app handles secure payment methods.</p>
     </section>
 
     <!-- testimonial -->
     <section>
       <h2>What Customers Say</h2>
       <div class="testimonial">
-        <p>"Great experience buying through Vinted — fast and reliable!"</p>
-        <span>— Alex W.</span>
+        <p>"Bought through Vinted and was honestly surprised at how smooth and quick it was."</p>
+        <span>— Ella R.</span>
       </div>
     </section>
 
   </div>
 
-  <!-- ---------- FOOTER ---------- -->
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <!-- ---------- SCRIPTS ---------- -->
   <script>
     function toggleMenu(){
       const d = document.getElementById('dropdownMenu');
