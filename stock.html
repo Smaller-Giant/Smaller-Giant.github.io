@@ -63,6 +63,7 @@
       gap:20px;
     }
     .item-card{
+      position: relative;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.1);
       border-radius:12px;
@@ -71,22 +72,41 @@
       cursor:pointer;
       transition:.3s;
       backdrop-filter:blur(8px);
+      height: 260px; /* fixed height */
+      overflow: hidden;
     }
     .item-card:hover{transform:translateY(-5px)}
     .item-card img{
       width:100%;
       border-radius:10px;
       margin-bottom:8px;
+      max-height: 120px;
+      object-fit: cover;
     }
     .item-card h3{font-size:1rem;color:#4caf50}
-    .item-card p{font-size:.85rem;color:#ccc}
+    .item-card p{font-size:.85rem;color:#ccc; margin-bottom: 0;}
 
-    /* MODAL-like expanded info */
+    /* Extra info overlay inside card */
     .extra-info {
-      display:none;
-      color:#ccc;
-      margin-top:10px;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(20, 20, 20, 0.95);
+      color: #ccc;
+      padding: 15px;
+      border-radius: 12px;
+      display: none;
+      overflow-y: auto;
+      text-align: left;
       font-size: 0.9rem;
+      box-shadow: 0 0 10px 3px rgba(76,175,80,0.6);
+      z-index: 10;
+    }
+    .extra-info h4 {
+      color: #4caf50;
+      margin-bottom: 8px;
+    }
+    .extra-info p {
+      margin-bottom: 8px;
     }
     .extra-info a {
       color:#4caf50;
@@ -137,7 +157,7 @@
 <div class="container">
   <section>
     <div class="stock-grid" id="stockGrid">
-      <!-- Items will be inserted here by JS -->
+      <!-- Cards inserted by JS -->
     </div>
   </section>
 </div>
@@ -160,114 +180,99 @@
     obs.observe(sec);
   });
 
-  // Stock data array with 10 items
   const stockItems = [
     {
       title: 'Air Max 90',
       price: '£85',
       img: 'https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80',
-      desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.'
+      condition: 'Excellent',
+      size: 'UK 9',
+      shipping: 'Ships in 1-2 days',
+      desc: 'Classic silhouette in great condition.'
     },
     {
       title: 'Yeezy Boost 350',
       price: '£150',
       img: 'https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80',
-      desc: 'Lightly worn, UK 10. Includes original box.'
+      condition: 'Lightly worn',
+      size: 'UK 10',
+      shipping: 'Ships in 3-4 days',
+      desc: 'Includes original box.'
     },
     {
       title: 'Dunk Low Panda',
       price: '£110',
       img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80',
-      desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.'
+      condition: 'Brand new',
+      size: 'UK 8',
+      shipping: 'Ships in 1 day',
+      desc: 'One of the cleanest looks in rotation right now.'
     },
     {
       title: 'Jordan 1 Retro',
       price: '£130',
       img: 'https://images.unsplash.com/photo-1512499617640-c2f99912f50a?auto=format&fit=crop&w=400&q=80',
-      desc: 'Retro vibes, UK 9. Perfect condition.'
+      condition: 'Great',
+      size: 'UK 9',
+      shipping: 'Ships in 2 days',
+      desc: 'Retro vibes, perfect condition.'
     },
     {
       title: 'Chuck Taylor All Star',
       price: '£50',
       img: 'https://images.unsplash.com/photo-1519741496417-c2df2a7c88f2?auto=format&fit=crop&w=400&q=80',
-      desc: 'Classic canvas, UK 11. Great for everyday wear.'
+      condition: 'Good',
+      size: 'UK 11',
+      shipping: 'Ships in 1-3 days',
+      desc: 'Classic canvas, great for everyday wear.'
     },
     {
       title: 'Vans Old Skool',
       price: '£60',
       img: 'https://images.unsplash.com/photo-1534282827827-42f36d5b741b?auto=format&fit=crop&w=400&q=80',
-      desc: 'Black and white, UK 9. Lightly used.'
+      condition: 'Lightly used',
+      size: 'UK 9',
+      shipping: 'Ships in 2 days',
+      desc: 'Black and white style.'
     },
     {
       title: 'Puma RS-X',
       price: '£75',
       img: 'https://images.unsplash.com/photo-1542293787937-2f03a34e89f8?auto=format&fit=crop&w=400&q=80',
-      desc: 'Sporty and stylish. UK 10.'
+      condition: 'Excellent',
+      size: 'UK 10',
+      shipping: 'Ships in 1-2 days',
+      desc: 'Sporty and stylish.'
     },
     {
       title: 'New Balance 990',
       price: '£90',
       img: 'https://images.unsplash.com/photo-1552346154-7e9258c35f82?auto=format&fit=crop&w=400&q=80',
-      desc: 'Comfort and performance. UK 9.5.'
+      condition: 'Great',
+      size: 'UK 9.5',
+      shipping: 'Ships in 3 days',
+      desc: 'Comfort and performance.'
     },
     {
       title: 'Adidas Ultraboost',
       price: '£140',
       img: 'https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80',
-      desc: 'Responsive cushioning. UK 10.'
+      condition: 'New',
+      size: 'UK 10',
+      shipping: 'Ships in 1 day',
+      desc: 'Responsive cushioning.'
     },
     {
       title: 'Reebok Classic',
       price: '£70',
       img: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=400&q=80',
-      desc: 'Timeless style. UK 9.'
+      condition: 'Good',
+      size: 'UK 9',
+      shipping: 'Ships in 2 days',
+      desc: 'Timeless style.'
     }
   ];
 
   const stockGrid = document.getElementById('stockGrid');
 
-  function toggleExpand(card) {
-    const extra = card.querySelector('.extra-info');
-    if (extra.style.display === 'block') {
-      extra.style.display = 'none';
-      card.style.boxShadow = 'none';
-      card.style.background = 'rgba(255,255,255,0.04)';
-      card.style.transform = 'none';
-    } else {
-      // Close others
-      document.querySelectorAll('.extra-info').forEach(info => info.style.display = 'none');
-      document.querySelectorAll('.item-card').forEach(c=>{
-        c.style.boxShadow = 'none';
-        c.style.background = 'rgba(255,255,255,0.04)';
-        c.style.transform = 'none';
-      });
-
-      extra.style.display = 'block';
-      card.style.boxShadow = '0 4px 15px rgba(76, 175, 80, 0.5)';
-      card.style.background = 'rgba(76,175,80,0.1)';
-      card.style.transform = 'translateY(-5px)';
-    }
-  }
-
-  // Populate grid
-  stockItems.forEach((item) => {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.setAttribute('onclick', 'toggleExpand(this)');
-
-    card.innerHTML = `
-      <img src="${item.img}" alt="${item.title}" />
-      <h3>${item.title}</h3>
-      <p>${item.price}</p>
-      <div class="extra-info">
-        ${item.desc}<br />
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer">Buy now</a>
-      </div>
-    `;
-
-    stockGrid.appendChild(card);
-  });
-</script>
-
-</body>
-</html>
+  fun
