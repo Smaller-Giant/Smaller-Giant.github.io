@@ -1,152 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trainer Store | Stock</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trainer Store | Stock</title>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #111;
+    color: #eee;
+    min-height: 100vh;
+  }
 
-    header{
-      position:fixed;top:0;width:100%;z-index:1000;
-      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
-      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
-    }
-    header h1{font-size:1.4rem;color:#fff}
+  header {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: rgba(0,0,0,.85);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.7);
+  }
+  header h1 { font-size: 1.4rem; color: #fff; }
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color .3s;
+  }
+  a:visited { color: inherit; }
+  nav {
+    display: flex; gap: 18px;
+  }
+  nav a {
+    color: #ccc;
+    font-size: .95rem;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 2px;
+    background: #4caf50;
+    transition: width .3s;
+  }
+  nav a:hover, nav a.active {
+    color: #fff;
+  }
+  nav a:hover::after, nav a.active::after {
+    width: 100%;
+  }
+  .menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: #ccc;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .dropdown {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: #222;
+    display: none;
+    flex-direction: column;
+    padding: 10px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.7);
+    animation: fadeInDown .3s ease-out forwards;
+  }
+  .dropdown a {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    color: #eee;
+    font-size: 1rem;
+  }
+  .dropdown a:last-child { border-bottom: none; }
+  .dropdown a:hover, .dropdown a.active { color: #4caf50; }
 
-    a{color:inherit;text-decoration:none;transition:color .3s}
-    a:visited{color:inherit}
+  .hero {
+    height: 40vh;
+    min-height: 220px;
+    background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-content {
+    position: relative;
+    text-align: center;
+    color: #fff;
+  }
+  .hero-content h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+  }
+  .hero-content p {
+    font-size: 1.1rem;
+    opacity: 0;
+    animation: fadeInUp 1s .3s forwards;
+  }
 
-    nav{display:flex;gap:18px}
-    nav a{
-      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
-    }
-    nav a::after{
-      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
-      background:#4caf50;transition:width .3s
-    }
-    nav a:hover,nav a.active{color:#fff}
-    nav a:hover::after,nav a.active::after{width:100%}
+  .container {
+    max-width: 1000px;
+    margin: 60px auto 80px;
+    padding: 0 20px;
+  }
+  section {
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all .6s ease-out;
+  }
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+  .stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 20px;
+  }
+  .item-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  }
+  .item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+  }
+  .item-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    filter: brightness(0.95);
+    transition: filter 0.3s ease;
+  }
+  .item-card img:hover {
+    filter: brightness(1);
+  }
+  .item-card h3 {
+    font-size: 1rem;
+    color: #4caf50;
+    margin-bottom: 4px;
+  }
+  .item-card p {
+    font-size: .85rem;
+    color: #ccc;
+    margin-top: 0;
+  }
 
-    .dropdown{
-      position:absolute;top:100%;left:0;right:0;
-      background:#222;display:none;flex-direction:column;padding:10px 20px;
-      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
-    }
-    .dropdown a{
-      padding:12px 0;border-bottom:1px solid #333;
-      color:#eee;font-size:1rem
-    }
-    .dropdown a:last-child{border-bottom:none}
-    .dropdown a:hover,.dropdown a.active{color:#4caf50}
+  /* Expandable info panel */
+  .expandable-panel {
+    grid-column: 1 / -1; /* Full width under grid */
+    background: rgba(40, 40, 40, 0.8);
+    border-radius: 12px;
+    margin-top: -10px;
+    padding: 20px;
+    color: #ddd;
+    box-shadow: 0 8px 24px rgba(76,175,80,0.7);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+  .expandable-panel.open {
+    max-height: 400px; /* Enough to show content */
+    padding: 20px;
+  }
+  .expandable-panel img {
+    max-width: 200px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  }
+  .expandable-panel h2 {
+    color: #4caf50;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .expandable-panel p {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    color: #ccc;
+  }
+  .expandable-panel button {
+    background: #4caf50;
+    color: #111;
+    font-weight: 600;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 0 6px 16px rgba(76,175,80,0.8);
+    transition: background-color 0.3s ease;
+  }
+  .expandable-panel button:hover {
+    background-color: #43a047;
+    box-shadow: 0 8px 20px rgba(67,160,71,0.9);
+  }
 
-    .hero{
-      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
-      position:relative;display:flex;align-items:center;justify-content:center
-    }
-    .hero-content{position:relative;text-align:center;color:#fff}
-    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
-    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
+  footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: .9rem;
+    color: #aaa;
+    border-top: 1px solid #333;
+    user-select: none;
+  }
 
-    .container{max-width:1000px;margin:60px auto;padding:0 20px}
-    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
-    section.visible{opacity:1;transform:translateY(0)}
+  @media (max-width: 768px) {
+    .menu-toggle { display: block; }
+    nav { display: none; }
+  }
 
-    .stock-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-      gap:20px;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
     }
-    .item-card{
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.15);
-      border-radius:12px;
-      padding:10px;
-      text-align:center;
-      cursor:pointer;
-      transition:.3s;
-      backdrop-filter:blur(8px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .item-card:hover{transform:translateY(-5px); box-shadow: 0 6px 14px rgba(0,0,0,0.6);}
-    .item-card img{
-      width:100%;
-      border-radius:10px;
-      margin-bottom:8px;
-      filter: brightness(0.95);
-      transition: filter 0.3s ease;
+  }
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
     }
-    .item-card img:hover {
-      filter: brightness(1);
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .item-card h3{font-size:1rem;color:#4caf50;margin-bottom:4px;}
-    .item-card p{font-size:.85rem;color:#ccc;margin-top:0;}
-
-    /* MODAL */
-    .modal-bg{
-      display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;
-      padding: 15px;
-    }
-    .modal{
-      background:rgba(30,30,30,0.95);padding:25px;border-radius:14px;max-width:420px;width:100%;
-      text-align:center;position:relative;animation:fadeInUp .4s;
-      box-shadow: 0 8px 20px rgba(76,175,80,0.8);
-      color: #ddd;
-      font-weight: 300;
-    }
-    .modal img{
-      width:100%;border-radius:10px;margin-bottom:18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
-      transition: transform 0.3s ease;
-    }
-    .modal img:hover {
-      transform: scale(1.05);
-    }
-    .modal h2{
-      color:#4caf50;margin-bottom:12px;font-weight: 600;
-    }
-    .modal p{
-      font-size:1rem;margin-bottom:22px;line-height:1.4;
-      color:#bbb;
-    }
-    .modal button{
-      background:#4caf50;color:#111;font-weight:600;padding:12px 28px;
-      border:none;border-radius:10px;cursor:pointer;font-size:1rem;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 4px 10px rgba(76,175,80,0.7);
-    }
-    .modal button:hover {
-      background-color: #43a047;
-      box-shadow: 0 6px 16px rgba(67,160,71,0.9);
-    }
-    .close-btn{
-      position:absolute;top:12px;right:18px;font-size:1.6rem;color:#aaa;
-      background:none;border:none;cursor:pointer;
-      transition: color 0.3s ease;
-    }
-    .close-btn:hover {
-      color: #4caf50;
-    }
-
-    footer{
-      text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333;
-      user-select:none;
-    }
-
-    @media(max-width:768px){
-      .menu-toggle{display:block}
-      nav{display:none}
-    }
-
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-  </style>
+  }
+</style>
 </head>
 <body>
 
@@ -177,20 +279,15 @@
 <div class="container">
   <section>
     <div class="stock-grid" id="stockGrid">
-      <!-- Items injected by JS -->
+      <!-- Items injected here -->
+    </div>
+    <div id="expandPanel" class="expandable-panel" aria-hidden="true">
+      <img id="expImg" src="" alt="">
+      <h2 id="expTitle"></h2>
+      <p id="expDesc"></p>
+      <button id="expBuyBtn">Buy Now</button>
     </div>
   </section>
-</div>
-
-<!-- MODAL -->
-<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
-  <div class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc" onclick="event.stopPropagation()">
-    <button class="close-btn" onclick="closeModal()" aria-label="Close modal">×</button>
-    <img id="modalImg" src="" alt="">
-    <h2 id="modalTitle">Product Name</h2>
-    <p id="modalDesc">Product description and details here.</p>
-    <button id="buyBtn">Buy Now</button>
-  </div>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
@@ -211,35 +308,39 @@
     obs.observe(sec);
   });
 
-  const modalBg = document.getElementById('modalBg');
-  const modalImg = document.getElementById('modalImg');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalDesc = document.getElementById('modalDesc');
-  const buyBtn = document.getElementById('buyBtn');
   const stockGrid = document.getElementById('stockGrid');
+  const expandPanel = document.getElementById('expandPanel');
+  const expImg = document.getElementById('expImg');
+  const expTitle = document.getElementById('expTitle');
+  const expDesc = document.getElementById('expDesc');
+  const expBuyBtn = document.getElementById('expBuyBtn');
 
   const stockItems = [
     {
       title: 'Air Max 90',
       img: 'https://via.placeholder.com/300x200?text=Air+Max+90',
       desc: 'Classic silhouette in great condition. UK 9. Ships in 1-2 days.',
-      buyUrl: 'https://www.vinted.co.uk/member/233654539'
+      buyUrl: 'https://www.vinted.co.uk/member/233654539',
+      price: '85'
     },
     {
       title: 'Yeezy Boost 350',
       img: 'https://via.placeholder.com/300x200?text=Yeezy+Boost+350',
       desc: 'Lightly worn, UK 10. Includes original box.',
-      buyUrl: 'https://www.vinted.co.uk/member/233654539'
+      buyUrl: 'https://www.vinted.co.uk/member/233654539',
+      price: '150'
     },
     {
       title: 'Dunk Low Panda',
       img: 'https://via.placeholder.com/300x200?text=Dunk+Low+Panda',
       desc: 'Brand new. UK 8. One of the cleanest looks in rotation right now.',
-      buyUrl: 'https://www.vinted.co.uk/member/233654539'
+      buyUrl: 'https://www.vinted.co.uk/member/233654539',
+      price: '110'
     }
   ];
 
-  // Inject items into grid
+  let expandedIndex = -1;
+
   function renderStock() {
     stockGrid.innerHTML = '';
     stockItems.forEach((item, i) => {
@@ -248,38 +349,45 @@
       card.setAttribute('tabindex', '0');
       card.setAttribute('role', 'button');
       card.setAttribute('aria-pressed', 'false');
-      card.addEventListener('click', () => openModal(i));
-      card.addEventListener('keydown', e => {
-        if(e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openModal(i);
-        }
-      });
-
       card.innerHTML = `
         <img src="${item.img}" alt="${item.title}">
         <h3>${item.title}</h3>
-        <p>£${item.price || 'TBD'}</p>
+        <p>£${item.price}</p>
       `;
+      card.addEventListener('click', () => toggleExpand(i));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleExpand(i);
+        }
+      });
       stockGrid.appendChild(card);
     });
   }
 
-  // Open modal with item data
-  function openModal(index) {
+  function toggleExpand(index) {
+    if (expandedIndex === index) {
+      closeExpand();
+      return;
+    }
+    expandedIndex = index;
     const item = stockItems[index];
-    modalImg.src = item.img;
-    modalImg.alt = item.title;
-    modalTitle.textContent = item.title;
-    modalDesc.textContent = item.desc;
-    buyBtn.onclick = () => window.open(item.buyUrl, '_blank');
-    modalBg.style.display = 'flex';
-    // Trap focus or accessibility improvements can be added here if needed
+    expImg.src = item.img;
+    expImg.alt = item.title;
+    expTitle.textContent = item.title;
+    expDesc.textContent = item.desc;
+    expBuyBtn.onclick = () => window.open(item.buyUrl, '_blank');
+
+    expandPanel.classList.add('open');
+    expandPanel.setAttribute('aria-hidden', 'false');
+    // Scroll into view smoothly:
+    expandPanel.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
-  function closeModal(e) {
-    if(e && e.target !== modalBg && e.target !== document.querySelector('.close-btn')) return;
-    modalBg.style.display = 'none';
+  function closeExpand() {
+    expandedIndex = -1;
+    expandPanel.classList.remove('open');
+    expandPanel.setAttribute('aria-hidden', 'true');
   }
 
   renderStock();
