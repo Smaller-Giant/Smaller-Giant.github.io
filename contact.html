@@ -5,8 +5,142 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trainer Store - Contact</title>
   <style>
-    /* Same CSS as index.html */
-    /* ... (same as above) ... */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fbfc;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #111;
+      padding: 15px 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    nav {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #4CAF50;
+    }
+    nav a.active {
+      color: #4CAF50;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 2px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 100px auto 40px auto;
+      padding: 30px 40px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+      margin-bottom: 25px;
+    }
+    p {
+      font-size: 1.1em;
+      margin-bottom: 25px;
+      color: #555;
+    }
+    ul {
+      margin-bottom: 30px;
+      color: #555;
+      font-size: 1.05em;
+      list-style-type: none;
+      padding-left: 0;
+    }
+    ul li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    ul li::before {
+      content: "📞";
+      font-size: 1.2em;
+    }
+    ul li.email::before {
+      content: "📧";
+    }
+    ul li.social::before {
+      content: "🌐";
+    }
+    a.contact-link {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a.contact-link:hover {
+      text-decoration: underline;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #444;
+    }
+    input, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+      resize: vertical;
+    }
+    textarea {
+      min-height: 100px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      font-weight: 600;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1em;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #888;
+      padding-bottom: 20px;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
@@ -16,22 +150,33 @@
       <div>
         <a href="stock.html">Stock</a>
         <a href="info.html">Info</a>
-        <a href="contact.html" style="color:#4CAF50;">Contact</a>
+        <a href="contact.html" class="active">Contact</a>
       </div>
     </nav>
   </header>
 
   <div class="container">
-    <section>
-      <h1>Contact Us</h1>
-      <p>If you have any questions or want to get in touch, please use the details below:</p>
-      <ul>
-        <li>Email: <a href="mailto:contact@trainerstore.com">contact@trainerstore.com</a></li>
-        <li>Phone: 01234 567890</li>
-        <li>Instagram: <a href="https://instagram.com/trainerstore" target="_blank">@trainerstore</a></li>
-      </ul>
-      <p>Or send us a message through our social platforms!</p>
-    </section>
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you! Whether you have questions about our trainers or need assistance, please reach out using any of the options below or fill in the contact form.</p>
+
+    <ul>
+      <li class="email">Email: <a href="mailto:contact@trainerstore.com" class="contact-link">contact@trainerstore.com</a></li>
+      <li>Phone: <a href="tel:+441234567890" class="contact-link">01234 567890</a></li>
+      <li class="social">Instagram: <a href="https://instagram.com/trainerstore" target="_blank" class="contact-link">@trainerstore</a></li>
+    </ul>
+
+    <form action="mailto:contact@trainerstore.com" method="post" enctype="text/plain" novalidate>
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" placeholder="John Doe" required />
+
+      <label for="email">Your Email</label>
+      <input type="email" id="email" name="email" placeholder="john@example.com" required />
+
+      <label for="message">Your Message</label>
+      <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
   </div>
 
   <div class="footer">
