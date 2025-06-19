@@ -6,29 +6,35 @@
   <title>Trainer Store | Contact</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; }
-
-    header {
-      position: fixed; 
-      top: 0; 
-      width: 100%; 
-      z-index: 1000;
-      background: rgba(0,0,0,0.85); 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      padding: 12px 20px; 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-
-    header h1 { 
-      font-size: 1.4rem; 
-      color: #fff; 
-      white-space: nowrap;  /* Prevent wrapping */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #111;
+      color: #eee;
+      line-height: 1.6;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+    header h1 {
+      font-size: 1.4rem;
+      color: #fff;
+      white-space: nowrap;
       flex-shrink: 0;
     }
-
     .menu-toggle {
       display: none;
       font-size: 1.5rem;
@@ -38,10 +44,9 @@
       border: none;
       flex-shrink: 0;
       transition: color 0.3s;
-      -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+      -webkit-tap-highlight-color: transparent; /* remove tap highlight */
       outline: none;
     }
-
     .menu-toggle:hover,
     .menu-toggle:focus,
     .menu-toggle:active {
@@ -50,95 +55,89 @@
       box-shadow: none !important;
       -webkit-tap-highlight-color: transparent !important;
     }
-
     nav {
-      display: flex; 
-      gap: 18px; 
+      display: flex;
+      gap: 18px;
       flex-grow: 1;
       justify-content: flex-end;
     }
-
     nav a {
-      color: #ccc; 
-      text-decoration: none; 
+      color: #ccc;
+      text-decoration: none;
       font-size: 0.95rem;
-      position: relative; 
-      padding-bottom: 2px; 
+      position: relative;
+      padding-bottom: 2px;
       transition: color 0.3s;
     }
-
     nav a::after {
-      content: ''; 
-      position: absolute; 
-      bottom: -2px; 
+      content: '';
+      position: absolute;
+      bottom: -2px;
       left: 0;
-      width: 0; 
-      height: 2px; 
-      background: #4caf50; 
+      width: 0;
+      height: 2px;
+      background: #4caf50;
       transition: width 0.3s;
     }
-
-    nav a:hover, nav a.active { 
-      color: #fff; 
+    nav a:hover,
+    nav a.active {
+      color: #fff;
     }
-
-    nav a:hover::after, nav a.active::after { 
-      width: 100%; 
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
     }
-
     .dropdown {
-      position: absolute; 
-      top: 100%; 
-      left: 0; 
+      position: absolute;
+      top: 100%;
+      left: 0;
       right: 0;
-      background: #222; 
-      display: none; 
-      flex-direction: column; 
+      background: #222;
+      display: none;
+      flex-direction: column;
       padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
       animation: fadeInDown 0.3s ease-out forwards;
     }
-
     .dropdown a {
-      padding: 12px 0; 
+      padding: 12px 0;
       border-bottom: 1px solid #333;
-      color: #eee; 
+      color: #eee;
       font-size: 1rem;
     }
-
-    .dropdown a:last-child { border-bottom: none; }
-
-    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
-
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover,
+    .dropdown a.active {
+      color: #4caf50;
+    }
     .container {
       max-width: 900px;
       margin: 100px auto 40px auto;
       padding: 20px;
     }
-
     h2 {
       text-align: center;
       margin-bottom: 30px;
       color: #4caf50;
     }
-
     form {
       background: #1a1a1a;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
       max-width: 600px;
       margin: 0 auto;
     }
-
     label {
       display: block;
       margin-bottom: 6px;
       font-weight: 600;
       color: #ccc;
     }
-
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       padding: 10px;
       margin-bottom: 20px;
@@ -150,12 +149,11 @@
       resize: vertical;
       transition: background 0.3s;
     }
-
-    input:focus, textarea:focus {
+    input:focus,
+    textarea:focus {
       background: #444;
       outline: none;
     }
-
     button {
       background: #4caf50;
       color: #111;
@@ -168,73 +166,102 @@
       transition: background 0.3s;
       width: 100%;
     }
-
     button:hover {
       background: #3a9d3a;
     }
-
     footer {
       text-align: center;
       padding: 30px 0 15px;
       font-size: 0.9rem;
       color: #aaa;
     }
-
     @media (max-width: 768px) {
-      .menu-toggle { display: block; }
-      nav { display: none; }
+      .menu-toggle {
+        display: block;
+      }
+      nav {
+        display: none;
+      }
     }
-
     @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Trainer Store</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html" class="active">Contact</a>
+    </div>
+  </header>
 
-<header>
-  <h1>Trainer Store</h1>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="stock.html">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html" class="active">Contact</a>
-  </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="stock.html">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html" class="active">Contact</a>
+  <div class="container">
+    <h2>Contact Us</h2>
+    <form
+      action="mailto:youremail@example.com"
+      method="POST"
+      enctype="text/plain"
+      onsubmit="alert('Thank you for contacting us!');"
+    >
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="Name"
+        required
+        placeholder="Your full name"
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="Email"
+        required
+        placeholder="you@example.com"
+      />
+
+      <label for="message">Message</label>
+      <textarea
+        id="message"
+        name="Message"
+        rows="5"
+        required
+        placeholder="Write your message here..."
+      ></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
   </div>
-</header>
 
-<div class="container">
-  <h2>Contact Us</h2>
+  <footer>
+    This site is for display only. All orders handled through Vinted or eBay.
+  </footer>
 
-  <form action="mailto:youremail@example.com" method="POST" enctype="text/plain" onsubmit="alert('Thank you for contacting us!');">
-    <label for="name">Name</label>
-    <input type="text" id="name" name="Name" required placeholder="Your full name" />
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="Email" required placeholder="you@example.com" />
-
-    <label for="message">Message</label>
-    <textarea id="message" name="Message" rows="5" required placeholder="Write your message here..."></textarea>
-
-    <button type="submit">Send Message</button>
-  </form>
-</div>
-
-<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
-
-<script>
-  function toggleMenu() {
-    const dropdown = document.getElementById('dropdownMenu');
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
-</script>
-
+  <script>
+    function toggleMenu() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display =
+        dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>
