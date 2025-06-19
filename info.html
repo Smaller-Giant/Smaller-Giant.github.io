@@ -6,46 +6,112 @@
   <title>Trainer Store | Info</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; }
-
-    header {
-      position: fixed; top: 0; width: 100%; z-index: 1000;
-      background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    /* Same styles as your other pages */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
     }
-    header h1 { font-size: 1.4rem; color: #fff; }
-
-    nav { display: flex; gap: 18px; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #111;
+      color: #eee;
+      line-height: 1.6;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+    header h1 {
+      font-size: 1.4rem;
+      color: #fff;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: #ccc;
+      cursor: pointer;
+      background: none;
+      border: none;
+      flex-shrink: 0;
+      transition: color 0.3s;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+    .menu-toggle:hover,
+    .menu-toggle:focus,
+    .menu-toggle:active {
+      color: #ccc !important;
+      outline: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-grow: 1;
+      justify-content: flex-end;
+    }
     nav a {
-      color: #ccc; text-decoration: none; font-size: 0.95rem;
-      position: relative; padding-bottom: 2px; transition: color 0.3s;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.95rem;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.3s;
     }
     nav a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0;
-      width: 0; height: 2px; background: #4caf50; transition: width 0.3s;
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #4caf50;
+      transition: width 0.3s;
     }
-    nav a:hover, nav a.active { color: #fff; }
-    nav a:hover::after, nav a.active::after { width: 100%; }
-
-    .menu-toggle {
-      display: none; font-size: 1.5rem; color: #ccc; cursor: pointer;
-      background: none; border: none;
+    nav a:hover,
+    nav a.active {
+      color: #fff;
     }
-
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
     .dropdown {
-      position: absolute; top: 100%; left: 0; right: 0;
-      background: #222; display: none; flex-direction: column; padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #222;
+      display: none;
+      flex-direction: column;
+      padding: 10px 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
       animation: fadeInDown 0.3s ease-out forwards;
     }
     .dropdown a {
-      padding: 12px 0; border-bottom: 1px solid #333;
-      color: #eee; font-size: 1rem;
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+      color: #eee;
+      font-size: 1rem;
     }
-    .dropdown a:last-child { border-bottom: none; }
-    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
-
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover,
+    .dropdown a.active {
+      color: #4caf50;
+    }
     .container {
       max-width: 900px;
       margin: 100px auto 40px auto;
@@ -57,100 +123,107 @@
       color: #4caf50;
     }
     h3 {
-      margin-bottom: 8px;
-      color: #ddd;
+      color: #4caf50;
+      margin-top: 30px;
+      margin-bottom: 12px;
     }
-    p {
+    p, li {
+      max-width: 700px;
+      margin: 0 auto 16px auto;
+      font-size: 1.05rem;
       color: #ccc;
       line-height: 1.5;
-      margin-bottom: 16px;
     }
-
-    .info-section {
-      background: #1a1a1a;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-      transition: background 0.3s;
+    ul {
+      max-width: 700px;
+      margin: 0 auto 20px auto;
+      padding-left: 20px;
+      color: #ccc;
     }
-    .info-section:hover {
-      background: #2a2a2a;
+    a {
+      color: #4caf50;
+      text-decoration: none;
     }
-
+    a:hover {
+      text-decoration: underline;
+    }
     footer {
       text-align: center;
       padding: 30px 0 15px;
       font-size: 0.9rem;
       color: #aaa;
     }
-
     @media (max-width: 768px) {
-      .menu-toggle { display: block; }
-      nav { display: none; }
+      .menu-toggle {
+        display: block;
+      }
+      nav {
+        display: none;
+      }
     }
-
     @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Trainer Store</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html" class="active">Info</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html" class="active">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </header>
 
-<header>
-  <h1>Trainer Store</h1>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="stock.html">Stock</a>
-    <a href="info.html" class="active">Info</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="stock.html">Stock</a>
-    <a href="info.html" class="active">Info</a>
-    <a href="contact.html">Contact</a>
+  <div class="container">
+    <h2>About Trainer Store</h2>
+    <p>Welcome to Trainer Store — your friendly online spot for fresh trainers and stylish kicks.  
+    We’re passionate about offering a curated collection of quality shoes with a simple, trustworthy shopping experience.</p>
+    
+    <h3>Where to Buy</h3>
+    <p>You can find all our available trainers on our <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer">Vinted profile</a>.  
+    We handle all orders securely through Vinted’s platform for a safe and smooth purchase.</p>
+    
+    <h3>Refunds & Returns</h3>
+    <p>Refunds and returns depend on the app or platform you purchased the item from. Please check their policies directly.</p>
+    
+    <h3>Frequently Asked Questions</h3>
+    <ul>
+      <li><strong>Q:</strong> How do I know if a trainer is authentic?<br />
+          <strong>A:</strong> We carefully select and verify all trainers before listing on Vinted.</li>
+      <li><strong>Q:</strong> Do you ship internationally?<br />
+          <strong>A:</strong> Shipping depends on Vinted’s options; please check the listing for details.</li>
+      <li><strong>Q:</strong> How can I contact you?<br />
+          <strong>A:</strong> You can reach out through our <a href="contact.html">Contact page</a> or message us on Vinted.</li>
+    </ul>
   </div>
-</header>
 
-<div class="container">
-  <h2>About Trainer Store</h2>
+  <footer>
+    This site is for display only. All orders handled through Vinted or eBay.
+  </footer>
 
-  <div class="info-section">
-    <h3>Our Mission</h3>
-    <p>We are passionate about connecting sneaker lovers with authentic trainers. Our mission is to provide a seamless shopping experience with verified products and fast delivery.</p>
-  </div>
-
-  <div class="info-section">
-    <h3>Shipping & Delivery</h3>
-    <p>Orders are shipped quickly via trusted carriers. Estimated delivery times range between 3-7 working days, depending on your location. You will receive tracking details once your order is dispatched.</p>
-  </div>
-
-  <div class="info-section">
-    <h3>Authenticity Guarantee</h3>
-    <p>All trainers listed are 100% authentic. We verify each pair carefully before listing to ensure you receive genuine products you can trust.</p>
-  </div>
-
-  <div class="info-section">
-    <h3>Payment & Security</h3>
-    <p>Payments are processed securely via Vinted or eBay. We never store your payment details on our website and provide buyer protection for your peace of mind.</p>
-  </div>
-
-  <div class="info-section">
-    <h3>Returns & Refunds</h3>
-    <p>If you're not satisfied with your purchase, please contact the seller on the platform where you made your order (Vinted or eBay) to discuss return options.</p>
-  </div>
-</div>
-
-<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
-
-<script>
-  function toggleMenu() {
-    const dropdown = document.getElementById('dropdownMenu');
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
-</script>
+  <script>
+    function toggleMenu() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display =
+        dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>
