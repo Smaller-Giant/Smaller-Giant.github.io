@@ -5,11 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trainer Store</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
       background-color: #f6f6f6;
       color: #222;
+    }
+    header {
+      background: #111;
+      padding: 15px 0;
+    }
+    nav {
+      max-width: 800px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
     }
     .container {
       max-width: 800px;
@@ -17,8 +42,15 @@
       padding: 20px;
       background: white;
     }
+    section {
+      margin-bottom: 40px;
+    }
     h1, h2 {
       text-align: center;
+      margin-bottom: 15px;
+    }
+    p {
+      margin: 10px 0;
     }
     .trainer {
       margin: 20px 0;
@@ -45,55 +77,69 @@
       margin-top: 40px;
       font-size: 0.9em;
       color: #888;
+      padding-bottom: 20px;
     }
   </style>
 </head>
 <body>
+  <header>
+    <nav>
+      <div><a href="#home">Home</a></div>
+      <div>
+        <a href="#stock">Stock</a>
+        <a href="#info">Info</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
   <div class="container">
-    <h1>Brand New Trainers — UK Only</h1>
+    <section id="home">
+      <h1>Brand New Trainers — UK Only</h1>
+      <p>
+        We offer high-quality, brand new trainers at fair prices — all boxed, all authentic. Every pair is shipped from within England and carefully inspected before listing. Stock is updated regularly and typically sells out fast, so grab your size while it’s available.
+      </p>
+    </section>
 
-    <p>
-      We offer high-quality, brand new trainers at fair prices — all boxed, all authentic. Every pair is shipped from within England and carefully inspected before listing. Stock is updated regularly and typically sells out fast, so grab your size while it’s available.
-    </p>
+    <section id="stock">
+      <h2>Current Stock</h2>
+      <div class="trainer">
+        <h3>Nike Dunk Low “Panda” – UK 6 – Brand New</h3>
+        <img src="shoe1.jpg" alt="Nike Dunk Panda">
+        <p>Status: In Stock</p>
+      </div>
 
-    <h2>Current Stock</h2>
+      <div class="trainer">
+        <h3>Nike Dunk Low Twist – UK 5.5 – Brand New with Box</h3>
+        <img src="shoe2.jpg" alt="Nike Dunk Twist">
+        <p>Status: In Stock</p>
+      </div>
 
-    <div class="trainer">
-      <h3>Nike Dunk Low “Panda” – UK 6 – Brand New</h3>
-      <img src="shoe1.jpg" alt="Nike Dunk Panda">
-      <p>Status: In Stock</p>
-    </div>
+      <div class="trainer">
+        <h3>Nike SB Chron 2 – UK 6 – Sold</h3>
+        <img src="shoe3.jpg" alt="Nike SB Chron">
+        <p>Status: Sold</p>
+      </div>
+    </section>
 
-    <div class="trainer">
-      <h3>Nike Dunk Low Twist – UK 5.5 – Brand New with Box</h3>
-      <img src="shoe2.jpg" alt="Nike Dunk Twist">
-      <p>Status: In Stock</p>
-    </div>
+    <section id="info">
+      <h2>Info</h2>
+      <p><strong>Shipping:</strong> UK only — Tracked. 2–4 working days.</p>
+      <p><strong>Returns:</strong> Currently not accepted unless the item arrives not as described.</p>
+      <p><strong>Condition:</strong> All items are brand new with box unless listed otherwise.</p>
+    </section>
 
-    <div class="trainer">
-      <h3>Nike SB Chron 2 – UK 6 – Sold</h3>
-      <img src="shoe3.jpg" alt="Nike SB Chron">
-      <p>Status: Sold</p>
-    </div>
-
-    <h2>Shop with Us</h2>
-    <div class="links">
-      <a href="#">View on Vinted</a>
-      <a href="#">View on eBay</a>
-    </div>
-
-    <h2>Shipping & Delivery</h2>
-    <p>
-      Orders ship from within England only. Delivery is typically within 2–4 working days. We use tracked services for safety and speed.
-    </p>
-
-    <h2>Got a Question?</h2>
-    <p>
-      Message us on Vinted or eBay if you have questions about size, availability, or delivery. We reply quickly and are happy to help.
-    </p>
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Have a question? Contact us on:</p>
+      <div class="links">
+        <a href="https://www.vinted.co.uk/member/233654539" target="_blank">My Vinted Profile</a>
+        <a href="#">My eBay (coming soon)</a>
+      </div>
+    </section>
 
     <div class="footer">
-      This site is for display only. All sales via Vinted or eBay.
+      This site is for display only. All orders handled through Vinted or eBay.
     </div>
   </div>
 </body>
