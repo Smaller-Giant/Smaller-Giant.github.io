@@ -15,7 +15,6 @@
       font-family: 'Poppins', sans-serif;
       background: #111;
       color: #eee;
-      min-height: 100vh;
     }
     header {
       position: fixed;
@@ -26,13 +25,11 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
       z-index: 1000;
     }
     header h1 {
       font-size: 1.4rem;
       color: #fff;
-      line-height: 1.2;
     }
     header h1 span {
       display: block;
@@ -46,143 +43,165 @@
     }
     nav a {
       color: #ccc;
-      font-size: 0.95rem;
-      padding-bottom: 2px;
-      position: relative;
       text-decoration: none;
+      position: relative;
     }
-    nav a::after {
+    nav a.active,
+    nav a:hover {
+      color: #fff;
+    }
+    nav a.active::after,
+    nav a:hover::after {
       content: '';
       position: absolute;
       bottom: -2px;
       left: 0;
-      width: 0;
       height: 2px;
-      background: #4caf50;
-      transition: width 0.3s;
-    }
-    nav a:hover,
-    nav a.active {
-      color: #fff;
-    }
-    nav a:hover::after,
-    nav a.active::after {
       width: 100%;
+      background: #4caf50;
     }
-    .menu-toggle {
-      display: none;
-      font-size: 1.5rem;
-      color: #ccc;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0; right: 0;
-      background: #222;
-      display: none;
-      flex-direction: column;
-      padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-      animation: fadeInDown 0.3s ease-out forwards;
-    }
-    .dropdown a {
-      padding: 12px 0;
-      border-bottom: 1px solid #333;
-      color: #eee;
-      font-size: 1rem;
-    }
-    .dropdown a:last-child {
-      border-bottom: none;
-    }
-    .dropdown a:hover,
-    .dropdown a.active {
-      color: #4caf50;
-    }
+
     .hero {
-      margin-top: 56px;
+      margin-top: 64px;
       height: 40vh;
       min-height: 220px;
-      background:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
         url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
       display: flex;
-      justify-content: center;
       align-items: center;
-      color: #fff;
+      justify-content: center;
       text-align: center;
+      color: #fff;
     }
-    .hero-content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-    .hero-content p {
-      font-size: 1.1rem;
-    }
+
     .container {
       max-width: 1200px;
-      margin: 40px auto 60px;
+      margin: 40px auto;
       padding: 0 20px;
     }
+
     .stock-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
     }
+
+    .item-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
     .item-card {
-      background: rgba(255,255,255,0.04);
+      background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 10px;
-      text-align: center;
       cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: transform 0.3s ease;
-      user-select: none;
+      text-align: center;
+      transition: transform 0.2s;
     }
+
     .item-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
     }
+
     .item-card img {
       width: 100%;
       height: 160px;
-      border-radius: 10px;
       object-fit: cover;
-      margin-bottom: 8px;
+      border-radius: 8px;
     }
+
     .item-card h3 {
-      font-size: 1.1rem;
       color: #4caf50;
-      margin-bottom: 4px;
+      margin: 8px 0 4px;
     }
+
     .item-card p {
-      font-size: 0.9rem;
       color: #ccc;
-      margin-bottom: 0;
+      font-size: 0.95rem;
     }
+
+    .expanded-panel {
+      display: none;
+      background: rgba(40, 40, 40, 0.95);
+      border: 1px solid #4caf50;
+      border-radius: 10px;
+      padding: 20px;
+      gap: 20px;
+      margin-top: -10px;
+      animation: fadeInUp 0.3s ease-out;
+    }
+
+    .expanded-panel.visible {
+      display: flex;
+    }
+
+    .image-viewer {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-viewer img {
+      max-width: 100%;
+      max-height: 400px;
+      border-radius: 8px;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4caf50;
+      background: rgba(0,0,0,0.6);
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .arrow-left { left: 10px; }
+    .arrow-right { right: 10px; }
+
+    .details {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .details h2 {
+      color: #4caf50;
+      margin-bottom: 10px;
+    }
+
+    .details p {
+      margin: 6px 0;
+    }
+
+    .buy-link {
+      display: inline-block;
+      margin-top: 10px;
+      background: #4caf50;
+      color: #111;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
     footer {
       text-align: center;
-      padding: 20px 0;
-      font-size: 0.9rem;
+      margin: 60px 0 20px;
       color: #aaa;
-      border-top: 1px solid #333;
     }
 
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-      }
-      .menu-toggle {
-        display: block;
-      }
-    }
-
-    @keyframes fadeInDown {
+    @keyframes fadeInUp {
       from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
@@ -195,67 +214,129 @@
 
 <header>
   <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
     <a href="info.html">Info</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </div>
 </header>
 
-<section class="hero">
-  <div class="hero-content">
+<div class="hero">
+  <div>
     <h1>Our Current Stock</h1>
     <p>Premium Trainers from leading brands</p>
   </div>
-</section>
+</div>
 
 <div class="container">
-  <section>
-    <div class="stock-grid">
-      <div class="item-card">
-        <img src="images/IMG-20250620-WA0001.jpg" alt="Air Max 90">
-        <h3>Air Max 90</h3>
-        <p>£85</p>
-      </div>
-      <div class="item-card">
-        <img src="https://via.placeholder.com/300x160?text=No+Image" alt="Yeezy Boost 350">
-        <h3>Yeezy Boost 350</h3>
-        <p>£150</p>
-      </div>
-      <div class="item-card">
-        <img src="https://via.placeholder.com/300x160?text=No+Image" alt="Dunk Low Panda">
-        <h3>Dunk Low Panda</h3>
-        <p>£110</p>
-      </div>
-      <div class="item-card">
-        <img src="https://via.placeholder.com/300x160?text=No+Image" alt="Jordan 1 Retro">
-        <h3>Jordan 1 Retro</h3>
-        <p>£125</p>
-      </div>
-      <div class="item-card">
-        <img src="https://via.placeholder.com/300x160?text=No+Image" alt="New Balance 550">
-        <h3>New Balance 550</h3>
-        <p>£95</p>
-      </div>
-    </div>
-  </section>
+  <div class="stock-grid" id="stockGrid">
+    <!-- Cards + expansion go here -->
+  </div>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 <script>
-  function toggleMenu() {
-    const dropdown = document.getElementById('dropdownMenu');
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
+  const shoes = [
+    {
+      title: "Air Max 90",
+      price: "£85",
+      images: [
+        "images/IMG-20250620-WA0001.jpg",
+        "images/IMG-20250620-WA0002.jpg",
+        "images/IMG-20250620-WA0003.jpg",
+        "images/IMG-20250620-WA0006.jpg",
+        "images/IMG-20250620-WA0007.jpg"
+      ],
+      info: {
+        size: "UK 9",
+        condition: "New",
+        color: "White/Black",
+        material: "Leather and mesh",
+        shipping: "Ships in 1-2 days",
+        box: "Includes original box and tags",
+        authenticity: "Authenticity guaranteed"
+      },
+      buyLink: "https://www.vinted.co.uk/member/233654539"
+    },
+    {
+      title: "Yeezy Boost 350",
+      price: "£150",
+      images: [],
+      info: {},
+      buyLink: "#"
+    }
+  ];
+
+  const stockGrid = document.getElementById('stockGrid');
+  let currentPanel = null;
+
+  shoes.forEach((shoe, index) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'item-wrapper';
+
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <img src="${shoe.images[0] || 'https://via.placeholder.com/300x160?text=No+Image'}" alt="${shoe.title}" />
+      <h3>${shoe.title}</h3>
+      <p>${shoe.price}</p>
+    `;
+    wrapper.appendChild(card);
+
+    const panel = document.createElement('div');
+    panel.className = 'expanded-panel';
+
+    panel.innerHTML = `
+      <div class="image-viewer">
+        <div class="arrow arrow-left">&#10094;</div>
+        <img src="${shoe.images[0] || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${shoe.title}" />
+        <div class="arrow arrow-right">&#10095;</div>
+      </div>
+      <div class="details">
+        <h2>${shoe.title}</h2>
+        <p><strong>Price:</strong> ${shoe.price}</p>
+        ${shoe.info.size ? `<p><strong>Size:</strong> ${shoe.info.size}</p>` : ''}
+        ${shoe.info.condition ? `<p><strong>Condition:</strong> ${shoe.info.condition}</p>` : ''}
+        ${shoe.info.color ? `<p><strong>Color:</strong> ${shoe.info.color}</p>` : ''}
+        ${shoe.info.material ? `<p><strong>Material:</strong> ${shoe.info.material}</p>` : ''}
+        ${shoe.info.shipping ? `<p><strong>Shipping:</strong> ${shoe.info.shipping}</p>` : ''}
+        ${shoe.info.box ? `<p><strong>Box:</strong> ${shoe.info.box}</p>` : ''}
+        ${shoe.info.authenticity ? `<p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>` : ''}
+        <a href="${shoe.buyLink}" target="_blank" class="buy-link">Buy now on Vinted</a>
+      </div>
+    `;
+
+    const mainImg = panel.querySelector('img');
+    const left = panel.querySelector('.arrow-left');
+    const right = panel.querySelector('.arrow-right');
+    let imgIndex = 0;
+
+    left.onclick = () => {
+      if (shoe.images.length > 1) {
+        imgIndex = (imgIndex - 1 + shoe.images.length) % shoe.images.length;
+        mainImg.src = shoe.images[imgIndex];
+      }
+    };
+    right.onclick = () => {
+      if (shoe.images.length > 1) {
+        imgIndex = (imgIndex + 1) % shoe.images.length;
+        mainImg.src = shoe.images[imgIndex];
+      }
+    };
+
+    card.addEventListener('click', () => {
+      if (currentPanel && currentPanel !== panel) {
+        currentPanel.classList.remove('visible');
+      }
+      panel.classList.toggle('visible');
+      currentPanel = panel.classList.contains('visible') ? panel : null;
+    });
+
+    wrapper.appendChild(panel);
+    stockGrid.appendChild(wrapper);
+  });
 </script>
 
 </body>
