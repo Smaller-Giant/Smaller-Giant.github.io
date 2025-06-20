@@ -4,169 +4,394 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: #111;
       color: #eee;
-      margin: 0;
+      min-height: 100vh;
     }
     header {
       position: fixed;
       top: 0;
-      left: 0;
       width: 100%;
-      background: #000;
-      padding: 10px 20px;
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.85);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 12px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      z-index: 1000;
     }
     header h1 {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+    header h1 span {
+      display: block;
+      font-size: 0.75rem;
       color: #4caf50;
+      font-weight: 300;
+    }
+    nav {
+      display: flex;
+      gap: 18px;
     }
     nav a {
       color: #ccc;
-      margin-left: 20px;
+      font-size: 0.95rem;
+      padding-bottom: 2px;
+      position: relative;
       text-decoration: none;
     }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #4caf50;
+      transition: width 0.3s;
+    }
+    nav a:hover,
     nav a.active {
+      color: #fff;
+    }
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      color: #ccc;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: #222;
+      display: none;
+      flex-direction: column;
+      padding: 10px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      animation: fadeInDown 0.3s ease-out forwards;
+    }
+    .dropdown a {
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+      color: #eee;
+      font-size: 1rem;
+    }
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover,
+    .dropdown a.active {
       color: #4caf50;
     }
     .hero {
-      margin-top: 60px;
-      text-align: center;
-      padding: 40px 0;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x300?text=SoleZone+Stock') center/cover no-repeat;
-    }
-    .hero h1 {
-      font-size: 2rem;
+      margin-top: 56px;
+      height: 40vh;
+      min-height: 220px;
+      background:
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: #fff;
+      text-align: center;
+    }
+    .hero-content h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
     }
     .container {
       max-width: 1200px;
-      margin: 40px auto;
+      margin: 40px auto 60px;
       padding: 0 20px;
     }
+    section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Grid for items */
     .stock-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
     }
+
+    /* Basic item card */
     .item-card {
-      background: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
       cursor: pointer;
+      backdrop-filter: blur(8px);
       transition: transform 0.3s ease;
+      user-select: none;
     }
     .item-card:hover {
-      transform: scale(1.03);
+      transform: translateY(-5px);
     }
     .item-card img {
       width: 100%;
-      height: 140px;
+      height: 160px;
+      border-radius: 10px;
       object-fit: cover;
+      margin-bottom: 8px;
     }
     .item-card h3 {
+      font-size: 1.1rem;
       color: #4caf50;
-      margin: 10px 0 5px;
-      font-size: 1rem;
-      text-align: center;
+      margin-bottom: 4px;
     }
     .item-card p {
-      text-align: center;
       font-size: 0.9rem;
       color: #ccc;
-      margin-bottom: 10px;
+      margin-bottom: 0;
     }
 
+    /* Expanded panel below the grid */
     .expanded-panel {
-      background: #222;
+      background: rgba(40, 40, 40, 0.95);
       border: 1px solid #4caf50;
-      padding: 20px;
-      margin: 30px 0;
       border-radius: 15px;
+      margin-top: 30px;
+      padding: 20px;
       display: flex;
       gap: 20px;
-      animation: fadeIn 0.3s ease-in-out;
+      color: #ccc;
+      animation: fadeInUp 0.3s ease forwards;
     }
+    /* Left side image viewer */
     .image-viewer {
-      flex: 1;
+      flex: 1 1 50%;
       position: relative;
+      max-height: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .image-viewer img {
-      width: 100%;
-      border-radius: 10px;
-      max-height: 300px;
+      max-width: 100%;
+      max-height: 400px;
       object-fit: contain;
+      border-radius: 15px;
+      user-select: none;
+      pointer-events: none;
     }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #4caf50;
+      font-size: 2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    .arrow:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .arrow-left {
+      left: 10px;
+    }
+    .arrow-right {
+      right: 10px;
+    }
+
+    /* Right side details */
     .details {
-      flex: 1;
-      color: #ddd;
+      flex: 1 1 50%;
+      overflow-y: auto;
+      max-height: 400px;
+      padding-right: 10px;
     }
     .details h2 {
       color: #4caf50;
+      margin-bottom: 15px;
     }
     .details p {
-      margin: 8px 0;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      font-size: 1rem;
     }
-    .details a {
+    .details strong {
+      color: #a5d6a7;
+    }
+    .details a.buy-link {
       display: inline-block;
-      margin-top: 15px;
+      margin-top: 20px;
       padding: 10px 15px;
       background: #4caf50;
       color: #111;
-      text-decoration: none;
-      border-radius: 8px;
       font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .details a.buy-link:hover {
+      background: #388e3c;
     }
+
     footer {
       text-align: center;
-      padding: 20px;
-      color: #888;
+      padding: 20px 0;
+      font-size: 0.9rem;
+      color: #aaa;
       border-top: 1px solid #333;
-      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .expanded-panel {
+        flex-direction: column;
+        max-height: none;
+      }
+      .image-viewer, .details {
+        max-height: none;
+        flex: none;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .arrow-left {
+        left: 5px;
+      }
+      .arrow-right {
+        right: 5px;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>SoleZone</h1>
+  <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
     <a href="info.html">Info</a>
     <a href="contact.html">Contact</a>
   </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </header>
 
 <section class="hero">
-  <h1>Our Current Stock</h1>
+  <div class="hero-content">
+    <h1>Our Current Stock</h1>
+    <p>Premium Trainers from leading brands</p>
+  </div>
 </section>
 
 <div class="container">
-  <div id="stockGrid" class="stock-grid"></div>
+  <section>
+    <div class="stock-grid" id="stockGrid">
+      <!-- Shoe cards will be added here -->
+    </div>
+
+    <!-- Expanded details panel -->
+    <div id="expandedPanel" style="display:none;" class="expanded-panel" tabindex="0" aria-live="polite">
+      <div class="image-viewer">
+        <div class="arrow arrow-left" id="arrowLeft" role="button" tabindex="0" aria-label="Previous image">&#10094;</div>
+        <img src="" alt="Shoe image" id="mainImage" />
+        <div class="arrow arrow-right" id="arrowRight" role="button" tabindex="0" aria-label="Next image">&#10095;</div>
+      </div>
+      <div class="details" id="shoeDetails">
+        <!-- Details go here -->
+      </div>
+    </div>
+  </section>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 <script>
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu() {
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+  }
+
   const shoes = [
     {
       title: "Air Max 90",
       price: "£85",
-      images: ["images/IMG-20250620-WA0001.jpg", "images/IMG-20250620-WA0002.jpg"],
+      images: [
+        "images/IMG-20250620-WA0001.jpg",
+        "images/IMG-20250620-WA0002.jpg",
+        "images/IMG-20250620-WA0003.jpg",
+        "images/IMG-20250620-WA0006.jpg",
+        "images/IMG-20250620-WA0007.jpg"
+      ],
       info: {
         size: "UK 9",
         condition: "New",
@@ -181,101 +406,173 @@
     {
       title: "Yeezy Boost 350",
       price: "£150",
-      images: ["https://via.placeholder.com/600x400?text=Yeezy+350"],
-      info: {
-        size: "UK 8",
-        condition: "Like New",
-        color: "Cream",
-        material: "Primeknit",
-        shipping: "Ships in 2 days",
-        box: "Original box",
-        authenticity: "Verified by Vinted"
-      },
+      images: [],
+      info: {},
       buyLink: "#"
     },
     {
       title: "Dunk Low Panda",
       price: "£110",
-      images: ["https://via.placeholder.com/600x400?text=Dunk+Low+Panda"],
-      info: {
-        size: "UK 7.5",
-        condition: "New",
-        color: "Black/White",
-        material: "Leather",
-        shipping: "Next day shipping",
-        box: "Original",
-        authenticity: "Yes"
-      },
+      images: [],
+      info: {},
       buyLink: "#"
     },
     {
       title: "Jordan 1 Retro",
       price: "£125",
-      images: ["https://via.placeholder.com/600x400?text=Jordan+1+Retro"],
-      info: {
-        size: "UK 9",
-        condition: "Excellent",
-        color: "Red/Black",
-        material: "Leather",
-        shipping: "Ships in 1 day",
-        box: "Yes",
-        authenticity: "100% Authentic"
-      },
+      images: [],
+      info: {},
+      buyLink: "#"
+    },
+    {
+      title: "New Balance 550",
+      price: "£95",
+      images: [],
+      info: {},
       buyLink: "#"
     }
   ];
 
   const stockGrid = document.getElementById('stockGrid');
-  let currentExpanded = null;
+  const expandedPanel = document.getElementById('expandedPanel');
+  const mainImage = document.getElementById('mainImage');
+  const shoeDetails = document.getElementById('shoeDetails');
+  const arrowLeft = document.getElementById('arrowLeft');
+  const arrowRight = document.getElementById('arrowRight');
 
-  shoes.forEach((shoe, index) => {
+  let currentIndex = null;   // currently expanded shoe index
+  let currentImageIndex = 0; // which image is shown in expanded panel
+
+  // Create shoe cards grid
+  shoes.forEach((shoe, idx) => {
     const card = document.createElement('div');
     card.className = 'item-card';
+    card.setAttribute('tabindex', '0'); // keyboard focusable
 
-    card.innerHTML = `
-      <img src="${shoe.images[0]}" alt="${shoe.title}">
-      <h3>${shoe.title}</h3>
-      <p>${shoe.price}</p>
-    `;
+    const thumb = document.createElement('img');
+    if (shoe.images.length > 0) {
+      thumb.src = shoe.images[0];
+    } else {
+      thumb.src = 'https://via.placeholder.com/300x160?text=No+Image';
+    }
+    thumb.alt = shoe.title;
+    card.appendChild(thumb);
 
-    card.addEventListener('click', () => {
-      if (currentExpanded) currentExpanded.remove();
+    const title = document.createElement('h3');
+    title.textContent = shoe.title;
+    card.appendChild(title);
 
-      const panel = document.createElement('div');
-      panel.className = 'expanded-panel';
+    const price = document.createElement('p');
+    price.textContent = shoe.price;
+    card.appendChild(price);
 
-      const details = `
-        <h2>${shoe.title}</h2>
-        <p><strong>Price:</strong> ${shoe.price}</p>
-        <p><strong>Size:</strong> ${shoe.info.size}</p>
-        <p><strong>Condition:</strong> ${shoe.info.condition}</p>
-        <p><strong>Color:</strong> ${shoe.info.color}</p>
-        <p><strong>Material:</strong> ${shoe.info.material}</p>
-        <p><strong>Shipping:</strong> ${shoe.info.shipping}</p>
-        <p><strong>Box:</strong> ${shoe.info.box}</p>
-        <p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>
-        <a href="${shoe.buyLink}" target="_blank">Buy now on Vinted</a>
-      `;
-
-      panel.innerHTML = `
-        <div class="image-viewer">
-          <img src="${shoe.images[0]}" alt="${shoe.title} main image" />
-        </div>
-        <div class="details">${details}</div>
-      `;
-
-      card.style.display = 'none';
-      card.parentNode.insertBefore(panel, card.nextSibling);
-      currentExpanded = panel;
-
-      panel.addEventListener('click', () => {
-        panel.remove();
-        card.style.display = 'block';
-        currentExpanded = null;
-      });
+    card.addEventListener('click', () => openExpanded(idx));
+    card.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openExpanded(idx);
+      }
     });
 
     stockGrid.appendChild(card);
+  });
+
+  function openExpanded(idx) {
+    if (currentIndex === idx) {
+      closeExpanded();
+      return;
+    }
+    currentIndex = idx;
+    currentImageIndex = 0;
+
+    const shoe = shoes[idx];
+
+    if (shoe.images.length > 0) {
+      mainImage.src = shoe.images[currentImageIndex];
+      mainImage.alt = shoe.title + " image " + (currentImageIndex + 1);
+      arrowLeft.style.display = 'flex';
+      arrowRight.style.display = 'flex';
+    } else {
+      mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image';
+      mainImage.alt = "No image available";
+      arrowLeft.style.display = 'none';
+      arrowRight.style.display = 'none';
+    }
+
+    // Build details HTML
+    let detailsHTML = `<h2>${shoe.title}</h2>`;
+    detailsHTML += `<p><strong>Price:</strong> ${shoe.price}</p>`;
+
+    if (idx === 0 && shoe.info) {
+      detailsHTML += `<p><strong>Size:</strong> ${shoe.info.size}</p>`;
+      detailsHTML += `<p><strong>Condition:</strong> ${shoe.info.condition}</p>`;
+      detailsHTML += `<p><strong>Color:</strong> ${shoe.info.color}</p>`;
+      detailsHTML += `<p><strong>Material:</strong> ${shoe.info.material}</p>`;
+      detailsHTML += `<p><strong>Shipping:</strong> ${shoe.info.shipping}</p>`;
+      detailsHTML += `<p><strong>Box:</strong> ${shoe.info.box}</p>`;
+      detailsHTML += `<p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>`;
+    }
+
+    detailsHTML += `<a href="${shoe.buyLink}" target="_blank" class="buy-link" rel="noopener">Buy now on Vinted</a>`;
+
+    shoeDetails.innerHTML = detailsHTML;
+
+    expandedPanel.style.display = 'flex';
+
+    // Scroll to expanded panel
+    expandedPanel.scrollIntoView({behavior: "smooth", block: "start"});
+  }
+
+  function closeExpanded() {
+    expandedPanel.style.display = 'none';
+    currentIndex = null;
+  }
+
+  arrowLeft.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentIndex === null) return;
+    const images = shoes[currentIndex].images;
+    if (!images.length) return;
+
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    mainImage.src = images[currentImageIndex];
+    mainImage.alt = shoes[currentIndex].title + " image " + (currentImageIndex + 1);
+  });
+
+  arrowRight.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentIndex === null) return;
+    const images = shoes[currentIndex].images;
+    if (!images.length) return;
+
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    mainImage.src = images[currentImageIndex];
+    mainImage.alt = shoes[currentIndex].title + " image " + (currentImageIndex + 1);
+  });
+
+  // Close expanded if clicking outside the panel or cards
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.item-card') && !e.target.closest('#expandedPanel')) {
+      closeExpanded();
+    }
+  });
+
+  // Keyboard accessible close on ESC
+  document.addEventListener('keydown', (e) => {
+    if(e.key === "Escape" && currentIndex !== null) {
+      closeExpanded();
+    }
+  });
+
+  // Animate section on scroll
+  document.querySelectorAll('section').forEach(sec => {
+    const obs = new IntersectionObserver(e => {
+      if(e[0].isIntersecting) {
+        sec.classList.add('visible');
+        obs.disconnect();
+      }
+    }, {threshold: 0.2});
+    obs.observe(sec);
   });
 </script>
 
