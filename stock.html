@@ -120,7 +120,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 56px; /* header height + some spacing */
+      margin-top: 56px;
     }
     .hero-content {
       position: relative;
@@ -198,7 +198,7 @@
       display: none;
       text-align: left;
       overflow-y: auto;
-      max-height: 320px;
+      max-height: 280px;
     }
     .image-gallery {
       display: flex;
@@ -220,7 +220,7 @@
     }
     .expanded {
       grid-column: 1 / -1 !important;
-      height: 600px;
+      height: 480px;
       padding: 20px;
       display: flex;
       gap: 20px;
@@ -236,6 +236,50 @@
       object-fit: contain;
       margin-bottom: 0;
       flex-shrink: 0;
+      position: relative;
+    }
+    /* Arrows for main image */
+    .expanded .main-img-container {
+      position: relative;
+      width: 50%;
+      height: 100%;
+    }
+    .expanded .main-img {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      object-fit: contain;
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #4caf50;
+      font-size: 2rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .arrow:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .arrow-left {
+      left: 10px;
+    }
+    .arrow-right {
+      right: 10px;
     }
     .expanded .details {
       width: 50%;
@@ -270,7 +314,7 @@
         flex-direction: column;
         height: auto;
       }
-      .expanded img.main-img,
+      .expanded .main-img-container,
       .expanded .details {
         width: 100%;
         height: auto;
@@ -280,6 +324,12 @@
       }
       .extra-info {
         max-height: none;
+      }
+      .arrow {
+        font-size: 1.5rem;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
       }
     }
     @keyframes fadeInUp {
@@ -435,11 +485,18 @@
         const gallery = expandedCard.querySelector('.image-gallery');
         gallery.style.display = 'none';
         expandedCard.querySelector('img.main-img').style.display = 'none';
+        expandedCard.querySelector('.main-img-container').style.display = 'none';
         expandedCard.querySelector('img.thumb').style.display = 'block';
         expandedCard.querySelector('h3').style.display = 'block';
         expandedCard.querySelector('p').style.display = 'block';
         expandedIndex = null;
       }
+    }
+
+    function showMainImage(card, index, imgIndex) {
+      const mainImg = card.querySelector('img.main-img');
+      mainImg.src = shoes[index].images[imgIndex];
+      mainImg.dataset.index = imgIndex;
     }
 
     function expandItem(index) {
@@ -454,12 +511,15 @@
       const card = grid.children[index];
       card.classList.add('expanded');
 
-      // Show main big image, hide thumbnail and text
-      card.querySelector('img.main-img').src = shoes[index].images[currentMainImgIndex];
+      // Show main big image container & hide thumbnail and text
       card.querySelector('img.main-img').style.display = 'block';
+      card.querySelector('.main-img-container').style.display = 'flex';
       card.querySelector('img.thumb').style.display = 'none';
       card.querySelector('h3').style.display = 'none';
       card.querySelector('p').style.display = 'none';
+
+      // Set main image
+      showMainImage(card, index, currentMainImgIndex);
 
       // Show details and gallery
       const details = card.querySelector('.details');
@@ -476,12 +536,14 @@
       shoes[index].images.forEach((imgSrc, i) => {
         const thumb = document.createElement('img');
         thumb.src = imgSrc;
-        thumb.className = i === currentMainImgIndex ? 'selected' : '';
+        thumb.classList.add('thumb');
+        if (i === currentMainImgIndex) thumb.classList.add('selected');
         thumb.addEventListener('click', () => {
           currentMainImgIndex = i;
-          card.querySelector('img.main-img').src = imgSrc;
-          gallery.querySelectorAll('img').forEach((img, idx) => {
-            img.classList.toggle('selected', idx === i);
+          showMainImage(card, index, i);
+          // Update selection border
+          gallery.querySelectorAll('img.thumb').forEach((t, idx) => {
+            t.classList.toggle('selected', idx === i);
           });
         });
         gallery.appendChild(thumb);
@@ -489,50 +551,108 @@
       gallery.style.display = 'flex';
     }
 
+    function changeMainImage(direction) {
+      if (expandedIndex === null) return;
+      currentMainImgIndex += direction;
+      if (currentMainImgIndex < 0) currentMainImgIndex = shoes[expandedIndex].images.length - 1;
+      if (currentMainImgIndex >= shoes[expandedIndex].images.length) currentMainImgIndex = 0;
+      const card = grid.children[expandedIndex];
+      showMainImage(card, expandedIndex, currentMainImgIndex);
+
+      // Update gallery highlight
+      const gallery = card.querySelector('.image-gallery');
+      gallery.querySelectorAll('img.thumb').forEach((t, idx) => {
+        t.classList.toggle('selected', idx === currentMainImgIndex);
+      });
+    }
+
     function createCard(shoe, index) {
       const card = document.createElement('div');
       card.className = 'item-card';
-      card.innerHTML = `
-        <img src="${shoe.mainImg}" alt="${shoe.title}" class="thumb" />
-        <img src="${shoe.mainImg}" alt="${shoe.title}" class="main-img" style="display:none;" />
-        <h3>${shoe.title}</h3>
-        <p>${shoe.price}</p>
-        <div class="details" style="display:none;"></div>
-        <div class="image-gallery" style="display:none;"></div>
-      `;
-      card.addEventListener('click', (e) => {
-        // Prevent collapse if clicking inside gallery or buy link or main image
-        if (
-          e.target.classList.contains('image-gallery') ||
-          e.target.closest('.image-gallery') ||
-          e.target.tagName === 'A' ||
-          e.target.classList.contains('main-img')
-        ) {
-          return;
-        }
 
+      // Thumbnail image
+      const thumbImg = document.createElement('img');
+      thumbImg.src = shoe.mainImg;
+      thumbImg.alt = shoe.title;
+      thumbImg.className = 'thumb';
+      card.appendChild(thumbImg);
+
+      // Main large image container (hidden initially)
+      const mainImgContainer = document.createElement('div');
+      mainImgContainer.className = 'main-img-container';
+      mainImgContainer.style.display = 'none';
+
+      // Left arrow
+      const arrowLeft = document.createElement('div');
+      arrowLeft.className = 'arrow arrow-left';
+      arrowLeft.textContent = '‹';
+      arrowLeft.title = 'Previous Image';
+      arrowLeft.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeMainImage(-1);
+      });
+      mainImgContainer.appendChild(arrowLeft);
+
+      // Main big image
+      const mainImg = document.createElement('img');
+      mainImg.className = 'main-img';
+      mainImg.style.display = 'none';
+      mainImgContainer.appendChild(mainImg);
+
+      // Right arrow
+      const arrowRight = document.createElement('div');
+      arrowRight.className = 'arrow arrow-right';
+      arrowRight.textContent = '›';
+      arrowRight.title = 'Next Image';
+      arrowRight.addEventListener('click', (e) => {
+        e.stopPropagation();
+        changeMainImage(1);
+      });
+      mainImgContainer.appendChild(arrowRight);
+
+      card.appendChild(mainImgContainer);
+
+      // Title & Price (visible in normal card)
+      const title = document.createElement('h3');
+      title.textContent = shoe.title;
+      card.appendChild(title);
+
+      const price = document.createElement('p');
+      price.textContent = shoe.price;
+      card.appendChild(price);
+
+      // Details + gallery container (hidden initially)
+      const details = document.createElement('div');
+      details.className = 'details';
+      details.style.display = 'none';
+      card.appendChild(details);
+
+      const gallery = document.createElement('div');
+      gallery.className = 'image-gallery';
+      gallery.style.display = 'none';
+      card.appendChild(gallery);
+
+      card.addEventListener('click', () => {
         if (expandedIndex === index) {
           closeExpanded();
         } else {
           expandItem(index);
         }
       });
+
       return card;
     }
-
-    // Close expanded on clicking outside cards
-    document.body.addEventListener('click', (e) => {
-      if (
-        !e.target.closest('.item-card') &&
-        expandedIndex !== null
-      ) {
-        closeExpanded();
-      }
-    });
 
     shoes.forEach((shoe, i) => {
       const card = createCard(shoe, i);
       grid.appendChild(card);
+    });
+
+    // Close expanded if clicking outside cards
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.item-card')) {
+        closeExpanded();
+      }
     });
 
     // Animate sections visible
