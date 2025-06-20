@@ -13,9 +13,8 @@
     font-family: 'Poppins', sans-serif;
     background: #111;
     color: #eee;
-    min-height: 100vh;
     margin: 0;
-    padding: 0 20px 40px;
+    padding: 80px 20px 40px;
     overflow-x: hidden;
   }
   header {
@@ -50,12 +49,10 @@
   nav a:hover {
     color: #4caf50;
   }
-
   h1.hero-title {
-    margin-top: 70px;
-    font-size: 2rem;
-    text-align: center;
     margin-bottom: 30px;
+    text-align: center;
+    font-size: 2rem;
   }
 
   /* Grid for shoe cards */
@@ -63,6 +60,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
+    align-items: start;
   }
 
   /* Normal shoe card */
@@ -72,14 +70,13 @@
     padding: 12px;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: box-shadow 0.25s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   .item-card:hover {
     box-shadow: 0 0 10px #4caf50cc;
-    transform: translateY(-4px);
   }
   .item-card img {
     width: 100%;
@@ -97,32 +94,36 @@
     font-size: 0.95rem;
   }
 
-  /* Expanded panel container, position relative for animation */
+  /* Container for expanded card + panel */
   .expanded-container {
-    position: relative;
-    /* grid span will be adjusted dynamically */
+    display: flex;
+    gap: 20px;
+    grid-column: span 2; /* Span 2 columns */
   }
 
-  /* The expanded panel itself */
+  /* Keep the small card as normal size but disable interactions */
+  .expanded-container .item-card {
+    flex: 0 0 220px;
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Expanded panel */
   .expanded-panel {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 600px;
-    max-width: 90vw;
-    background: rgba(30, 30, 30, 0.98);
+    background: rgba(30, 30, 30, 0.95);
     border-radius: 16px;
     box-shadow: 0 0 20px #4caf50cc;
+    flex: 1 1 480px;
+    max-width: calc(100vw - 260px - 60px); /* viewport width minus small card width and gap */
     display: flex;
     overflow: hidden;
+    position: relative;
     opacity: 0;
     transform-origin: bottom right;
-    transform: scale(0.8);
-    transition:
-      opacity 0.4s ease,
-      transform 0.4s cubic-bezier(0.4,0,0.2,1);
-    z-index: 10;
+    transform: scale(0.85);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1);
   }
   .expanded-panel.visible {
     opacity: 1;
@@ -145,7 +146,7 @@
     object-fit: contain;
     user-select: none;
     pointer-events: none;
-    transition: opacity 0.35s ease;
+    transition: opacity 0.4s ease;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -219,51 +220,59 @@
     background: #388e3c;
   }
 
-  /* Responsive: on smaller widths, don't expand on right side, just overlay full screen */
-  @media (max-width: 760px) {
-    .expanded-panel {
-      position: fixed !important;
-      width: 95vw !important;
-      height: 90vh;
-      top: 50% !important;
-      left: 50% !important;
-      right: auto !important;
-      bottom: auto !important;
-      transform-origin: center !important;
-      transform: translate(-50%, -50%) scale(1) !important;
-      border-radius: 14px;
+  /* Responsive: stacked on small screens */
+  @media (max-width: 720px) {
+    .expanded-container {
       flex-direction: column;
-      overflow: hidden;
-      z-index: 9999;
+      grid-column: span 1;
+    }
+    .expanded-container .item-card {
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+      flex: none;
+      margin-bottom: 20px;
+    }
+    .expanded-panel {
+      max-width: 100%;
+      width: 100%;
+      max-height: none;
+      transform-origin: center;
+      transform: scale(1);
+      opacity: 1 !important;
+      position: relative;
+      box-shadow: none;
+      border-radius: 10px;
+      flex-direction: column;
+      padding: 15px;
     }
     .image-gallery {
-      max-height: 45vh;
-      flex: none;
+      max-height: 300px;
       width: 100%;
       position: relative;
     }
     .image-gallery img {
       position: relative;
-      max-height: 45vh;
+      max-height: 300px;
       transform: none;
       top: auto;
       left: auto;
+      border-radius: 10px;
     }
     .arrow-left {
-      left: 15px;
-      top: 35%;
+      left: 10px;
+      top: 45%;
       transform: translateY(-50%);
     }
     .arrow-right {
-      right: 15px;
-      top: 35%;
+      right: 10px;
+      top: 45%;
       transform: translateY(-50%);
     }
     .details {
-      padding: 20px 20px 25px;
-      flex: 1 1 auto;
+      padding: 15px 10px;
+      flex: none;
       width: 100%;
-      overflow-y: auto;
     }
   }
 </style>
@@ -287,15 +296,16 @@
 </div>
 
 <script>
-  // Data array
   const shoes = [
     {
       title: "Air Max 90",
       price: "£85",
       images: [
-        "https://images.unsplash.com/photo-1600185369082-81c5d30992ed?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1600185369013-5fc7f1c28740?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1600185369077-0b9cc1c84ae8?auto=format&fit=crop&w=600&q=80"
+        "images/IMG-20250620-WA0001.jpg",
+        "images/IMG-20250620-WA0002.jpg",
+        "images/IMG-20250620-WA0003.jpg",
+        "images/IMG-20250620-WA0006.jpg",
+        "images/IMG-20250620-WA0007.jpg"
       ],
       info: {
         Size: "UK 9",
@@ -342,16 +352,14 @@
         Authenticity: "Authenticity guaranteed"
       },
       buyLink: "#"
-    },
+    }
   ];
 
   const stockGrid = document.getElementById('stockGrid');
 
-  // State
   let expandedIndex = null;
   let currentImageIndex = 0;
 
-  // Helper: create shoe card element
   function createCard(shoe, idx) {
     const card = document.createElement('div');
     card.className = 'item-card';
@@ -360,13 +368,11 @@
     card.setAttribute('aria-expanded', 'false');
     card.setAttribute('aria-label', `View details for ${shoe.title}`);
 
-    // Image thumbnail
     const img = document.createElement('img');
     img.src = shoe.images[0] || 'https://via.placeholder.com/300x160?text=No+Image';
     img.alt = shoe.title;
     card.appendChild(img);
 
-    // Title & price
     const title = document.createElement('h3');
     title.textContent = shoe.title;
     card.appendChild(title);
@@ -375,10 +381,9 @@
     price.textContent = shoe.price;
     card.appendChild(price);
 
-    // Click/keyboard event to expand
     card.addEventListener('click', () => openExpanded(idx));
     card.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ') {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         openExpanded(idx);
       }
@@ -387,34 +392,27 @@
     return card;
   }
 
-  // Render grid normally or with expanded card
   function renderGrid() {
     stockGrid.innerHTML = '';
     shoes.forEach((shoe, idx) => {
       if (idx === expandedIndex) {
-        // Container div to hold the card and expanded panel side-by-side
         const container = document.createElement('div');
         container.className = 'expanded-container';
-        container.style.position = 'relative';
-        container.style.display = 'flex';
 
-        // Original small card on left (small)
         const card = createCard(shoe, idx);
         card.style.flex = '0 0 220px';
-        card.style.cursor = 'default';
-        card.style.opacity = '0.4';
+        card.style.opacity = '0.5';
         card.style.pointerEvents = 'none';
+        card.style.userSelect = 'none';
         container.appendChild(card);
 
-        // Expanded panel on right
         const expanded = document.createElement('div');
         expanded.className = 'expanded-panel visible';
 
-        // Image gallery left
+        // Left: images
         const gallery = document.createElement('div');
         gallery.className = 'image-gallery';
 
-        // Images will be absolutely positioned for fade effect
         shoe.images.forEach((src, i) => {
           const img = document.createElement('img');
           img.src = src;
@@ -424,7 +422,6 @@
           gallery.appendChild(img);
         });
 
-        // Arrows
         const arrowLeft = document.createElement('div');
         arrowLeft.className = 'arrow arrow-left';
         arrowLeft.innerHTML = '&#10094;';
@@ -466,18 +463,16 @@
 
         expanded.appendChild(gallery);
 
-        // Details right
+        // Right: details
         const details = document.createElement('div');
         details.className = 'details';
 
         let detailsHTML = `<h2>${shoe.title}</h2>`;
         detailsHTML += `<p><strong>Price:</strong> ${shoe.price}</p>`;
-
         for (const [key, val] of Object.entries(shoe.info)) {
           detailsHTML += `<p><strong>${key}:</strong> ${val}</p>`;
         }
         detailsHTML += `<a href="${shoe.buyLink}" target="_blank" rel="noopener noreferrer" class="buy-link">Buy now</a>`;
-
         details.innerHTML = detailsHTML;
 
         expanded.appendChild(details);
@@ -485,7 +480,6 @@
 
         stockGrid.appendChild(container);
       } else {
-        // Normal card
         stockGrid.appendChild(createCard(shoe, idx));
       }
     });
@@ -499,7 +493,8 @@
     expandedIndex = idx;
     currentImageIndex = 0;
     renderGrid();
-    // Scroll clicked card into view smoothly, so expanded panel is visible
+
+    // Scroll the expanded container into view horizontally if needed
     const container = document.querySelector('.expanded-container');
     if (container) {
       container.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'start'});
@@ -521,12 +516,10 @@
     renderGrid();
   }
 
-  // Close expanded panel if clicking outside any card or expanded container
+  // Close expanded panel if clicking outside cards or panel
   document.addEventListener('click', e => {
-    const expandedContainer = document.querySelector('.expanded-container');
-    if (!expandedContainer) return;
-    if (!e.target.closest('.expanded-container') && !e.target.closest('.item-card')) {
-      closeExpanded();
+    if (!e.target.closest('.item-card') && !e.target.closest('.expanded-panel')) {
+      if (expandedIndex !== null) closeExpanded();
     }
   });
 
