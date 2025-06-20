@@ -1,163 +1,574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SoleZone | Stock</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SoleZone | Stock</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #111;
+    color: #eee;
+    min-height: 100vh;
+  }
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+  }
+  header h1 {
+    font-size: 1.4rem;
+  }
+  header h1 span {
+    display: block;
+    font-size: 0.75rem;
+    color: #4caf50;
+    font-weight: 300;
+  }
+  nav {
+    display: flex;
+    gap: 18px;
+  }
+  nav a {
+    color: #ccc;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #4caf50;
+    transition: width 0.3s ease;
+  }
+  nav a:hover,
+  nav a.active {
+    color: #fff;
+  }
+  nav a:hover::after,
+  nav a.active::after {
+    width: 100%;
+  }
+  .menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    color: #ccc;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(0,0,0,0.9);
+    flex-direction: column;
+    padding: 10px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+    z-index: 1100;
+  }
+  .dropdown a {
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+    color: #eee;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+  .dropdown a:last-child {
+    border-bottom: none;
+  }
+  .dropdown a:hover,
+  .dropdown a.active {
+    color: #4caf50;
+  }
+  .hero {
+    margin-top: 56px;
+    height: 40vh;
+    background:
+      linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+      url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .hero p {
+    font-size: 1.1rem;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 40px auto 60px;
+    padding: 0 20px;
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #111;
-      color: #eee;
-      min-height: 100vh;
-    }
-    header { /* same styling you previously used */ }
+  /* Search + Filter Bar */
+  .search-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+  }
+  .search-bar input,
+  .search-bar select {
+    flex: 1 1 250px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255 255 255 / 0.08);
+    color: #eee;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+  }
+  .search-bar input::placeholder {
+    color: #bbb;
+  }
+  .search-bar input:focus,
+  .search-bar select:focus {
+    outline: none;
+    background: rgba(255 255 255 / 0.15);
+  }
 
-    .container { max-width: 1200px; margin: 100px auto 60px; padding: 0 20px; }
-    .controls {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-    .controls input,
-    .controls select {
-      background: rgba(255,255,255,0.05);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      color: #eee;
-      font-size: 1rem;
-      width: 100%;
-      backdrop-filter: blur(8px);
-      transition: background 0.3s;
-    }
-    .controls input::placeholder,
-    .controls select {
-      color: #ccc;
-    }
-    .controls input:focus,
-    .controls select:focus {
-      background: rgba(255,255,255,0.1);
-      outline: none;
-    }
+  .stock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .item-card {
+    background: rgba(255 255 255 / 0.05);
+    border: 1px solid rgba(255 255 255 / 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .item-card:hover {
+    transform: translateY(-6px);
+  }
+  .item-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    user-select: none;
+  }
+  .item-card h3 {
+    font-size: 1.1rem;
+    color: #4caf50;
+    margin-bottom: 4px;
+  }
+  .item-card p {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-top: auto;
+  }
 
-    .stock-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
-      gap: 30px;
-    }
-    .item-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: transform 0.3s, opacity 0.3s;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .item-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .item-card img { width:100%; height:160px; border-radius:10px; object-fit:cover; margin-bottom:8px; }
-    .item-card h3 { font-size:1.1rem; color:#4caf50; }
-    .item-card p { font-size:0.9rem; color:#ccc; }
+  .no-results {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #777;
+    margin-top: 40px;
+  }
 
-    #noResults {
-      text-align: center;
-      color: #f44336;
-      font-size: 1.2rem;
-      margin-top: 40px;
+  /* Expanded overlay */
+  #expandedPanel {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 2000;
+  }
+  #expandedPanel.active {
+    display: flex;
+  }
+  .expanded-content {
+    background: rgba(30,30,30,0.95);
+    border-radius: 16px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    gap: 24px;
+    overflow: hidden;
+    color: #ccc;
+  }
+  .image-viewer {
+    position: relative;
+    flex: 1;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .image-viewer img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+  }
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.55);
+    color: #4caf50;
+    font-size: 2rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 36px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .arrow:hover {
+    background: rgba(0,0,0,0.85);
+  }
+  .arrow-left {
+    left: 12px;
+  }
+  .arrow-right {
+    right: 12px;
+  }
+  .details {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  .details h2 {
+    color: #4caf50;
+    margin-bottom: 12px;
+  }
+  .details p {
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .buy-link {
+    display: inline-block;
+    margin-top: 20px;
+    background: #4caf50;
+    color: #111;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  .buy-link:hover {
+    background: #388e3c;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9rem;
+    color: #aaa;
+    border-top: 1px solid #333;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav {
       display: none;
     }
-
-    .expanded-panel { /* similar to yours */ }
-
-    /* Remaining CSS (image viewer, controls, responsive styles) unchanged from your code */
-
-  </style>
+    .menu-toggle {
+      display: block;
+    }
+    .dropdown {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 56px;
+      left: 0; right: 0;
+      background: rgba(0,0,0,0.95);
+      padding: 10px 20px;
+      box-shadow: none;
+      z-index: 1500;
+    }
+    .dropdown.show {
+      display: flex;
+    }
+    .expanded-content {
+      flex-direction: column;
+      max-height: 80vh;
+    }
+    .image-viewer, .details {
+      max-height: none;
+      width: 100%;
+      padding: 0;
+    }
+    .arrow-left {
+      left: 8px;
+    }
+    .arrow-right {
+      right: 8px;
+    }
+    .search-bar {
+      flex-direction: column;
+    }
+  }
+</style>
 </head>
 <body>
-  <header>…Your existing header here…</header>
-  <div class="container">
-    <div class="controls">
-      <input type="search" id="searchInput" placeholder="Search trainers…" />
-      <select id="filterSelect">
-        <option value="">All Sizes</option>
-        <option value="UK 8">UK 8</option>
-        <option value="UK 9">UK 9</option>
-        <option value="UK 9.5">UK 9.5</option>
-        <option value="UK 10">UK 10</option>
-      </select>
-    </div>
 
-    <div class="stock-grid" id="stockGrid"></div>
-    <p id="noResults">No trainers found.</p>
+<header>
+  <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
+  <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="dropdown" id="dropdownMenu" aria-label="Mobile menu">
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
 
-    <div id="expandedPanel" class="expanded-panel" style="display:none;">
-      …Your same expanded-panel markup…
-    </div>
+<section class="hero" aria-label="Page hero">
+  <div>
+    <h1>Our Current Stock</h1>
+    <p>Premium Trainers from leading brands</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search shoes..." aria-label="Search shoes" autocomplete="off" />
+    <select id="filterSelect" aria-label="Filter by condition">
+      <option value="">All Conditions</option>
+      <option value="New">New</option>
+      <option value="Used">Used</option>
+    </select>
   </div>
 
-  <footer>…Your footer here…</footer>
+  <div class="stock-grid" id="stockGrid" aria-live="polite" aria-relevant="additions"></div>
+  <p class="no-results" id="noResults" style="display:none;">No shoes found.</p>
+</div>
 
-  <script>
-    let shoes = [], currentIndex = null, currentImageIndex = 0;
-    const stockGrid = document.getElementById('stockGrid'),
-          searchInput = document.getElementById('searchInput'),
-          filterSelect = document.getElementById('filterSelect'),
-          noResults = document.getElementById('noResults');
+<div id="expandedPanel" role="dialog" aria-modal="true" aria-labelledby="shoeTitle" tabindex="-1">
+  <div class="expanded-content">
+    <div class="image-viewer">
+      <div class="arrow arrow-left" role="button" tabindex="0" aria-label="Previous image">&#10094;</div>
+      <img src="" alt="" id="mainImage" />
+      <div class="arrow arrow-right" role="button" tabindex="0" aria-label="Next image">&#10095;</div>
+    </div>
+    <div class="details" id="shoeDetails"></div>
+  </div>
+</div>
 
-    fetch('data/shoes.json')
-      .then(res => res.json())
-      .then(data => {
-        shoes = data;
-        applyFilter();
-      })
-      .catch(err => {
-        stockGrid.innerHTML = "<p style='color:#f44336;'>Failed to load data.</p>";
-      });
+<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-    function applyFilter() {
-      const query = searchInput.value.trim().toLowerCase();
-      const size = filterSelect.value;
-      const filtered = shoes.filter(s => {
-        const matchesText = s.title.toLowerCase().includes(query);
-        const matchesSize = !size || (s.info.size === size);
-        return matchesText && matchesSize;
-      });
-      renderGrid(filtered);
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  menuToggle.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('show');
+  });
+
+  const stockGrid = document.getElementById('stockGrid');
+  const noResults = document.getElementById('noResults');
+  const searchInput = document.getElementById('searchInput');
+  const filterSelect = document.getElementById('filterSelect');
+
+  const expandedPanel = document.getElementById('expandedPanel');
+  const mainImage = document.getElementById('mainImage');
+  const shoeDetails = document.getElementById('shoeDetails');
+  const prevArrow = expandedPanel.querySelector('.arrow-left');
+  const nextArrow = expandedPanel.querySelector('.arrow-right');
+
+  let shoes = [];
+  let filteredShoes = [];
+  let currentExpandedIndex = null;
+  let currentImageIndex = 0;
+
+  // Load JSON data
+  fetch('shoes.json')
+    .then(res => res.json())
+    .then(data => {
+      shoes = data;
+      filteredShoes = shoes;
+      renderGrid(filteredShoes);
+    })
+    .catch(err => {
+      stockGrid.innerHTML = '<p style="color:#f44;">Failed to load shoe data.</p>';
+      console.error(err);
+    });
+
+  function renderGrid(list) {
+    stockGrid.innerHTML = '';
+    if (list.length === 0) {
+      noResults.style.display = 'block';
+      return;
     }
+    noResults.style.display = 'none';
 
-    function renderGrid(list) {
-      stockGrid.innerHTML = '';
-      noResults.style.display = list.length ? 'none' : 'block';
-      list.forEach((s, i) => {
-        const card = document.createElement('div');
-        card.className = 'item-card';
-        setTimeout(() => card.classList.add('visible'), i * 50);
+    list.forEach((shoe, i) => {
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-pressed', 'false');
+      card.setAttribute('aria-label', `View details for ${shoe.title}`);
 
-        card.innerHTML = `
-          <img src="${s.images[0] || 'https://via.placeholder.com/300x160?text=No+Image'}" alt="${s.title}">
-          <h3>${s.title}</h3>
-          <p>${s.price}</p>
-        `;
-        card.addEventListener('click', () => openExpanded(shoes.indexOf(s)));
-        stockGrid.appendChild(card);
+      const img = document.createElement('img');
+      img.src = shoe.images && shoe.images.length > 0 ? shoe.images[0] : 'https://via.placeholder.com/300x160?text=No+Image';
+      img.alt = shoe.title;
+
+      const title = document.createElement('h3');
+      title.textContent = shoe.title;
+
+      const price = document.createElement('p');
+      price.textContent = shoe.price;
+
+      card.append(img, title, price);
+
+      // Click & keyboard to open details
+      card.addEventListener('click', () => openExpanded(i));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openExpanded(i);
+        }
       });
+
+      stockGrid.appendChild(card);
+    });
+  }
+
+  // Filter & search
+  function filterAndRender() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const conditionFilter = filterSelect.value;
+
+    filteredShoes = shoes.filter(shoe => {
+      const matchesSearch = shoe.title.toLowerCase().includes(searchTerm);
+      const matchesCondition = conditionFilter === '' || (shoe.info && shoe.info.condition === conditionFilter);
+      return matchesSearch && matchesCondition;
+    });
+    renderGrid(filteredShoes);
+  }
+
+  searchInput.addEventListener('input', filterAndRender);
+  filterSelect.addEventListener('change', filterAndRender);
+
+  // Expanded shoe detail
+  function openExpanded(index) {
+    currentExpandedIndex = index;
+    currentImageIndex = 0;
+    showExpanded();
+  }
+
+  function showExpanded() {
+    const shoe = filteredShoes[currentExpandedIndex];
+    if (!shoe) return;
+
+    // Set image and alt
+    const imgSrc = shoe.images && shoe.images.length > 0 ? shoe.images[currentImageIndex] : 'https://via.placeholder.com/600x400?text=No+Image';
+    mainImage.src = imgSrc;
+    mainImage.alt = `${shoe.title} image ${currentImageIndex + 1}`;
+
+    // Details HTML
+    shoeDetails.innerHTML = `
+      <h2 id="shoeTitle">${shoe.title}</h2>
+      <p><strong>Price:</strong> ${shoe.price}</p>
+      <p><strong>Condition:</strong> ${shoe.info?.condition || 'N/A'}</p>
+      <p><strong>Size:</strong> ${shoe.info?.size || 'N/A'}</p>
+      <p><strong>Color:</strong> ${shoe.info?.color || 'N/A'}</p>
+      <p><strong>Material:</strong> ${shoe.info?.material || 'N/A'}</p>
+      <p><strong>Shipping:</strong> ${shoe.info?.shipping || 'N/A'}</p>
+      <p><strong>Box:</strong> ${shoe.info?.box || 'N/A'}</p>
+      <p><strong>Authenticity:</strong> ${shoe.info?.authenticity || 'N/A'}</p>
+      <a href="${shoe.buyLink || '#'}" class="buy-link" target="_blank" rel="noopener noreferrer">Buy now</a>
+    `;
+
+    expandedPanel.classList.add('active');
+    expandedPanel.focus();
+  }
+
+  prevArrow.addEventListener('click', e => {
+    e.stopPropagation();
+    const shoe = filteredShoes[currentExpandedIndex];
+    if (!shoe || !shoe.images?.length) return;
+    currentImageIndex = (currentImageIndex - 1 + shoe.images.length) % shoe.images.length;
+    showExpanded();
+  });
+  nextArrow.addEventListener('click', e => {
+    e.stopPropagation();
+    const shoe = filteredShoes[currentExpandedIndex];
+    if (!shoe || !shoe.images?.length) return;
+    currentImageIndex = (currentImageIndex + 1) % shoe.images.length;
+    showExpanded();
+  });
+
+  // Keyboard support for arrows
+  prevArrow.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      prevArrow.click();
     }
+  });
+  nextArrow.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      nextArrow.click();
+    }
+  });
 
-    searchInput.addEventListener('input', applyFilter);
-    filterSelect.addEventListener('change', applyFilter);
+  // Close expanded panel on background click or Escape key
+  expandedPanel.addEventListener('click', e => {
+    if (e.target === expandedPanel) {
+      closeExpanded();
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && expandedPanel.classList.contains('active')) {
+      closeExpanded();
+    }
+  });
 
-    /* Add your openExpanded, closeExpanded, arrow logic, click-to-close, animations... 
-       (exactly as your working version above) */
-  </script>
+  function closeExpanded() {
+    expandedPanel.classList.remove('active');
+  }
+</script>
 </body>
 </html>
