@@ -166,8 +166,10 @@
     flex-direction: column;
     align-items: center;
   }
-  .item-card:hover {
+  .item-card:hover,
+  .item-card:focus-visible {
     transform: translateY(-6px);
+    outline: none;
   }
   .item-card img {
     width: 100%;
@@ -256,8 +258,10 @@
     justify-content: center;
     z-index: 10;
   }
-  .arrow:hover {
+  .arrow:hover,
+  .arrow:focus-visible {
     background: rgba(0,0,0,0.85);
+    outline: none;
   }
   .arrow-left {
     left: 12px;
@@ -289,8 +293,10 @@
     text-decoration: none;
     transition: background 0.3s ease;
   }
-  .buy-link:hover {
+  .buy-link:hover,
+  .buy-link:focus-visible {
     background: #388e3c;
+    outline: none;
   }
 
   footer {
@@ -422,12 +428,12 @@
   let currentImageIndex = 0;
 
   // Load JSON data
-fetch('folder/shoes.json?v=' + Date.now())
+  fetch('folder/shoes.json?v=' + Date.now())
     .then(res => res.json())
     .then(data => {
       shoes = data;
       filteredShoes = shoes;
-      renderGrid(filteredShoes);
+      filterAndRender();
     })
     .catch(err => {
       stockGrid.innerHTML = '<p style="color:#f44;">Failed to load shoe data.</p>';
@@ -475,7 +481,7 @@ fetch('folder/shoes.json?v=' + Date.now())
     });
   }
 
-  // Filter & search
+  // Filter & search and render
   function filterAndRender() {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const conditionFilter = filterSelect.value;
