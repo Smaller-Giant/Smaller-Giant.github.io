@@ -136,7 +136,7 @@
       transform: translateY(0);
     }
 
-    /* Search & Filter container */
+    /* Filter bar */
     .filter-bar {
       display: flex;
       gap: 15px;
@@ -173,6 +173,7 @@
       border-color: #4caf50;
       color: #fff;
     }
+
     /* Grid for items */
     .stock-grid {
       display: grid;
@@ -400,13 +401,13 @@
 
 <div class="container">
   <section>
-    <!-- FILTER & SEARCH BAR -->
+    <!-- FILTER BAR -->
     <div class="filter-bar" role="region" aria-label="Search and filter trainers">
       <label for="searchInput">Search:</label>
-      <input type="search" id="searchInput" placeholder="Search by shoe title…" aria-describedby="searchHelp" />
+      <input type="search" id="searchInput" placeholder="Search by shoe title…" />
 
       <label for="priceFilter">Filter by price:</label>
-      <select id="priceFilter" aria-describedby="filterHelp">
+      <select id="priceFilter">
         <option value="all">All Prices</option>
         <option value="under100">Under £100</option>
         <option value="100to125">£100 - £125</option>
@@ -503,11 +504,13 @@
   const shoeDetails = document.getElementById('shoeDetails');
   const arrowLeft = document.getElementById('arrowLeft');
   const arrowRight = document.getElementById('arrowRight');
+  const searchInput = document.getElementById('searchInput');
+  const priceFilter = document.getElementById('priceFilter');
 
   let currentIndex = null;   // currently expanded shoe index
   let currentImageIndex = 0; // which image is shown in expanded panel
 
-  // Function to create and return a shoe card element
+  // Create shoe cards grid
   function createShoeCard(shoe, idx) {
     const card = document.createElement('div');
     card.className = 'item-card';
@@ -542,17 +545,127 @@
     return card;
   }
 
-  // Initially populate the grid with all shoes
-  function populateGrid(shoesToShow) {
+  // Render grid with filtering
+  function renderGrid() {
+    // Filter shoes by search & price filter
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const priceVal = priceFilter.value;
+
+    const filtered = shoes.filter(shoe => {
+      const matchesSearch = shoe.title.toLowerCase().includes(searchTerm);
+      let matchesPrice = true;
+
+      if (priceVal === 'under100') {
+        matchesPrice = shoe.price < 100;
+      } else if (priceVal === '100to125') {
+        matchesPrice = shoe.price >= 100 && shoe.price <= 125;
+      } else if (priceVal === 'above125') {
+        matchesPrice = shoe.price > 125;
+      }
+
+      return matchesSearch && matchesPrice;
+    });
+
     stockGrid.innerHTML = '';
-    shoesToShow.forEach((shoe, idx) => {
-      const card = createShoeCard(shoe, idx);
-      stockGrid.appendChild(card);
+    filtered.forEach((shoe, i) => {
+      stockGrid.appendChild(createShoeCard(shoe, shoes.indexOf(shoe)));
     });
   }
 
-  // Initial render
-  populateGrid(shoes);
+  // Open expanded panel for shoe
+  function openExpanded(idx) {
+    currentIndex = idx;
+    currentImageIndex = 0;
+    const shoe = shoes[idx];
 
-  // Filtering and searching
-  const searchInput
+    // Hide grid
+    stockGrid.style.display = 'none';
+    // Show expanded panel
+    expandedPanel.style.display = 'flex';
+
+    updateExpanded();
+    expandedPanel.focus();
+  }
+
+  // Update expanded panel content
+  function updateExpanded() {
+    const shoe = shoes[currentIndex];
+
+    // Update main image
+    if (shoe.images.length > 0) {
+      mainImage.src = shoe.images[currentImageIndex];
+      mainImage.alt = `${shoe.title} image ${currentImageIndex + 1}`;
+    } else {
+      mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image';
+      mainImage.alt = 'No image available';
+    }
+
+    // Build details HTML
+    let html = `<h2>${shoe.title}</h2>`;
+    html += `<p><strong>Price:</strong> ${shoe.priceText}</p>`;
+
+    if (shoe.info.size) html += `<p><strong>Size:</strong> ${shoe.info.size}</p>`;
+    if (shoe.info.condition) html += `<p><strong>Condition:</strong> ${shoe.info.condition}</p>`;
+    if (shoe.info.color) html += `<p><strong>Color:</strong> ${shoe.info.color}</p>`;
+    if (shoe.info.material) html += `<p><strong>Material:</strong> ${shoe.info.material}</p>`;
+    if (shoe.info.shipping) html += `<p><strong>Shipping:</strong> ${shoe.info.shipping}</p>`;
+    if (shoe.info.box) html += `<p><strong>Box:</strong> ${shoe.info.box}</p>`;
+    if (shoe.info.authenticity) html += `<p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>`;
+
+    html += `<a href="${shoe.buyLink}" target="_blank" rel="noopener noreferrer" class="buy-link">Buy Now</a>`;
+
+    shoeDetails.innerHTML = html;
+  }
+
+  // Close expanded panel on click outside or ESC key
+  function closeExpanded() {
+    expandedPanel.style.display = 'none';
+    stockGrid.style.display = 'grid';
+    currentIndex = null;
+    currentImageIndex = 0;
+  }
+
+  // Left/right arrow image navigation
+  arrowLeft.addEventListener('click', () => {
+    if (currentIndex === null) return;
+    const shoe = shoes[currentIndex];
+    if (shoe.images.length === 0) return;
+    currentImageIndex = (currentImageIndex - 1 + shoe.images.length) % shoe.images.length;
+    updateExpanded();
+  });
+  arrowRight.addEventListener('click', () => {
+    if (currentIndex === null) return;
+    const shoe = shoes[currentIndex];
+    if (shoe.images.length === 0) return;
+    currentImageIndex = (currentImageIndex + 1) % shoe.images.length;
+    updateExpanded();
+  });
+
+  // Keyboard for expanded panel arrows & close (Escape)
+  expandedPanel.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeExpanded();
+    } else if (e.key === 'ArrowLeft') {
+      arrowLeft.click();
+    } else if (e.key === 'ArrowRight') {
+      arrowRight.click();
+    }
+  });
+
+  // Close expanded if clicking outside details or image viewer
+  expandedPanel.addEventListener('click', e => {
+    if (e.target === expandedPanel) {
+      closeExpanded();
+    }
+  });
+
+  // Search & filter event handlers
+  searchInput.addEventListener('input', renderGrid);
+  priceFilter.addEventListener('change', renderGrid);
+
+  // Initial render
+  renderGrid();
+</script>
+
+</body>
+</html>
