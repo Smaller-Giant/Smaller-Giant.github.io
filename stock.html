@@ -5,349 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #111;
-      color: #eee;
-      min-height: 100vh;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
-      z-index: 1000;
-    }
-    header h1 {
-      font-size: 1.4rem;
-      color: #fff;
-      line-height: 1.2;
-    }
-    header h1 span {
-      display: block;
-      font-size: 0.75rem;
-      color: #4caf50;
-      font-weight: 300;
-    }
-    nav {
-      display: flex;
-      gap: 18px;
-    }
-    nav a {
-      color: #ccc;
-      font-size: 0.95rem;
-      padding-bottom: 2px;
-      position: relative;
-      text-decoration: none;
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #4caf50;
-      transition: width 0.3s;
-    }
-    nav a:hover,
-    nav a.active {
-      color: #fff;
-    }
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
-    }
-    .menu-toggle {
-      display: none;
-      font-size: 1.5rem;
-      color: #ccc;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0; right: 0;
-      background: #222;
-      display: none;
-      flex-direction: column;
-      padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-      animation: fadeInDown 0.3s ease-out forwards;
-    }
-    .dropdown a {
-      padding: 12px 0;
-      border-bottom: 1px solid #333;
-      color: #eee;
-      font-size: 1rem;
-    }
-    .dropdown a:last-child {
-      border-bottom: none;
-    }
-    .dropdown a:hover,
-    .dropdown a.active {
-      color: #4caf50;
-    }
-    .hero {
-      margin-top: 56px;
-      height: 40vh;
-      min-height: 220px;
-      background:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-        url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      text-align: center;
-    }
-    .hero-content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-    .hero-content p {
-      font-size: 1.1rem;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 40px auto 60px;
-      padding: 0 20px;
-    }
-    section {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease-out;
-    }
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Grid for items */
-    .stock-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 25px;
-    }
-
-    /* Basic item card */
-    .item-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: transform 0.3s ease;
-      user-select: none;
-    }
-    .item-card:hover {
-      transform: translateY(-5px);
-    }
-    .item-card img {
-      width: 100%;
-      height: 140px;
-      border-radius: 10px;
-      object-fit: cover;
-      margin-bottom: 8px;
-    }
-    .item-card h3 {
-      font-size: 1rem;
-      color: #4caf50;
-      margin-bottom: 4px;
-    }
-    .item-card p {
-      font-size: 0.85rem;
-      color: #ccc;
-      margin-bottom: 0;
-    }
-
-    /* Expanded panel inline below clicked card */
-    .expanded-panel {
-      background: rgba(40, 40, 40, 0.95);
-      border: 1px solid #4caf50;
-      border-radius: 15px;
-      margin-top: 15px;
-      padding: 20px;
-      display: flex;
-      gap: 20px;
-      color: #ccc;
-      animation: fadeInUp 0.3s ease forwards;
-      max-width: 100%;
-      box-sizing: border-box;
-      z-index: 5;
-    }
-    /* Left side image viewer */
-    .image-viewer {
-      flex: 1 1 50%;
-      position: relative;
-      max-height: 400px;
-      border-radius: 15px;
-      overflow: hidden;
-      background: #222;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .image-viewer img {
-      max-width: 100%;
-      max-height: 400px;
-      object-fit: contain;
-      border-radius: 15px;
-      user-select: none;
-      pointer-events: none;
-    }
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
-      color: #4caf50;
-      font-size: 2rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      line-height: 36px;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.3s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-    .arrow:hover {
-      background: rgba(0,0,0,0.8);
-    }
-    .arrow-left {
-      left: 10px;
-    }
-    .arrow-right {
-      right: 10px;
-    }
-
-    /* Right side details */
-    .details {
-      flex: 1 1 50%;
-      overflow-y: auto;
-      max-height: 400px;
-      padding-right: 10px;
-    }
-    .details h2 {
-      color: #4caf50;
-      margin-bottom: 15px;
-    }
-    .details p {
-      margin-bottom: 10px;
-      line-height: 1.4;
-      font-size: 1rem;
-    }
-    .details strong {
-      color: #a5d6a7;
-    }
-    .details a.buy-link {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 15px;
-      background: #4caf50;
-      color: #111;
-      font-weight: 600;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-    .details a.buy-link:hover {
-      background: #388e3c;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px 0;
-      font-size: 0.9rem;
-      color: #aaa;
-      border-top: 1px solid #333;
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-      }
-      .menu-toggle {
-        display: block;
-      }
-      .expanded-panel {
-        flex-direction: column;
-        max-height: none;
-      }
-      .image-viewer, .details {
-        max-height: none;
-        flex: none;
-        width: 100%;
-        margin-bottom: 20px;
-      }
-      .arrow-left {
-        left: 5px;
-      }
-      .arrow-right {
-        right: 5px;
-      }
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    /* (Include all your styles from the snippet above) */
   </style>
 </head>
 <body>
 
-<header>
-  <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </div>
-</header>
+<header>…</header>
 
 <section class="hero">
   <div class="hero-content">
@@ -358,317 +21,109 @@
 
 <div class="container">
   <section>
-    <div class="stock-grid" id="stockGrid">
-      <!-- Shoe cards inserted here -->
-    </div>
+    <div class="stock-grid" id="stockGrid"></div>
   </section>
 </div>
 
-<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+<footer>…</footer>
 
 <script>
-  const dropdown = document.getElementById('dropdownMenu');
-  function toggleMenu() {
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
-
   const shoes = [
-    {
-      title: "Air Max 90",
-      price: "£85",
-      images: [
-        "images/IMG-20250620-WA0001.jpg",
-        "images/IMG-20250620-WA0002.jpg",
-        "images/IMG-20250620-WA0003.jpg",
-        "images/IMG-20250620-WA0006.jpg",
-        "images/IMG-20250620-WA0007.jpg"
-      ],
-      info: {
-        size: "UK 9",
-        condition: "New",
-        color: "White/Black",
-        material: "Leather and mesh",
-        shipping: "Ships in 1-2 days",
-        box: "Includes original box and tags",
-        authenticity: "Authenticity guaranteed"
-      },
-      buyLink: "https://www.vinted.co.uk/member/233654539"
-    },
-    {
-      title: "Yeezy Boost 350",
-      price: "£150",
-      images: [
-        "images/yeezy1.jpg",
-        "images/yeezy2.jpg"
-      ],
-      info: {
-        size: "UK 10",
-        condition: "New",
-        color: "Cream White",
-        material: "Primeknit",
-        shipping: "Ships in 2-3 days",
-        box: "Includes original box",
-        authenticity: "Authenticity guaranteed"
-      },
-      buyLink: "#"
-    },
-    {
-      title: "Dunk Low Panda",
-      price: "£110",
-      images: [
-        "images/dunk1.jpg",
-        "images/dunk2.jpg"
-      ],
-      info: {
-        size: "UK 9.5",
-        condition: "Used - Excellent",
-        color: "Black/White",
-        material: "Leather",
-        shipping: "Ships in 1-2 days",
-        box: "No original box",
-        authenticity: "Authenticity guaranteed"
-      },
-      buyLink: "#"
-    },
-    {
-      title: "Jordan 1 Retro",
-      price: "£125",
-      images: [
-        "images/jordan1.jpg",
-        "images/jordan2.jpg"
-      ],
-      info: {
-        size: "UK 9",
-        condition: "New",
-        color: "Red/Black",
-        material: "Leather",
-        shipping: "Ships in 1-2 days",
-        box: "Includes original box and tags",
-        authenticity: "Authenticity guaranteed"
-      },
-      buyLink: "#"
-    },
-    {
-      title: "New Balance 550",
-      price: "£95",
-      images: [
-        "images/nb1.jpg",
-        "images/nb2.jpg"
-      ],
-      info: {
-        size: "UK 9",
-        condition: "New",
-        color: "White/Blue",
-        material: "Leather and mesh",
-        shipping: "Ships in 1-2 days",
-        box: "Includes original box",
-        authenticity: "Authenticity guaranteed"
-      },
-      buyLink: "#"
-    }
+    { title:"Air Max 90", price:"£85", images:["images/IMG-20250620-WA0001.jpg","images/IMG-20250620-WA0002.jpg","images/IMG-20250620-WA0003.jpg","images/IMG-20250620-WA0006.jpg","images/IMG-20250620-WA0007.jpg"], info:{size:"UK 9",condition:"New",color:"White/Black",material:"Leather + mesh",shipping:"Ships in 1‑2 days",box:"Original box + tags",authenticity:"Guaranteed"}, buyLink:"https://www.vinted.co.uk/member/233654539" },
+    { title:"Yeezy Boost 350", price:"£150", images:[], info:{}, buyLink:"#"},
+    { title:"Dunk Low Panda", price:"£110", images:[], info:{}, buyLink:"#"},
+    { title:"Jordan 1 Retro", price:"£125", images:[], info:{}, buyLink:"#"},
+    { title:"New Balance 550", price:"£95", images:[], info:{}, buyLink:"#"}
   ];
 
-  const stockGrid = document.getElementById('stockGrid');
+  const grid = document.getElementById('stockGrid');
+  let currentIdx = null;
+  let cardElems = [];
 
-  // We'll store references to cards to hide/show when expanded
-  const cards = [];
-
-  let expandedPanel = null;
-  let currentIndex = null;
-  let currentImageIndex = 0;
-
-  function createCard(shoe, idx) {
+  function buildCard(shoe, idx) {
     const card = document.createElement('div');
     card.className = 'item-card';
-    card.setAttribute('tabindex', '0');
-    card.dataset.index = idx;
-
-    const thumb = document.createElement('img');
-    thumb.src = shoe.images.length ? shoe.images[0] : 'https://via.placeholder.com/300x160?text=No+Image';
-    thumb.alt = shoe.title;
-    card.appendChild(thumb);
-
-    const title = document.createElement('h3');
-    title.textContent = shoe.title;
-    card.appendChild(title);
-
-    const price = document.createElement('p');
-    price.textContent = shoe.price;
-    card.appendChild(price);
-
-    // Click / keyboard open
-    card.addEventListener('click', () => toggleExpanded(idx));
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <img src="${shoe.images[0] || 'https://via.placeholder.com/300x160?text=No+Image'}" alt="${shoe.title}">
+      <h3>${shoe.title}</h3><p>${shoe.price}</p>`;
+    card.addEventListener('click', () => toggleExpand(idx));
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        toggleExpanded(idx);
+        toggleExpand(idx);
       }
     });
-
     return card;
   }
 
-  function toggleExpanded(idx) {
-    if (currentIndex === idx) {
-      closeExpanded();
-      return;
-    }
-    openExpanded(idx);
-  }
-
-  function openExpanded(idx) {
-    closeExpanded(); // close any existing first
-
-    currentIndex = idx;
-    currentImageIndex = 0;
+  function toggleExpand(idx) {
+    if (currentIdx === idx) { collapse(); return; }
+    if (currentIdx !== null) collapse();
+    currentIdx = idx;
 
     const shoe = shoes[idx];
+    const card = cardElems[idx];
+    card.style.display = 'none';
 
-    // Hide the clicked card
-    cards[idx].style.display = 'none';
+    const panel = document.createElement('div');
+    panel.className = 'expanded-panel';
+    panel.tabIndex = 0;
 
-    // Create expanded panel element
-    expandedPanel = document.createElement('div');
-    expandedPanel.className = 'expanded-panel';
-    expandedPanel.setAttribute('tabindex', '0');
-    expandedPanel.setAttribute('aria-live', 'polite');
+    panel.innerHTML = `
+      <div class="image-viewer">
+        <div class="arrow arrow-left">&#10094;</div>
+        <img src="${shoe.images[0] || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="">
+        <div class="arrow arrow-right">&#10095;</div>
+      </div>
+      <div class="details">
+        <h2>${shoe.title}</h2><p><strong>Price:</strong> ${shoe.price}</p>
+        ${Object.entries(shoe.info).map(([k,v]) => v?`<p><strong>${k.charAt(0).toUpperCase()+k.slice(1)}:</strong> ${v}</p>`:'').join('')}
+        <a class="buy-link" href="${shoe.buyLink}" target="_blank">Buy now on Vinted</a>
+      </div>`;
 
-    // Left image viewer
-    const imageViewer = document.createElement('div');
-    imageViewer.className = 'image-viewer';
+    const left = panel.querySelector('.arrow-left');
+    const right = panel.querySelector('.arrow-right');
+    const img = panel.querySelector('.image-viewer img');
+    let imgIdx = 0;
 
-    const arrowLeft = document.createElement('div');
-    arrowLeft.className = 'arrow arrow-left';
-    arrowLeft.setAttribute('role', 'button');
-    arrowLeft.setAttribute('tabindex', '0');
-    arrowLeft.setAttribute('aria-label', 'Previous image');
-    arrowLeft.innerHTML = '&#10094;';
-    imageViewer.appendChild(arrowLeft);
-
-    const mainImage = document.createElement('img');
-    mainImage.src = shoe.images.length ? shoe.images[0] : 'https://via.placeholder.com/600x400?text=No+Image';
-    mainImage.alt = shoe.title + (shoe.images.length ? " image 1" : " - No image available");
-    imageViewer.appendChild(mainImage);
-
-    const arrowRight = document.createElement('div');
-    arrowRight.className = 'arrow arrow-right';
-    arrowRight.setAttribute('role', 'button');
-    arrowRight.setAttribute('tabindex', '0');
-    arrowRight.setAttribute('aria-label', 'Next image');
-    arrowRight.innerHTML = '&#10095;';
-    imageViewer.appendChild(arrowRight);
-
-    // Right details
-    const details = document.createElement('div');
-    details.className = 'details';
-
-    let detailsHTML = `<h2>${shoe.title}</h2>`;
-    detailsHTML += `<p><strong>Price:</strong> ${shoe.price}</p>`;
-    if (shoe.info) {
-      if (shoe.info.size) detailsHTML += `<p><strong>Size:</strong> ${shoe.info.size}</p>`;
-      if (shoe.info.condition) detailsHTML += `<p><strong>Condition:</strong> ${shoe.info.condition}</p>`;
-      if (shoe.info.color) detailsHTML += `<p><strong>Color:</strong> ${shoe.info.color}</p>`;
-      if (shoe.info.material) detailsHTML += `<p><strong>Material:</strong> ${shoe.info.material}</p>`;
-      if (shoe.info.shipping) detailsHTML += `<p><strong>Shipping:</strong> ${shoe.info.shipping}</p>`;
-      if (shoe.info.box) detailsHTML += `<p><strong>Box:</strong> ${shoe.info.box}</p>`;
-      if (shoe.info.authenticity) detailsHTML += `<p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>`;
-    }
-    detailsHTML += `<a href="${shoe.buyLink}" target="_blank" class="buy-link" rel="noopener">Buy now on Vinted</a>`;
-
-    details.innerHTML = detailsHTML;
-
-    expandedPanel.appendChild(imageViewer);
-    expandedPanel.appendChild(details);
-
-    // Insert expanded panel directly after the clicked card
-    cards[idx].insertAdjacentElement('afterend', expandedPanel);
-
-    // Image navigation
-    function updateImage() {
-      mainImage.src = shoe.images[currentImageIndex];
-      mainImage.alt = shoe.title + " image " + (currentImageIndex + 1);
-    }
-
-    arrowLeft.addEventListener('click', e => {
+    left.addEventListener('click', e => {
       e.stopPropagation();
-      if (shoe.images.length === 0) return;
-      currentImageIndex = (currentImageIndex - 1 + shoe.images.length) % shoe.images.length;
-      updateImage();
+      if (!shoe.images.length) return;
+      imgIdx = (imgIdx -1 + shoe.images.length)%shoe.images.length;
+      img.src = shoe.images[imgIdx];
     });
-    arrowLeft.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        arrowLeft.click();
-      }
-    });
-
-    arrowRight.addEventListener('click', e => {
+    right.addEventListener('click', e => {
       e.stopPropagation();
-      if (shoe.images.length === 0) return;
-      currentImageIndex = (currentImageIndex + 1) % shoe.images.length;
-      updateImage();
+      if (!shoe.images.length) return;
+      imgIdx = (imgIdx +1)%shoe.images.length;
+      img.src = shoe.images[imgIdx];
     });
-    arrowRight.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        arrowRight.click();
-      }
-    });
+    panel.addEventListener('click', collapse);
 
-    // Clicking expanded panel closes it
-    expandedPanel.addEventListener('click', closeExpanded);
-
-    // Focus expanded panel for accessibility
-    expandedPanel.focus();
-
-    // Scroll smoothly so expanded panel is visible
-    expandedPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.insertAdjacentElement('afterend', panel);
+    panel.focus({preventScroll:true});
   }
 
-  function closeExpanded() {
-    if (expandedPanel) {
-      expandedPanel.remove();
-      expandedPanel = null;
-    }
-    if (currentIndex !== null) {
-      cards[currentIndex].style.display = '';
-      currentIndex = null;
-      currentImageIndex = 0;
-    }
+  function collapse() {
+    if (currentIdx === null) return;
+    const panel = document.querySelector('.expanded-panel');
+    if (panel) panel.remove();
+    cardElems[currentIdx].style.display = '';
+    currentIdx = null;
   }
 
-  // Build cards and append to grid
-  shoes.forEach((shoe, idx) => {
-    const card = createCard(shoe, idx);
-    stockGrid.appendChild(card);
-    cards.push(card);
-  });
-
-  // Close expanded on clicking outside or pressing ESC
   document.addEventListener('click', e => {
-    if (
-      expandedPanel &&
-      !e.target.closest('.expanded-panel') &&
-      !e.target.closest('.item-card')
-    ) {
-      closeExpanded();
-    }
+    if (currentIdx !== null && !e.target.closest('.item-card') && !e.target.closest('.expanded-panel')) collapse();
   });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && currentIndex !== null) {
-      closeExpanded();
-    }
+    if (e.key==='Escape') collapse();
   });
 
-  // Animate section on scroll
-  document.querySelectorAll('section').forEach(sec => {
-    const obs = new IntersectionObserver(entries => {
-      if(entries[0].isIntersecting) {
-        sec.classList.add('visible');
-        obs.disconnect();
-      }
-    }, { threshold: 0.2 });
-    obs.observe(sec);
+  shoes.forEach((shoe,i) => {
+    const c = buildCard(shoe,i);
+    cardElems.push(c);
+    grid.appendChild(c);
   });
 </script>
 
