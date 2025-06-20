@@ -422,7 +422,7 @@
   let currentImageIndex = 0;
 
   // Load JSON data
-fetch('folder/shoes.json')
+fetch('folder/shoes.json?v=' + Date.now())
     .then(res => res.json())
     .then(data => {
       shoes = data;
