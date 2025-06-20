@@ -1,7 +1,7 @@
 [
   {
-    "title": "Air Max 90",
-    "price": "£85",
+    "title": "Nike Dunks",
+    "price": "£45",
     "images": [
       "images/IMG-20250620-WA0001.jpg",
       "images/IMG-20250620-WA0002.jpg",
@@ -10,7 +10,7 @@
       "images/IMG-20250620-WA0007.jpg"
     ],
     "info": {
-      "size": "UK 9",
+      "size": "UK 6",
       "condition": "New",
       "color": "White/Black",
       "material": "Leather and mesh",
