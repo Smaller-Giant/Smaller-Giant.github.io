@@ -141,7 +141,6 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 30px;
-      position: relative;
     }
 
     /* Basic item card */
@@ -155,7 +154,6 @@
       backdrop-filter: blur(8px);
       transition: transform 0.3s ease;
       user-select: none;
-      z-index: 1;
     }
     .item-card:hover {
       transform: translateY(-5px);
@@ -178,24 +176,18 @@
       margin-bottom: 0;
     }
 
-    /* Expanded panel inserted after the clicked card */
+    /* Expanded panel below the grid */
     .expanded-panel {
       background: rgba(40, 40, 40, 0.95);
       border: 1px solid #4caf50;
       border-radius: 15px;
+      margin-top: 30px;
       padding: 20px;
       display: flex;
       gap: 20px;
       color: #ccc;
       animation: fadeInUp 0.3s ease forwards;
-      grid-column: span 3;
-      position: relative;
-      z-index: 10;
-      user-select: text;
-      overflow: hidden;
-      /* To avoid scrollbar, no fixed height */
     }
-
     /* Left side image viewer */
     .image-viewer {
       flex: 1 1 50%;
@@ -298,7 +290,6 @@
       .expanded-panel {
         flex-direction: column;
         max-height: none;
-        grid-column: span 1 !important;
       }
       .image-viewer, .details {
         max-height: none;
@@ -367,6 +358,18 @@
     <div class="stock-grid" id="stockGrid">
       <!-- Shoe cards will be added here -->
     </div>
+
+    <!-- Expanded details panel -->
+    <div id="expandedPanel" style="display:none;" class="expanded-panel" tabindex="0" aria-live="polite">
+      <div class="image-viewer">
+        <div class="arrow arrow-left" id="arrowLeft" role="button" tabindex="0" aria-label="Previous image">&#10094;</div>
+        <img src="" alt="Shoe image" id="mainImage" />
+        <div class="arrow arrow-right" id="arrowRight" role="button" tabindex="0" aria-label="Next image">&#10095;</div>
+      </div>
+      <div class="details" id="shoeDetails">
+        <!-- Details go here -->
+      </div>
+    </div>
   </section>
 </div>
 
@@ -431,7 +434,12 @@
   ];
 
   const stockGrid = document.getElementById('stockGrid');
-  let expandedPanel = null;
+  const expandedPanel = document.getElementById('expandedPanel');
+  const mainImage = document.getElementById('mainImage');
+  const shoeDetails = document.getElementById('shoeDetails');
+  const arrowLeft = document.getElementById('arrowLeft');
+  const arrowRight = document.getElementById('arrowRight');
+
   let currentIndex = null;   // currently expanded shoe index
   let currentImageIndex = 0; // which image is shown in expanded panel
 
@@ -458,66 +466,40 @@
     price.textContent = shoe.price;
     card.appendChild(price);
 
-    card.addEventListener('click', () => openExpanded(idx, card));
+    card.addEventListener('click', () => openExpanded(idx));
     card.addEventListener('keydown', e => {
       if(e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openExpanded(idx, card);
+        openExpanded(idx);
       }
     });
 
     stockGrid.appendChild(card);
   });
 
-  function openExpanded(idx, card) {
+  function openExpanded(idx) {
     if (currentIndex === idx) {
       closeExpanded();
       return;
     }
-    closeExpanded();
-
     currentIndex = idx;
     currentImageIndex = 0;
 
-    // Hide the clicked card
-    card.style.display = 'none';
-
-    // Create expanded panel container
-    expandedPanel = document.createElement('div');
-    expandedPanel.className = 'expanded-panel';
-    expandedPanel.setAttribute('tabindex', '0');
-    expandedPanel.setAttribute('aria-live', 'polite');
-
-    // Left side image viewer
-    const imageViewer = document.createElement('div');
-    imageViewer.className = 'image-viewer';
-
-    const arrowLeft = document.createElement('div');
-    arrowLeft.className = 'arrow arrow-left';
-    arrowLeft.setAttribute('role', 'button');
-    arrowLeft.setAttribute('tabindex', '0');
-    arrowLeft.setAttribute('aria-label', 'Previous image');
-    arrowLeft.innerHTML = '&#10094;';
-    imageViewer.appendChild(arrowLeft);
-
-    const mainImage = document.createElement('img');
-    imageViewer.appendChild(mainImage);
-
-    const arrowRight = document.createElement('div');
-    arrowRight.className = 'arrow arrow-right';
-    arrowRight.setAttribute('role', 'button');
-    arrowRight.setAttribute('tabindex', '0');
-    arrowRight.setAttribute('aria-label', 'Next image');
-    arrowRight.innerHTML = '&#10095;';
-    imageViewer.appendChild(arrowRight);
-
-    // Right side details
-    const details = document.createElement('div');
-    details.className = 'details';
-
-    // Build details HTML
     const shoe = shoes[idx];
 
+    if (shoe.images.length > 0) {
+      mainImage.src = shoe.images[currentImageIndex];
+      mainImage.alt = shoe.title + " image " + (currentImageIndex + 1);
+      arrowLeft.style.display = 'flex';
+      arrowRight.style.display = 'flex';
+    } else {
+      mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image';
+      mainImage.alt = "No image available";
+      arrowLeft.style.display = 'none';
+      arrowRight.style.display = 'none';
+    }
+
+    // Build details HTML
     let detailsHTML = `<h2>${shoe.title}</h2>`;
     detailsHTML += `<p><strong>Price:</strong> ${shoe.price}</p>`;
 
@@ -533,87 +515,65 @@
 
     detailsHTML += `<a href="${shoe.buyLink}" target="_blank" class="buy-link" rel="noopener">Buy now on Vinted</a>`;
 
-    details.innerHTML = detailsHTML;
+    shoeDetails.innerHTML = detailsHTML;
 
-    expandedPanel.appendChild(imageViewer);
-    expandedPanel.appendChild(details);
+    expandedPanel.style.display = 'flex';
 
-    // Insert expanded panel right after clicked card in grid
-    stockGrid.insertBefore(expandedPanel, card.nextSibling);
-
-    // Setup image carousel
-    function updateImage() {
-      if (shoe.images.length > 0) {
-        mainImage.src = shoe.images[currentImageIndex];
-        mainImage.alt = `${shoe.title} image ${currentImageIndex + 1}`;
-        arrowLeft.style.display = 'flex';
-        arrowRight.style.display = 'flex';
-      } else {
-        mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image';
-        mainImage.alt = 'No image available';
-        arrowLeft.style.display = 'none';
-        arrowRight.style.display = 'none';
-      }
-    }
-    updateImage();
-
-    arrowLeft.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (shoe.images.length === 0) return;
-      currentImageIndex = (currentImageIndex - 1 + shoe.images.length) % shoe.images.length;
-      updateImage();
-    });
-    arrowRight.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (shoe.images.length === 0) return;
-      currentImageIndex = (currentImageIndex + 1) % shoe.images.length;
-      updateImage();
-    });
-
-    // Close expanded if clicking anywhere outside expandedPanel or cards
-    function clickOutsideListener(e) {
-      if (!e.target.closest('.item-card') && !e.target.closest('.expanded-panel')) {
-        closeExpanded();
-      }
-    }
-    document.addEventListener('click', clickOutsideListener);
-
-    // Keyboard accessible close on ESC
-    function escListener(e) {
-      if (e.key === 'Escape') {
-        closeExpanded();
-      }
-    }
-    document.addEventListener('keydown', escListener);
-
-    // Save listeners to remove later
-    expandedPanel._cleanup = () => {
-      document.removeEventListener('click', clickOutsideListener);
-      document.removeEventListener('keydown', escListener);
-    };
-
-    // Focus expanded panel for accessibility
-    expandedPanel.focus();
+    // Scroll to expanded panel
+    expandedPanel.scrollIntoView({behavior: "smooth", block: "start"});
   }
 
   function closeExpanded() {
-    if (expandedPanel) {
-      expandedPanel._cleanup();
-      expandedPanel.remove();
-      expandedPanel = null;
-
-      if (currentIndex !== null) {
-        const cards = stockGrid.querySelectorAll('.item-card');
-        if (cards[currentIndex]) {
-          cards[currentIndex].style.display = '';
-          cards[currentIndex].focus();
-        }
-      }
-
-      currentIndex = null;
-      currentImageIndex = 0;
-    }
+    expandedPanel.style.display = 'none';
+    currentIndex = null;
   }
+
+  arrowLeft.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentIndex === null) return;
+    const images = shoes[currentIndex].images;
+    if (!images.length) return;
+
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    mainImage.src = images[currentImageIndex];
+    mainImage.alt = shoes[currentIndex].title + " image " + (currentImageIndex + 1);
+  });
+
+  arrowRight.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (currentIndex === null) return;
+    const images = shoes[currentIndex].images;
+    if (!images.length) return;
+
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    mainImage.src = images[currentImageIndex];
+    mainImage.alt = shoes[currentIndex].title + " image " + (currentImageIndex + 1);
+  });
+
+  // Close expanded if clicking outside the panel or cards
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.item-card') && !e.target.closest('#expandedPanel')) {
+      closeExpanded();
+    }
+  });
+
+  // Keyboard accessible close on ESC
+  document.addEventListener('keydown', (e) => {
+    if(e.key === "Escape" && currentIndex !== null) {
+      closeExpanded();
+    }
+  });
+
+  // Animate section on scroll
+  document.querySelectorAll('section').forEach(sec => {
+    const obs = new IntersectionObserver(e => {
+      if(e[0].isIntersecting) {
+        sec.classList.add('visible');
+        obs.disconnect();
+      }
+    }, {threshold: 0.2});
+    obs.observe(sec);
+  });
 </script>
 
 </body>
