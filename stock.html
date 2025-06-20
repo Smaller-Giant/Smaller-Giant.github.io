@@ -107,20 +107,23 @@
         url('https://via.placeholder.com/1200x600.png?text=SoleZone+Stock') center/cover no-repeat;
       position: relative;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 40px;
       color: white;
       text-align: center;
+      padding: 0 20px;
     }
     .hero-content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
+      font-size: 2.6rem;
+      margin-bottom: 6px;
       animation: fadeInUp 1s forwards;
       opacity: 0;
     }
     .hero-content p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      font-weight: 300;
       animation: fadeInUp 1s .3s forwards;
       opacity: 0;
     }
@@ -146,6 +149,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 20px;
+      grid-auto-flow: dense; /* helps fill gaps */
     }
 
     .item-card {
@@ -155,13 +159,14 @@
       padding: 10px;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  background-color 0.3s ease;
       backdrop-filter: blur(8px);
-      /* To keep scaling origin consistent */
       transform-origin: center center;
     }
 
-    .item-card:hover {
+    .item-card:hover:not(.expanded) {
       transform: translateY(-5px);
     }
 
@@ -169,6 +174,7 @@
       width: 100%;
       border-radius: 10px;
       margin-bottom: 8px;
+      transition: border-radius 0.3s ease;
     }
 
     .item-card h3 {
@@ -183,19 +189,21 @@
       margin-bottom: 4px;
     }
 
-    /* Expanded state styles */
+    /* Expanded card */
     .item-card.expanded {
       position: relative;
       z-index: 10;
       background: rgba(76,175,80,0.1);
-      box-shadow: 0 8px 24px rgba(76,175,80,0.7);
-      transform: scale(1.5);
+      box-shadow: 0 12px 30px rgba(76,175,80,0.8);
       cursor: pointer;
+      transform: scale(1.6);
     }
-
     .item-card.expanded img {
-      margin-bottom: 12px;
       border-radius: 14px;
+      margin-bottom: 12px;
+    }
+    .item-card.expanded .extra-info {
+      display: block;
     }
 
     .extra-info {
@@ -203,10 +211,6 @@
       color: #ccc;
       margin-top: 10px;
       font-size: 0.9rem;
-    }
-
-    .item-card.expanded .extra-info {
-      display: block;
     }
 
     footer {
@@ -217,12 +221,22 @@
       border-top: 1px solid #333;
     }
 
+    /* Mobile adjustments */
     @media (max-width: 768px) {
       .menu-toggle {
         display: block;
       }
       nav {
         display: none;
+      }
+      .item-card.expanded {
+        transform: scale(1.2);
+      }
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
       }
     }
 
@@ -277,7 +291,7 @@
 <div class="container">
   <section>
     <div class="stock-grid" id="stockGrid">
-      <!-- Cards will be added by JS -->
+      <!-- JS will inject shoe cards here -->
     </div>
   </section>
 </div>
@@ -300,7 +314,6 @@
 
   const grid = document.getElementById('stockGrid');
 
-  // Create and add cards
   shoes.forEach((shoe, index) => {
     const card = document.createElement('div');
     card.className = 'item-card';
@@ -317,22 +330,21 @@
         expanded.classList.remove('expanded');
       }
       card.classList.toggle('expanded');
-      // Scroll card into view nicely when expanded:
-      if(card.classList.contains('expanded')) {
+      if (card.classList.contains('expanded')) {
         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
     grid.appendChild(card);
   });
 
-  // Show hero animations on scroll
+  // Show hero animation on scroll
   document.querySelectorAll('section').forEach(sec => {
     const obs = new IntersectionObserver(e => {
       if (e[0].isIntersecting) {
         sec.classList.add('visible');
         obs.disconnect();
       }
-    }, { threshold: .2 });
+    }, { threshold: 0.2 });
     obs.observe(sec);
   });
 
