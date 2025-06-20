@@ -4,245 +4,148 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
-  <link rel="icon" href="https://via.placeholder.com/32x32.png?text=S" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3534/3534066.png" type="image/png" />
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh;}
+
+    header{
+      position:fixed;top:0;width:100%;z-index:1000;
+      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #111;
-      color: #eee;
-      min-height: 100vh;
+    header h1{
+      font-size:1.4rem;color:#fff;line-height:1.2;
+    }
+    header h1 span{
+      display:block;
+      font-size:0.75rem;
+      color:#4caf50;
+      font-weight:300;
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    a{color:inherit;text-decoration:none;transition:color .3s}
+    a:visited{color:inherit}
+
+    nav{display:flex;gap:18px}
+    nav a{
+      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
     }
-    header h1 {
-      font-size: 1.4rem;
-      color: #fff;
-      line-height: 1.2;
+    nav a::after{
+      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+      background:#4caf50;transition:width .3s
     }
-    header h1 span {
-      display: block;
-      font-size: 0.75rem;
-      color: #4caf50;
-      font-weight: 300;
+    nav a:hover,nav a.active{color:#fff}
+    nav a:hover::after,nav a.active::after{width:100%}
+
+    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+
+    .dropdown{
+      position:absolute;top:100%;left:0;right:0;
+      background:#222;display:none;flex-direction:column;padding:10px 20px;
+      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
+    }
+    .dropdown a{
+      padding:12px 0;border-bottom:1px solid #333;
+      color:#eee;font-size:1rem
+    }
+    .dropdown a:last-child{border-bottom:none}
+    .dropdown a:hover,.dropdown a.active{color:#4caf50}
+
+    .hero{
+      height:40vh;min-height:220px;
+      background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://images.unsplash.com/photo-1200x600?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+      position:relative;display:flex;align-items:center;justify-content:center;
+      margin-top:60px; /* to push below fixed header */
+    }
+    .hero-content{position:relative;text-align:center;color:#fff}
+    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
+    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
+
+    .container{max-width:1200px;margin:20px auto;padding:0 20px}
+
+    .stock-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px 40px;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    a:visited {
-      color: inherit;
-    }
-
-    nav {
-      display: flex;
-      gap: 18px;
-    }
-    nav a {
-      color: #ccc;
-      font-size: 0.95rem;
-      position: relative;
-      padding-bottom: 2px;
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #4caf50;
-      transition: width 0.3s;
-    }
-    nav a:hover,
-    nav a.active {
-      color: #fff;
-    }
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
-    }
-
-    .menu-toggle {
-      display: none;
-      font-size: 1.5rem;
-      color: #ccc;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #222;
-      display: none;
-      flex-direction: column;
-      padding: 10px 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
-      animation: fadeInDown 0.3s ease-out forwards;
-    }
-    .dropdown a {
-      padding: 12px 0;
-      border-bottom: 1px solid #333;
-      color: #eee;
-      font-size: 1rem;
-    }
-    .dropdown a:last-child {
-      border-bottom: none;
-    }
-    .dropdown a:hover,
-    .dropdown a.active {
-      color: #4caf50;
-    }
-
-    .hero {
-      height: 40vh;
-      min-height: 220px;
-      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-        url('https://via.placeholder.com/1200x600?text=SoleZone+Stock')
-          center/cover no-repeat;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .hero-content {
-      position: relative;
-      text-align: center;
-      color: #fff;
-    }
-    .hero-content h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-      opacity: 0;
-      animation: fadeInUp 1s forwards;
-    }
-    .hero-content p {
-      font-size: 1.1rem;
-      opacity: 0;
-      animation: fadeInUp 1s 0.3s forwards;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 60px auto;
-      padding: 0 20px;
-    }
-    section {
-      margin-bottom: 60px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease-out;
-    }
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .stock-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(160px, 1fr));
-      gap: 30px 30px;
-    }
-
-    .item-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.4s ease, box-shadow 0.4s ease,
-        background-color 0.4s ease;
-      backdrop-filter: blur(8px);
+    .item-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      transition: all 0.4s ease;
+      backdrop-filter:blur(8px);
       position: relative;
       overflow: hidden;
-      user-select: none;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
-    .item-card:hover {
+    .item-card:hover:not(.expanded) {
       transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
     }
-    .item-card img.main-image {
-      width: 100%;
+
+    .image-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+      scroll-snap-type: x mandatory;
       border-radius: 10px;
       margin-bottom: 8px;
-      pointer-events: none;
-      user-select: none;
-      max-height: 140px;
-      object-fit: contain;
-      background: #222;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
     }
+    .image-slider::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    .image-slider img {
+      height: 140px;
+      border-radius: 8px;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .image-slider img:hover {
+      transform: scale(1.05);
+    }
+
+    .item-card.expanded {
+      grid-column: span 2;
+      min-height: 400px;
+      background: rgba(76, 175, 80, 0.1);
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.6);
+      z-index: 10;
+      cursor: default;
+    }
+
     .item-card h3 {
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: #4caf50;
-      pointer-events: none;
-      user-select: none;
+      margin: 8px 0 4px 0;
     }
-    .item-card p.price {
-      font-size: 0.95rem;
+    .item-card p {
+      font-size: 1rem;
       color: #ccc;
       margin-bottom: 8px;
-      pointer-events: none;
-      user-select: none;
-      font-weight: 600;
     }
 
     .extra-info {
-      display: none;
       color: #ccc;
       margin-top: 10px;
       font-size: 0.9rem;
-      user-select: text;
+      display: none;
       text-align: left;
     }
-
-    .extra-info p {
-      margin-bottom: 6px;
-    }
-
-    /* Thumbnail image slider */
-    .thumb-slider {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-    }
-    .thumb-slider img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.3s;
-      flex-shrink: 0;
-      background: #222;
-    }
-    .thumb-slider img.selected {
-      border-color: #4caf50;
+    .item-card.expanded .extra-info {
+      display: block;
     }
 
     footer {
@@ -251,380 +154,154 @@
       font-size: 0.9rem;
       color: #aaa;
       border-top: 1px solid #333;
+      margin-top: 40px;
     }
 
-    @media (max-width: 1024px) {
+    @media(max-width: 768px) {
+      .menu-toggle {display:block}
+      nav {display:none}
       .stock-grid {
-        grid-template-columns: repeat(3, minmax(160px, 1fr));
-        gap: 24px 24px;
-      }
-      .menu-toggle {
-        display: block;
-      }
-      nav {
-        display: none;
-      }
-      .item-card.expanded {
-        grid-column: span 2 !important;
-        transform-origin: center center !important;
-        transform: scale(1.15) !important;
-        position: relative !important;
-        z-index: 10 !important;
-        max-height: 600px;
-        overflow-y: auto;
-      }
-    }
-    @media (max-width: 600px) {
-      .stock-grid {
-        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 20px 20px;
       }
       .item-card.expanded {
-        grid-column: span 1 !important;
-        transform-origin: center center !important;
-        transform: scale(1.1) !important;
-        max-height: 500px;
-        overflow-y: auto;
+        grid-column: auto;
+        min-height: 350px;
       }
-    }
-
-    /* Expanded card styles */
-    .item-card.expanded {
-      z-index: 10;
-      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.7);
-      background: rgba(76, 175, 80, 0.12);
-      transition: transform 0.4s ease, box-shadow 0.4s ease,
-        background-color 0.4s ease;
-      /* transform and transform-origin set dynamically */
-      overflow: visible;
+      .image-slider img {
+        height: 110px;
+      }
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from {opacity:0;transform:translateY(20px)}
+      to {opacity:1;transform:translateY(0)}
     }
     @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from {opacity:0;transform:translateY(-10px)}
+      to {opacity:1;transform:translateY(0)}
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>
-      SoleZone
-      <span>Premium Trainers from leading brands</span>
-    </h1>
-    <button
-      class="menu-toggle"
-      aria-label="Toggle menu"
-      onclick="toggleMenu()"
-    >
-      ☰
-    </button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </header>
+<header>
+  <h1>SoleZone<span>Premium Trainers from leading brands</span></h1>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Our Current Stock</h1>
-      <p>Premium Trainers from leading brands</p>
+<section class="hero">
+  <div class="hero-content">
+    <h1>Our Current Stock</h1>
+    <p>Premium Trainers from leading brands</p>
+  </div>
+</section>
+
+<div class="container">
+  <section>
+    <div class="stock-grid" id="stockGrid">
+      <!-- Shoes inserted here by JS -->
     </div>
   </section>
+</div>
 
-  <div class="container">
-    <section>
-      <div class="stock-grid" id="stockGrid">
-        <!-- JS injects shoe cards here -->
+<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+
+<script>
+  const shoes = [
+    {
+      title: "Dunk Low Custom",
+      price: "£95",
+      images: [
+        "images/IMG-20250620-WA0001.jpg",
+        "images/IMG-20250620-WA0002.jpg",
+        "images/IMG-20250620-WA0003.jpg",
+        "images/IMG-20250620-WA0006.jpg",
+        "images/IMG-20250620-WA0007.jpg"
+      ],
+      info: "UK 9 — Gently worn, no original box.<br>Dispatched in 1–2 days.<br>Vinted or eBay purchase available.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>"
+    },
+    {
+      title: "Air Max 90",
+      price: "£85",
+      images: [
+        "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80"
+      ],
+      info: "UK 9. Classic shape. Ships in 1-2 days."
+    },
+    {
+      title: "Yeezy Boost 350",
+      price: "£150",
+      images: [
+        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80"
+      ],
+      info: "UK 10. Lightly worn. Box included."
+    }
+  ];
+
+  const stockGrid = document.getElementById('stockGrid');
+
+  function createCard(shoe){
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <div class="image-slider">
+        ${shoe.images.map(src => `<img src="${src}" alt="${shoe.title}">`).join('')}
       </div>
-    </section>
-  </div>
+      <h3>${shoe.title}</h3>
+      <p>${shoe.price}</p>
+      <div class="extra-info">${shoe.info}</div>
+    `;
 
-  <footer>
-    This site is for display only. All orders handled through Vinted or eBay.
-  </footer>
-
-  <script>
-    const shoes = [
-      {
-        title: "Air Max 90",
-        price: "£85",
-        images: [
-          "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1528701800489-5de239f9b34f?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1528701800704-9984d28f8869?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1528701800281-34d89e63b10e?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1528701800777-10803a97db04?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 9. Condition: Excellent, lightly worn.<br>Classic Air Max 90 silhouette, authentic. Ships within 2 days.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Yeezy Boost 350",
-        price: "£150",
-        images: [
-          "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1590080877964-14ff5f10f918?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1590080877768-02bb8e5f490f?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1590080877867-19a89e23f82d?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1590080877976-f1218ecf97a0?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 10. Condition: Very good, worn a few times.<br>Includes original box and tags.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Dunk Low Panda",
-        price: "£110",
-        images: [
-          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1542291026-8b12d1df06f0?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1542291026-923f9484f67f?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1542291026-9530e22b8c6d?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1542291026-8d0f5e4418af?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 8. Condition: Brand new, never worn.<br>Authentic Dunk Low in panda colorway.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Jordan 1 Retro",
-        price: "£125",
-        images: [
-          "https://images.unsplash.com/photo-1611324212454-9b342ca7739e?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1611324212470-3a9d5c9b72c6?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1611324212487-53f25615324e?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1611324212466-fabdecc7ec9c?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1611324212501-7c8e062f3a74?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 9. Condition: Good, minimal signs of wear.<br>Classic Jordan 1 Retro design.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "New Balance 550",
-        price: "£95",
-        images: [
-          "https://images.unsplash.com/photo-1652166593905-bfd63168e3e1?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1652166593972-2d9e1eaa5fdb?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1652166593939-097b1db792b3?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1652166593861-8c7bb7e30e25?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1652166593997-f47a2a3df5a3?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 10. Condition: Clean and trendy.<br>Perfect for casual wear.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "UltraBoost DNA",
-        price: "£140",
-        images: [
-          "https://images.unsplash.com/photo-1617610223597-3bcb8ff19eac?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1617610223623-34b2e3f8cc4a?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1617610223611-01b57f037d1b?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1617610223603-96939940a645?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1617610223619-989a6f4b40a5?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 11. Condition: Great for running.<br>Responsive cushioning.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Air Force 1",
-        price: "£90",
-        images: [
-          "https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1606813903251-bcde3e3c08cd?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1606813903294-0a876f13bf99?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1606813903274-c76d55a9f0b6?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1606813903267-62b73a40b7e3?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 8. Condition: All-white classic.<br>Reliable and stylish.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Converse High Top",
-        price: "£60",
-        images: [
-          "https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1612977030346-3b61a1f8b993?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1612977030377-f62a917a2a16?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1612977030340-cd39e1898419?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1612977030383-08f12b7c0aeb?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 9. Condition: Timeless style.<br>Perfect for everyday wear.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Reebok Club C",
-        price: "£75",
-        images: [
-          "https://images.unsplash.com/photo-1593032465375-504baef6ed72?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1593032465359-4dbb6ecb70a1?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1593032465391-68ff1df79a5f?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1593032465404-d7e1a8929a7d?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1593032465333-e3a4a1e34932?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 8. Condition: Vintage vibes.<br>Classic white leather.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-      {
-        title: "Vans Old Skool",
-        price: "£65",
-        images: [
-          "https://images.unsplash.com/photo-1551854838-546f8dd6758d?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1551854837-5c1a234d4523?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1551854839-1c1a45f3b8ec?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1551854836-47e87f9f7bce?auto=format&fit=crop&w=400&q=80",
-          "https://images.unsplash.com/photo-1551854835-12f728e51dff?auto=format&fit=crop&w=400&q=80",
-        ],
-        info: "Size UK 9.5. Condition: Classic black/white.<br>Well-loved and comfortable.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
-      },
-    ];
-
-    const grid = document.getElementById("stockGrid");
-
-    function clearExpanded() {
-      document.querySelectorAll(".item-card").forEach((c) => {
-        c.classList.remove("expanded");
-        c.style.transform = "";
-        c.style.transformOrigin = "";
-        c.querySelector(".extra-info").style.display = "none";
-
-        // Reset main image to first
-        const mainImg = c.querySelector("img.main-image");
-        if (mainImg && c.dataset.firstImg) {
-          mainImg.src = c.dataset.firstImg;
-        }
-      });
-    }
-
-    function toggleExpand(card) {
-      const isExpanded = card.classList.contains("expanded");
-      clearExpanded();
-      if (!isExpanded) {
-        card.classList.add("expanded");
-        const extra = card.querySelector(".extra-info");
-        extra.style.display = "block";
-
-        // Determine if card is on left or right half of grid
-        const rect = card.getBoundingClientRect();
-        const viewportWidth = window.innerWidth;
-        const isLeft = rect.left + rect.width / 2 < viewportWidth / 2;
-
-        let translateX = 0;
-        let scale = 1.25;
-
-        if (viewportWidth > 1024) {
-          if (isLeft) {
-            translateX = -Math.min(rect.left - 20, rect.width * 0.5);
-            card.style.transformOrigin = "left center";
-          } else {
-            translateX = Math.min(viewportWidth - (rect.right + 20), rect.width * 0.5);
-            card.style.transformOrigin = "right center";
-          }
-          card.style.transform = `translateX(${translateX}px) scale(${scale})`;
-        } else {
-          card.style.transformOrigin = "center center";
-          card.style.transform = `scale(${viewportWidth <= 600 ? 1.1 : 1.15})`;
-        }
-
-        card.scrollIntoView({ behavior: "smooth", block: "center" });
+    card.addEventListener('click', (e) => {
+      if (card.classList.contains('expanded')){
+        card.classList.remove('expanded');
+      } else {
+        // Collapse others
+        document.querySelectorAll('.item-card.expanded').forEach(c => c.classList.remove('expanded'));
+        card.classList.add('expanded');
       }
-    }
-
-    // Create cards and attach click handlers
-    shoes.forEach((shoe) => {
-      const card = document.createElement("div");
-      card.className = "item-card";
-      card.dataset.firstImg = shoe.images[0];
-      card.innerHTML = `
-        <img src="${shoe.images[0]}" alt="${shoe.title}" class="main-image" />
-        <h3>${shoe.title}</h3>
-        <p class="price">${shoe.price}</p>
-        <div class="extra-info">
-          <p>${shoe.info}</p>
-          <div class="thumb-slider" aria-label="Image thumbnails for ${shoe.title}">
-            ${shoe.images
-              .map(
-                (img, idx) =>
-                  `<img src="${img}" alt="${shoe.title} image ${idx + 1}" data-idx="${idx}" ${
-                    idx === 0 ? "class='selected'" : ""
-                  } />`
-              )
-              .join("")}
-          </div>
-        </div>
-      `;
-
-      // Hide extra info initially
-      card.querySelector(".extra-info").style.display = "none";
-
-      card.addEventListener("click", (e) => {
-        e.stopPropagation();
-        toggleExpand(card);
-      });
-
-      // Thumbnail click to update main image
-      card.addEventListener("click", (e) => {
-        if (e.target.closest(".thumb-slider img")) {
-          const imgEl = e.target.closest(".thumb-slider img");
-          const mainImg = card.querySelector("img.main-image");
-          if (mainImg && imgEl) {
-            mainImg.src = imgEl.src;
-
-            // Update selected thumbnail border
-            card.querySelectorAll(".thumb-slider img").forEach((thumb) => {
-              thumb.classList.remove("selected");
-            });
-            imgEl.classList.add("selected");
-          }
-          e.stopPropagation();
-        }
-      });
-
-      grid.appendChild(card);
-    });
-
-    // Close expanded card when clicking anywhere else
-    document.body.addEventListener("click", () => {
-      clearExpanded();
-    });
-
-    // Dropdown menu toggle
-    const dropdown = document.getElementById("dropdownMenu");
-    function toggleMenu() {
-      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
-    }
-
-    // Animate sections on scroll
-    document.querySelectorAll("section").forEach((sec) => {
-      const obs = new IntersectionObserver(
-        (e) => {
-          if (e[0].isIntersecting) {
-            sec.classList.add("visible");
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.2 }
-      );
-      obs.observe(sec);
-    });
-
-    // Prevent scroll when clicking inside expanded item
-    grid.addEventListener("click", (e) => {
       e.stopPropagation();
     });
-  </script>
+
+    return card;
+  }
+
+  shoes.forEach(shoe => {
+    stockGrid.appendChild(createCard(shoe));
+  });
+
+  // Collapse expanded card if clicking outside
+  document.body.addEventListener('click', () => {
+    document.querySelectorAll('.item-card.expanded').forEach(c => c.classList.remove('expanded'));
+  });
+
+  // Dropdown toggle
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu(){
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+  }
+</script>
+
 </body>
 </html>
