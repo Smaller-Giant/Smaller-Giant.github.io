@@ -145,7 +145,7 @@
       border-radius: 15px;
       background: rgba(255 255 255 / 0.1);
       backdrop-filter: blur(12px);
-      box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+      /* Removed green glow */
       align-items: center;
       max-width: 600px;
       user-select: none;
@@ -161,6 +161,19 @@
       color: #eee;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
       transition: background 0.3s ease;
+      appearance: none; /* Remove default arrow */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #eee 50%),
+        linear-gradient(135deg, #eee 50%, transparent 50%);
+      background-position:
+        calc(100% - 20px) calc(1em + 2px),
+        calc(100% - 15px) calc(1em + 2px);
+      background-size: 5px 5px;
+      background-repeat: no-repeat;
+      padding-right: 40px;
+      cursor: pointer;
     }
     .filter-bar input[type="search"]::placeholder {
       color: #b0b0b0;
@@ -169,7 +182,7 @@
     .filter-bar select:focus {
       outline: none;
       background: rgba(255 255 255 / 0.3);
-      box-shadow: 0 0 10px #4caf50;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
       color: #fff;
     }
 
@@ -552,14 +565,13 @@
     currentImageIndex = 0;
 
     const shoe = filteredShoes[idx];
-
     if (shoe.images.length > 0) {
-      mainImage.src = shoe.images[currentImageIndex];
-      mainImage.alt = shoe.title + " image " + (currentImageIndex + 1);
+      mainImage.src = shoe.images[0];
+      mainImage.alt = shoe.title + " image 1";
       arrowLeft.style.display = 'flex';
       arrowRight.style.display = 'flex';
     } else {
-      mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image';
+      mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image+Available';
       mainImage.alt = "No image available";
       arrowLeft.style.display = 'none';
       arrowRight.style.display = 'none';
