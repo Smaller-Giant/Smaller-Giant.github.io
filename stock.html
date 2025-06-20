@@ -1,574 +1,748 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SoleZone | Stock</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-  * {
-    box-sizing: border-box;
-    margin: 0; padding: 0;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #111;
-    color: #eee;
-    min-height: 100vh;
-  }
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.85);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.7);
-  }
-  header h1 {
-    font-size: 1.4rem;
-  }
-  header h1 span {
-    display: block;
-    font-size: 0.75rem;
-    color: #4caf50;
-    font-weight: 300;
-  }
-  nav {
-    display: flex;
-    gap: 18px;
-  }
-  nav a {
-    color: #ccc;
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 2px;
-  }
-  nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #4caf50;
-    transition: width 0.3s ease;
-  }
-  nav a:hover,
-  nav a.active {
-    color: #fff;
-  }
-  nav a:hover::after,
-  nav a.active::after {
-    width: 100%;
-  }
-  .menu-toggle {
-    display: none;
-    font-size: 1.5rem;
-    color: #ccc;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  .dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0; right: 0;
-    background: rgba(0,0,0,0.9);
-    flex-direction: column;
-    padding: 10px 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.7);
-    z-index: 1100;
-  }
-  .dropdown a {
-    padding: 10px 0;
-    border-bottom: 1px solid #333;
-    color: #eee;
-    font-size: 1rem;
-    text-decoration: none;
-  }
-  .dropdown a:last-child {
-    border-bottom: none;
-  }
-  .dropdown a:hover,
-  .dropdown a.active {
-    color: #4caf50;
-  }
-  .hero {
-    margin-top: 56px;
-    height: 40vh;
-    background:
-      linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-      url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .hero h1 {
-    font-size: 2.2rem;
-  }
-  .hero p {
-    font-size: 1.1rem;
-  }
-  .container {
-    max-width: 1200px;
-    margin: 40px auto 60px;
-    padding: 0 20px;
-  }
-
-  /* Search + Filter Bar */
-  .search-bar {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-  }
-  .search-bar input,
-  .search-bar select {
-    flex: 1 1 250px;
-    padding: 12px 18px;
-    font-size: 1rem;
-    border-radius: 12px;
-    border: none;
-    background: rgba(255 255 255 / 0.08);
-    color: #eee;
-    backdrop-filter: blur(10px);
-    transition: background 0.3s ease;
-  }
-  .search-bar input::placeholder {
-    color: #bbb;
-  }
-  .search-bar input:focus,
-  .search-bar select:focus {
-    outline: none;
-    background: rgba(255 255 255 / 0.15);
-  }
-
-  .stock-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 24px;
-  }
-  .item-card {
-    background: rgba(255 255 255 / 0.05);
-    border: 1px solid rgba(255 255 255 / 0.1);
-    border-radius: 12px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .item-card:hover {
-    transform: translateY(-6px);
-  }
-  .item-card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    user-select: none;
-  }
-  .item-card h3 {
-    font-size: 1.1rem;
-    color: #4caf50;
-    margin-bottom: 4px;
-  }
-  .item-card p {
-    font-size: 0.95rem;
-    color: #ccc;
-    margin-top: auto;
-  }
-
-  .no-results {
-    text-align: center;
-    font-size: 1.3rem;
-    color: #777;
-    margin-top: 40px;
-  }
-
-  /* Expanded overlay */
-  #expandedPanel {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.85);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    z-index: 2000;
-  }
-  #expandedPanel.active {
-    display: flex;
-  }
-  .expanded-content {
-    background: rgba(30,30,30,0.95);
-    border-radius: 16px;
-    max-width: 900px;
-    width: 100%;
-    max-height: 90vh;
-    display: flex;
-    gap: 24px;
-    overflow: hidden;
-    color: #ccc;
-  }
-  .image-viewer {
-    position: relative;
-    flex: 1;
-    border-radius: 16px;
-    overflow: hidden;
-    background: #222;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .image-viewer img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    user-select: none;
-  }
-  .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.55);
-    color: #4caf50;
-    font-size: 2rem;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    line-height: 36px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
-  .arrow:hover {
-    background: rgba(0,0,0,0.85);
-  }
-  .arrow-left {
-    left: 12px;
-  }
-  .arrow-right {
-    right: 12px;
-  }
-  .details {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  .details h2 {
-    color: #4caf50;
-    margin-bottom: 12px;
-  }
-  .details p {
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .buy-link {
-    display: inline-block;
-    margin-top: 20px;
-    background: #4caf50;
-    color: #111;
-    font-weight: 700;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: background 0.3s ease;
-  }
-  .buy-link:hover {
-    background: #388e3c;
-  }
-
-  footer {
-    text-align: center;
-    padding: 20px 0;
-    font-size: 0.9rem;
-    color: #aaa;
-    border-top: 1px solid #333;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SoleZone | Stock</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #111;
+      color: #eee;
+      min-height: 100vh;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      z-index: 1000;
+    }
+    header h1 {
+      font-size: 1.4rem;
+      color: #fff;
+      line-height: 1.2;
+    }
+    header h1 span {
+      display: block;
+      font-size: 0.75rem;
+      color: #4caf50;
+      font-weight: 300;
+    }
     nav {
-      display: none;
+      display: flex;
+      gap: 18px;
+    }
+    nav a {
+      color: #ccc;
+      font-size: 0.95rem;
+      padding-bottom: 2px;
+      position: relative;
+      text-decoration: none;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #4caf50;
+      transition: width 0.3s;
+    }
+    nav a:hover,
+    nav a.active {
+      color: #fff;
+    }
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
     }
     .menu-toggle {
-      display: block;
+      display: none;
+      font-size: 1.5rem;
+      color: #ccc;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
     .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: #222;
       display: none;
       flex-direction: column;
-      position: fixed;
-      top: 56px;
-      left: 0; right: 0;
-      background: rgba(0,0,0,0.95);
       padding: 10px 20px;
-      box-shadow: none;
-      z-index: 1500;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      animation: fadeInDown 0.3s ease-out forwards;
+      z-index: 1001;
     }
-    .dropdown.show {
+    .dropdown a {
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+      color: #eee;
+      font-size: 1rem;
+    }
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+    .dropdown a:hover,
+    .dropdown a.active {
+      color: #4caf50;
+    }
+    .hero {
+      margin-top: 56px;
+      height: 40vh;
+      min-height: 220px;
+      background:
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
       display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      text-align: center;
     }
-    .expanded-content {
-      flex-direction: column;
-      max-height: 80vh;
+    .hero-content h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
     }
-    .image-viewer, .details {
-      max-height: none;
+    .hero-content p {
+      font-size: 1.1rem;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+    }
+    section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Glassy search + filter container */
+    .search-filter-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      backdrop-filter: blur(14px);
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 12px;
+      padding: 12px 20px;
+      border: 1px solid rgba(255 255 255 / 0.2);
+      user-select: none;
+    }
+    /* Search input */
+    .search-filter-bar input[type="search"] {
+      flex: 1 1 300px;
+      font-size: 1rem;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255 255 255 / 0.15);
+      color: #eee;
+      transition: background 0.3s ease;
+      outline-offset: 3px;
+      outline-color: transparent;
+      user-select: text;
+    }
+    .search-filter-bar input[type="search"]:focus {
+      background: rgba(255 255 255 / 0.25);
+      outline-color: #4caf50;
+    }
+    /* Custom filter dropdown */
+    .custom-filter {
+      position: relative;
+      flex: 0 0 220px;
+      cursor: pointer;
+      color: #eee;
+      font-size: 1rem;
+      user-select: none;
+    }
+    .custom-filter > .selected {
+      background: rgba(255 255 255 / 0.15);
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255 255 255 / 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    .custom-filter > .selected:hover,
+    .custom-filter > .selected:focus {
+      background: rgba(255 255 255 / 0.25);
+      outline: none;
+    }
+    .custom-filter > .selected:after {
+      content: "▼";
+      margin-left: 8px;
+      font-size: 0.7rem;
+      color: #4caf50;
+      user-select: none;
+    }
+    .custom-filter .options {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.9);
+      border-radius: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .custom-filter.open .options {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .custom-filter .options div {
+      padding: 10px 14px;
+      cursor: pointer;
+      user-select: none;
+      color: #eee;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+    }
+    .custom-filter .options div:hover,
+    .custom-filter .options div[aria-selected="true"] {
+      background: #4caf50;
+      color: #111;
+    }
+
+    /* Grid for items */
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      min-height: 80px;
+    }
+
+    /* Basic item card */
+    .item-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease;
+      user-select: none;
+    }
+    .item-card:hover, .item-card:focus-visible {
+      transform: translateY(-5px);
+      outline: none;
+    }
+    .item-card img {
       width: 100%;
-      padding: 0;
+      height: 160px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-bottom: 8px;
+      user-select: none;
+      pointer-events: none;
+    }
+    .item-card h3 {
+      font-size: 1.1rem;
+      color: #4caf50;
+      margin-bottom: 4px;
+    }
+    .item-card p {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 0;
+    }
+
+    /* Expanded panel below the grid */
+    .expanded-panel {
+      background: rgba(40, 40, 40, 0.95);
+      border: 1px solid #4caf50;
+      border-radius: 15px;
+      margin-top: 30px;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      color: #ccc;
+      animation: fadeInUp 0.3s ease forwards;
+    }
+    /* Left side image viewer */
+    .image-viewer {
+      flex: 1 1 50%;
+      position: relative;
+      max-height: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .image-viewer img {
+      max-width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 15px;
+      user-select: none;
+      pointer-events: none;
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #4caf50;
+      font-size: 2rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    .arrow:hover {
+      background: rgba(0,0,0,0.8);
     }
     .arrow-left {
-      left: 8px;
+      left: 10px;
     }
     .arrow-right {
-      right: 8px;
+      right: 10px;
     }
-    .search-bar {
-      flex-direction: column;
+
+    /* Right side details */
+    .details {
+      flex: 1 1 50%;
+      overflow-y: auto;
+      max-height: 400px;
+      padding-right: 10px;
     }
-  }
-</style>
+    .details h2 {
+      color: #4caf50;
+      margin-bottom: 15px;
+    }
+    .details p {
+      margin-bottom: 10px;
+      line-height: 1.4;
+      font-size: 1rem;
+    }
+    .details strong {
+      color: #a5d6a7;
+    }
+    .details a.buy-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #4caf50;
+      color: #111;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .details a.buy-link:hover {
+      background: #388e3c;
+    }
+
+    .no-results {
+      grid-column: 1/-1;
+      font-size: 1.2rem;
+      color: #777;
+      text-align: center;
+      padding: 40px 0;
+      user-select: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-top: 1px solid #333;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .expanded-panel {
+        flex-direction: column;
+        max-height: none;
+      }
+      .image-viewer, .details {
+        max-height: none;
+        flex: none;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .arrow-left {
+        left: 5px;
+      }
+      .arrow-right {
+        right: 5px;
+      }
+      .search-filter-bar {
+        flex-direction: column;
+      }
+      .custom-filter {
+        flex: none;
+        width: 100%;
+      }
+      .custom-filter > .selected {
+        justify-content: center;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
 
 <header>
   <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-  <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
     <a href="info.html">Info</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <div class="dropdown" id="dropdownMenu" aria-label="Mobile menu">
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
+  <div class="dropdown" id="dropdownMenu" role="menu" aria-hidden="true">
+    <a href="index.html" role="menuitem">Home</a>
+    <a href="stock.html" class="active" role="menuitem">Stock</a>
+    <a href="info.html" role="menuitem">Info</a>
+    <a href="contact.html" role="menuitem">Contact</a>
   </div>
 </header>
 
-<section class="hero" aria-label="Page hero">
-  <div>
+<section class="hero">
+  <div class="hero-content">
     <h1>Our Current Stock</h1>
     <p>Premium Trainers from leading brands</p>
   </div>
 </section>
 
 <div class="container">
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search shoes..." aria-label="Search shoes" autocomplete="off" />
-    <select id="filterSelect" aria-label="Filter by condition">
-      <option value="">All Conditions</option>
-      <option value="New">New</option>
-      <option value="Used">Used</option>
-    </select>
-  </div>
-
-  <div class="stock-grid" id="stockGrid" aria-live="polite" aria-relevant="additions"></div>
-  <p class="no-results" id="noResults" style="display:none;">No shoes found.</p>
-</div>
-
-<div id="expandedPanel" role="dialog" aria-modal="true" aria-labelledby="shoeTitle" tabindex="-1">
-  <div class="expanded-content">
-    <div class="image-viewer">
-      <div class="arrow arrow-left" role="button" tabindex="0" aria-label="Previous image">&#10094;</div>
-      <img src="" alt="" id="mainImage" />
-      <div class="arrow arrow-right" role="button" tabindex="0" aria-label="Next image">&#10095;</div>
+  <section>
+    <div class="search-filter-bar" role="search">
+      <input type="search" id="searchInput" placeholder="Search shoes by name..." aria-label="Search shoes by name" />
+      <div class="custom-filter" id="filterSelect" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="filterLabel">
+        <div class="selected" id="filterLabel" aria-live="polite">Filter by Condition: All</div>
+        <div class="options" role="listbox" tabindex="-1">
+          <div role="option" data-value="All" aria-selected="true" tabindex="0">All</div>
+          <div role="option" data-value="New" tabindex="0">New</div>
+          <div role="option" data-value="Used" tabindex="0">Used</div>
+          <div role="option" data-value="Refurbished" tabindex="0">Refurbished</div>
+        </div>
+      </div>
     </div>
-    <div class="details" id="shoeDetails"></div>
-  </div>
+
+    <div class="stock-grid" id="stockGrid" aria-live="polite" aria-relevant="additions removals">
+      <!-- Shoe cards will appear here -->
+    </div>
+
+    <!-- Expanded details panel -->
+    <div id="expandedPanel" style="display:none;" class="expanded-panel" tabindex="0" aria-live="polite">
+      <div class="image-viewer">
+        <div class="arrow arrow-left" id="arrowLeft" role="button" tabindex="0" aria-label="Previous image">&#10094;</div>
+        <img src="" alt="Shoe image" id="mainImage" />
+        <div class="arrow arrow-right" id="arrowRight" role="button" tabindex="0" aria-label="Next image">&#10095;</div>
+      </div>
+      <div class="details" id="shoeDetails">
+        <!-- Details go here -->
+      </div>
+    </div>
+  </section>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 <script>
-  const menuToggle = document.querySelector('.menu-toggle');
-  const dropdownMenu = document.getElementById('dropdownMenu');
+  // Menu toggle for mobile
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu() {
+    if (dropdown.style.display === 'flex') {
+      dropdown.style.display = 'none';
+      dropdown.setAttribute('aria-hidden', 'true');
+    } else {
+      dropdown.style.display = 'flex';
+      dropdown.setAttribute('aria-hidden', 'false');
+    }
+  }
 
-  menuToggle.addEventListener('click', () => {
-    dropdownMenu.classList.toggle('show');
+  // Custom dropdown for filter
+  const filterSelect = document.getElementById('filterSelect');
+  const filterLabel = filterSelect.querySelector('.selected');
+  const filterOptions = filterSelect.querySelector('.options');
+  let filterOpen = false;
+
+  filterSelect.addEventListener('click', () => toggleFilter());
+  filterSelect.addEventListener('keydown', (e) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+      e.preventDefault();
+      openFilter();
+      filterOptions.querySelector('[tabindex="0"]').focus();
+    } else if (e.key === "Escape") {
+      closeFilter();
+      filterSelect.focus();
+    }
   });
 
-  const stockGrid = document.getElementById('stockGrid');
-  const noResults = document.getElementById('noResults');
-  const searchInput = document.getElementById('searchInput');
-  const filterSelect = document.getElementById('filterSelect');
+  filterOptions.addEventListener('keydown', (e) => {
+    const options = Array.from(filterOptions.children);
+    let idx = options.indexOf(document.activeElement);
 
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      idx = (idx + 1) % options.length;
+      options[idx].focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      idx = (idx - 1 + options.length) % options.length;
+      options[idx].focus();
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      selectFilter(document.activeElement);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      closeFilter();
+      filterSelect.focus();
+    }
+  });
+
+  filterOptions.querySelectorAll('div').forEach(option => {
+    option.addEventListener('click', () => selectFilter(option));
+  });
+
+  function toggleFilter() {
+    if (filterOpen) closeFilter();
+    else openFilter();
+  }
+  function openFilter() {
+    filterSelect.classList.add('open');
+    filterSelect.setAttribute('aria-expanded', 'true');
+    filterOpen = true;
+  }
+  function closeFilter() {
+    filterSelect.classList.remove('open');
+    filterSelect.setAttribute('aria-expanded', 'false');
+    filterOpen = false;
+  }
+  function selectFilter(option) {
+    const value = option.getAttribute('data-value');
+    filterLabel.textContent = `Filter by Condition: ${value}`;
+    filterOptions.querySelectorAll('div').forEach(opt => opt.setAttribute('aria-selected', 'false'));
+    option.setAttribute('aria-selected', 'true');
+    closeFilter();
+    filterValue = value;
+    applyFilters();
+  }
+
+  // Variables
+  let shoes = [];
+  let filteredShoes = [];
+  let filterValue = 'All';
+  let searchValue = '';
+  let expandedIndex = null;
+  let currentImageIndex = 0;
+
+  const stockGrid = document.getElementById('stockGrid');
+  const searchInput = document.getElementById('searchInput');
   const expandedPanel = document.getElementById('expandedPanel');
   const mainImage = document.getElementById('mainImage');
   const shoeDetails = document.getElementById('shoeDetails');
-  const prevArrow = expandedPanel.querySelector('.arrow-left');
-  const nextArrow = expandedPanel.querySelector('.arrow-right');
-
-  let shoes = [];
-  let filteredShoes = [];
-  let currentExpandedIndex = null;
-  let currentImageIndex = 0;
+  const arrowLeft = document.getElementById('arrowLeft');
+  const arrowRight = document.getElementById('arrowRight');
 
   // Load JSON data
-fetch('folder/shoes.json?v=' + Date.now())
-    .then(res => res.json())
+  fetch('folder/shoes.json')
+    .then(res => {
+      if (!res.ok) throw new Error('Network response not ok');
+      return res.json();
+    })
     .then(data => {
       shoes = data;
       filteredShoes = shoes;
-      renderGrid(filteredShoes);
+      renderShoeCards();
+      showSection();
     })
     .catch(err => {
-      stockGrid.innerHTML = '<p style="color:#f44;">Failed to load shoe data.</p>';
+      stockGrid.innerHTML = `<div class="no-results">Failed to load shoe data.</div>`;
       console.error(err);
     });
 
-  function renderGrid(list) {
+  // Show section with animation
+  function showSection() {
+    document.querySelector('section').classList.add('visible');
+  }
+
+  // Render shoe cards
+  function renderShoeCards() {
     stockGrid.innerHTML = '';
-    if (list.length === 0) {
-      noResults.style.display = 'block';
+    const results = filteredShoes.filter(shoe => shoe.name.toLowerCase().includes(searchValue.toLowerCase()));
+    if (filterValue !== 'All') {
+      filteredShoes = filteredShoes.filter(shoe => shoe.condition === filterValue);
+    } else {
+      filteredShoes = shoes;
+    }
+    const filteredResults = filteredShoes.filter(shoe => shoe.name.toLowerCase().includes(searchValue.toLowerCase()));
+
+    if (filteredResults.length === 0) {
+      stockGrid.innerHTML = `<div class="no-results">No shoes found matching your search/filter.</div>`;
+      closeExpanded();
       return;
     }
-    noResults.style.display = 'none';
 
-    list.forEach((shoe, i) => {
-      const card = document.createElement('div');
+    filteredResults.forEach((shoe, idx) => {
+      const card = document.createElement('button');
       card.className = 'item-card';
-      card.setAttribute('tabindex', '0');
-      card.setAttribute('role', 'button');
-      card.setAttribute('aria-pressed', 'false');
-      card.setAttribute('aria-label', `View details for ${shoe.title}`);
-
-      const img = document.createElement('img');
-      img.src = shoe.images && shoe.images.length > 0 ? shoe.images[0] : 'https://via.placeholder.com/300x160?text=No+Image';
-      img.alt = shoe.title;
-
-      const title = document.createElement('h3');
-      title.textContent = shoe.title;
-
-      const price = document.createElement('p');
-      price.textContent = shoe.price;
-
-      card.append(img, title, price);
-
-      // Click & keyboard to open details
-      card.addEventListener('click', () => openExpanded(i));
-      card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+      card.setAttribute('aria-expanded', 'false');
+      card.setAttribute('aria-controls', 'expandedPanel');
+      card.tabIndex = 0;
+      card.innerHTML = `
+        <img src="images/${shoe.images[0]}" alt="${shoe.name}" loading="lazy" />
+        <h3>${shoe.name}</h3>
+        <p>${shoe.condition}</p>
+      `;
+      card.addEventListener('click', () => openExpanded(idx, filteredResults));
+      card.addEventListener('keydown', (e) => {
+        if(e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          openExpanded(i);
+          openExpanded(idx, filteredResults);
         }
       });
-
       stockGrid.appendChild(card);
     });
+    closeExpanded();
   }
 
-  // Filter & search
-  function filterAndRender() {
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const conditionFilter = filterSelect.value;
-
-    filteredShoes = shoes.filter(shoe => {
-      const matchesSearch = shoe.title.toLowerCase().includes(searchTerm);
-      const matchesCondition = conditionFilter === '' || (shoe.info && shoe.info.condition === conditionFilter);
-      return matchesSearch && matchesCondition;
-    });
-    renderGrid(filteredShoes);
-  }
-
-  searchInput.addEventListener('input', filterAndRender);
-  filterSelect.addEventListener('change', filterAndRender);
-
-  // Expanded shoe detail
-  function openExpanded(index) {
-    currentExpandedIndex = index;
+  // Open expanded details panel
+  function openExpanded(idx, list) {
+    expandedIndex = idx;
     currentImageIndex = 0;
-    showExpanded();
-  }
-
-  function showExpanded() {
-    const shoe = filteredShoes[currentExpandedIndex];
+    const shoe = list[idx];
     if (!shoe) return;
-
-    // Set image and alt
-    const imgSrc = shoe.images && shoe.images.length > 0 ? shoe.images[currentImageIndex] : 'https://via.placeholder.com/600x400?text=No+Image';
-    mainImage.src = imgSrc;
-    mainImage.alt = `${shoe.title} image ${currentImageIndex + 1}`;
-
-    // Details HTML
+    expandedPanel.style.display = 'flex';
+    mainImage.src = `images/${shoe.images[currentImageIndex]}`;
+    mainImage.alt = shoe.name;
     shoeDetails.innerHTML = `
-      <h2 id="shoeTitle">${shoe.title}</h2>
-      <p><strong>Price:</strong> ${shoe.price}</p>
-      <p><strong>Condition:</strong> ${shoe.info?.condition || 'N/A'}</p>
-      <p><strong>Size:</strong> ${shoe.info?.size || 'N/A'}</p>
-      <p><strong>Color:</strong> ${shoe.info?.color || 'N/A'}</p>
-      <p><strong>Material:</strong> ${shoe.info?.material || 'N/A'}</p>
-      <p><strong>Shipping:</strong> ${shoe.info?.shipping || 'N/A'}</p>
-      <p><strong>Box:</strong> ${shoe.info?.box || 'N/A'}</p>
-      <p><strong>Authenticity:</strong> ${shoe.info?.authenticity || 'N/A'}</p>
-      <a href="${shoe.buyLink || '#'}" class="buy-link" target="_blank" rel="noopener noreferrer">Buy now</a>
+      <h2>${shoe.name}</h2>
+      <p><strong>Condition:</strong> ${shoe.condition}</p>
+      <p><strong>Price:</strong> £${shoe.price}</p>
+      <p><strong>Description:</strong> ${shoe.description}</p>
+      <a href="${shoe.buyLink}" target="_blank" rel="noopener" class="buy-link" aria-label="Buy ${shoe.name}">Buy Now</a>
     `;
-
-    expandedPanel.classList.add('active');
-    expandedPanel.focus();
+    mainImage.focus();
   }
 
-  prevArrow.addEventListener('click', e => {
-    e.stopPropagation();
-    const shoe = filteredShoes[currentExpandedIndex];
-    if (!shoe || !shoe.images?.length) return;
-    currentImageIndex = (currentImageIndex - 1 + shoe.images.length) % shoe.images.length;
-    showExpanded();
-  });
-  nextArrow.addEventListener('click', e => {
-    e.stopPropagation();
-    const shoe = filteredShoes[currentExpandedIndex];
-    if (!shoe || !shoe.images?.length) return;
-    currentImageIndex = (currentImageIndex + 1) % shoe.images.length;
-    showExpanded();
-  });
-
-  // Keyboard support for arrows
-  prevArrow.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      prevArrow.click();
-    }
-  });
-  nextArrow.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      nextArrow.click();
-    }
-  });
-
-  // Close expanded panel on background click or Escape key
-  expandedPanel.addEventListener('click', e => {
-    if (e.target === expandedPanel) {
-      closeExpanded();
-    }
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && expandedPanel.classList.contains('active')) {
-      closeExpanded();
-    }
-  });
-
+  // Close expanded details panel
   function closeExpanded() {
-    expandedPanel.classList.remove('active');
+    expandedPanel.style.display = 'none';
+    expandedIndex = null;
   }
+
+  // Image navigation
+  arrowLeft.addEventListener('click', () => {
+    if (expandedIndex === null) return;
+    const shoe = filteredShoes[expandedIndex];
+    if (!shoe) return;
+    currentImageIndex = (currentImageIndex - 1 + shoe.images.length) % shoe.images.length;
+    mainImage.src = `images/${shoe.images[currentImageIndex]}`;
+  });
+  arrowRight.addEventListener('click', () => {
+    if (expandedIndex === null) return;
+    const shoe = filteredShoes[expandedIndex];
+    if (!shoe) return;
+    currentImageIndex = (currentImageIndex + 1) % shoe.images.length;
+    mainImage.src = `images/${shoe.images[currentImageIndex]}`;
+  });
+
+  // Keyboard nav for arrows
+  arrowLeft.addEventListener('keydown', e => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      arrowLeft.click();
+    }
+  });
+  arrowRight.addEventListener('keydown', e => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      arrowRight.click();
+    }
+  });
+
+  // Search input handler
+  searchInput.addEventListener('input', (e) => {
+    searchValue = e.target.value;
+    applyFilters();
+  });
+
+  // Apply search + filter
+  function applyFilters() {
+    if (filterValue === 'All') {
+      filteredShoes = shoes.filter(shoe => shoe.name.toLowerCase().includes(searchValue.toLowerCase()));
+    } else {
+      filteredShoes = shoes.filter(shoe => shoe.condition === filterValue && shoe.name.toLowerCase().includes(searchValue.toLowerCase()));
+    }
+    renderShoeCards();
+  }
+
+  // Close filter if click outside
+  document.addEventListener('click', (e) => {
+    if (!filterSelect.contains(e.target)) {
+      closeFilter();
+    }
+  });
 </script>
+
 </body>
 </html>
