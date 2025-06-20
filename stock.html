@@ -184,12 +184,15 @@
     .item-card:hover {
       transform: translateY(-5px);
     }
-    .item-card img {
+    .item-card img.main-image {
       width: 100%;
       border-radius: 10px;
       margin-bottom: 8px;
       pointer-events: none;
       user-select: none;
+      max-height: 140px;
+      object-fit: contain;
+      background: #222;
     }
     .item-card h3 {
       font-size: 1rem;
@@ -197,11 +200,13 @@
       pointer-events: none;
       user-select: none;
     }
-    .item-card p {
-      font-size: 0.85rem;
+    .item-card p.price {
+      font-size: 0.95rem;
       color: #ccc;
+      margin-bottom: 8px;
       pointer-events: none;
       user-select: none;
+      font-weight: 600;
     }
 
     .extra-info {
@@ -210,6 +215,34 @@
       margin-top: 10px;
       font-size: 0.9rem;
       user-select: text;
+      text-align: left;
+    }
+
+    .extra-info p {
+      margin-bottom: 6px;
+    }
+
+    /* Thumbnail image slider */
+    .thumb-slider {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .thumb-slider img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+      flex-shrink: 0;
+      background: #222;
+    }
+    .thumb-slider img.selected {
+      border-color: #4caf50;
     }
 
     footer {
@@ -237,6 +270,8 @@
         transform: scale(1.15) !important;
         position: relative !important;
         z-index: 10 !important;
+        max-height: 600px;
+        overflow-y: auto;
       }
     }
     @media (max-width: 600px) {
@@ -248,6 +283,8 @@
         grid-column: span 1 !important;
         transform-origin: center center !important;
         transform: scale(1.1) !important;
+        max-height: 500px;
+        overflow-y: auto;
       }
     }
 
@@ -259,6 +296,7 @@
       transition: transform 0.4s ease, box-shadow 0.4s ease,
         background-color 0.4s ease;
       /* transform and transform-origin set dynamically */
+      overflow: visible;
     }
 
     @keyframes fadeInUp {
@@ -321,7 +359,7 @@
   <div class="container">
     <section>
       <div class="stock-grid" id="stockGrid">
-        <!-- JS will inject shoe cards here -->
+        <!-- JS injects shoe cards here -->
       </div>
     </section>
   </div>
@@ -335,62 +373,122 @@
       {
         title: "Air Max 90",
         price: "£85",
-        img: "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
-        info: "UK 9. Classic shape. Ships in 1-2 days.",
+        images: [
+          "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1528701800489-5de239f9b34f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1528701800704-9984d28f8869?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1528701800281-34d89e63b10e?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1528701800777-10803a97db04?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 9. Condition: Excellent, lightly worn.<br>Classic Air Max 90 silhouette, authentic. Ships within 2 days.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Yeezy Boost 350",
         price: "£150",
-        img: "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
-        info: "UK 10. Lightly worn. Box included.",
+        images: [
+          "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1590080877964-14ff5f10f918?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1590080877768-02bb8e5f490f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1590080877867-19a89e23f82d?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1590080877976-f1218ecf97a0?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 10. Condition: Very good, worn a few times.<br>Includes original box and tags.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Dunk Low Panda",
         price: "£110",
-        img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
-        info: "UK 8. Brand new.",
+        images: [
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1542291026-8b12d1df06f0?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1542291026-923f9484f67f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1542291026-9530e22b8c6d?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1542291026-8d0f5e4418af?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 8. Condition: Brand new, never worn.<br>Authentic Dunk Low in panda colorway.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Jordan 1 Retro",
         price: "£125",
-        img: "https://images.unsplash.com/photo-1611324212454-9b342ca7739e?auto=format&fit=crop&w=400&q=80",
-        info: "UK 9. Good condition.",
+        images: [
+          "https://images.unsplash.com/photo-1611324212454-9b342ca7739e?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1611324212470-3a9d5c9b72c6?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1611324212487-53f25615324e?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1611324212466-fabdecc7ec9c?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1611324212501-7c8e062f3a74?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 9. Condition: Good, minimal signs of wear.<br>Classic Jordan 1 Retro design.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "New Balance 550",
         price: "£95",
-        img: "https://images.unsplash.com/photo-1652166593905-bfd63168e3e1?auto=format&fit=crop&w=400&q=80",
-        info: "UK 10. Clean and trendy.",
+        images: [
+          "https://images.unsplash.com/photo-1652166593905-bfd63168e3e1?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1652166593972-2d9e1eaa5fdb?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1652166593939-097b1db792b3?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1652166593861-8c7bb7e30e25?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1652166593997-f47a2a3df5a3?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 10. Condition: Clean and trendy.<br>Perfect for casual wear.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "UltraBoost DNA",
         price: "£140",
-        img: "https://images.unsplash.com/photo-1617610223597-3bcb8ff19eac?auto=format&fit=crop&w=400&q=80",
-        info: "UK 11. Great for running.",
+        images: [
+          "https://images.unsplash.com/photo-1617610223597-3bcb8ff19eac?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1617610223623-34b2e3f8cc4a?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1617610223611-01b57f037d1b?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1617610223603-96939940a645?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1617610223619-989a6f4b40a5?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 11. Condition: Great for running.<br>Responsive cushioning.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Air Force 1",
         price: "£90",
-        img: "https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=400&q=80",
-        info: "UK 8. All-white classic.",
+        images: [
+          "https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1606813903251-bcde3e3c08cd?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1606813903294-0a876f13bf99?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1606813903274-c76d55a9f0b6?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1606813903267-62b73a40b7e3?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 8. Condition: All-white classic.<br>Reliable and stylish.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Converse High Top",
         price: "£60",
-        img: "https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05?auto=format&fit=crop&w=400&q=80",
-        info: "UK 9. Timeless style.",
+        images: [
+          "https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1612977030346-3b61a1f8b993?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1612977030377-f62a917a2a16?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1612977030340-cd39e1898419?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1612977030383-08f12b7c0aeb?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 9. Condition: Timeless style.<br>Perfect for everyday wear.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Reebok Club C",
         price: "£75",
-        img: "https://images.unsplash.com/photo-1593032465375-504baef6ed72?auto=format&fit=crop&w=400&q=80",
-        info: "UK 8. Vintage vibes.",
+        images: [
+          "https://images.unsplash.com/photo-1593032465375-504baef6ed72?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1593032465359-4dbb6ecb70a1?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1593032465391-68ff1df79a5f?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1593032465404-d7e1a8929a7d?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1593032465333-e3a4a1e34932?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 8. Condition: Vintage vibes.<br>Classic white leather.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
       {
         title: "Vans Old Skool",
         price: "£65",
-        img: "https://images.unsplash.com/photo-1551854838-546f8dd6758d?auto=format&fit=crop&w=400&q=80",
-        info: "UK 9.5. Classic black/white.",
+        images: [
+          "https://images.unsplash.com/photo-1551854838-546f8dd6758d?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1551854837-5c1a234d4523?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1551854839-1c1a45f3b8ec?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1551854836-47e87f9f7bce?auto=format&fit=crop&w=400&q=80",
+          "https://images.unsplash.com/photo-1551854835-12f728e51dff?auto=format&fit=crop&w=400&q=80",
+        ],
+        info: "Size UK 9.5. Condition: Classic black/white.<br>Well-loved and comfortable.<br><a href='https://www.vinted.co.uk/member/233654539' target='_blank' style='color:#4caf50;'>Buy now</a>",
       },
     ];
 
@@ -402,6 +500,12 @@
         c.style.transform = "";
         c.style.transformOrigin = "";
         c.querySelector(".extra-info").style.display = "none";
+
+        // Reset main image to first
+        const mainImg = c.querySelector("img.main-image");
+        if (mainImg && c.dataset.firstImg) {
+          mainImg.src = c.dataset.firstImg;
+        }
       });
     }
 
@@ -410,19 +514,18 @@
       clearExpanded();
       if (!isExpanded) {
         card.classList.add("expanded");
-        card.querySelector(".extra-info").style.display = "block";
+        const extra = card.querySelector(".extra-info");
+        extra.style.display = "block";
 
         // Determine if card is on left or right half of grid
         const rect = card.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const isLeft = rect.left + rect.width / 2 < viewportWidth / 2;
 
-        // Calculate translateX and scale based on side
         let translateX = 0;
         let scale = 1.25;
 
         if (viewportWidth > 1024) {
-          // On large screens: expand and shift left or right accordingly
           if (isLeft) {
             translateX = -Math.min(rect.left - 20, rect.width * 0.5);
             card.style.transformOrigin = "left center";
@@ -432,12 +535,10 @@
           }
           card.style.transform = `translateX(${translateX}px) scale(${scale})`;
         } else {
-          // Smaller screens just scale center
           card.style.transformOrigin = "center center";
           card.style.transform = `scale(${viewportWidth <= 600 ? 1.1 : 1.15})`;
         }
 
-        // Scroll the expanded card into view smoothly
         card.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
@@ -446,16 +547,50 @@
     shoes.forEach((shoe) => {
       const card = document.createElement("div");
       card.className = "item-card";
+      card.dataset.firstImg = shoe.images[0];
       card.innerHTML = `
-        <img src="${shoe.img}" alt="${shoe.title}" />
+        <img src="${shoe.images[0]}" alt="${shoe.title}" class="main-image" />
         <h3>${shoe.title}</h3>
-        <p>${shoe.price}</p>
-        <div class="extra-info">${shoe.info}<br /><a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a></div>
+        <p class="price">${shoe.price}</p>
+        <div class="extra-info">
+          <p>${shoe.info}</p>
+          <div class="thumb-slider" aria-label="Image thumbnails for ${shoe.title}">
+            ${shoe.images
+              .map(
+                (img, idx) =>
+                  `<img src="${img}" alt="${shoe.title} image ${idx + 1}" data-idx="${idx}" ${
+                    idx === 0 ? "class='selected'" : ""
+                  } />`
+              )
+              .join("")}
+          </div>
+        </div>
       `;
+
+      // Hide extra info initially
+      card.querySelector(".extra-info").style.display = "none";
 
       card.addEventListener("click", (e) => {
         e.stopPropagation();
         toggleExpand(card);
+      });
+
+      // Thumbnail click to update main image
+      card.addEventListener("click", (e) => {
+        if (e.target.closest(".thumb-slider img")) {
+          const imgEl = e.target.closest(".thumb-slider img");
+          const mainImg = card.querySelector("img.main-image");
+          if (mainImg && imgEl) {
+            mainImg.src = imgEl.src;
+
+            // Update selected thumbnail border
+            card.querySelectorAll(".thumb-slider img").forEach((thumb) => {
+              thumb.classList.remove("selected");
+            });
+            imgEl.classList.add("selected");
+          }
+          e.stopPropagation();
+        }
       });
 
       grid.appendChild(card);
