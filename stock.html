@@ -1,163 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SoleZone | Stock</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🅂</text></svg>">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SoleZone | Stock</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh;padding-top:60px;}
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
+  header{
+    position:fixed;top:0;width:100%;z-index:1000;
+    background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
+    padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7);
+  }
+  header h1{font-size:1.4rem;color:#fff;}
+  nav{display:flex;gap:18px;}
+  nav a{
+    color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px;
+    text-decoration:none;transition:color .3s;
+  }
+  nav a::after{
+    content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+    background:#4caf50;transition:width .3s;
+  }
+  nav a:hover, nav a.active{color:#fff;}
+  nav a:hover::after, nav a.active::after{width:100%;}
 
-    header{
-      position:fixed;top:0;width:100%;z-index:1000;
-      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
-      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
-    }
-    header h1{font-size:1.4rem;color:#fff}
-    
-    a{color:inherit;text-decoration:none;transition:color .3s}
-    a:visited{color:inherit}
+  .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer;}
+  .dropdown{
+    position:absolute;top:100%;left:0;right:0;
+    background:#222;display:none;flex-direction:column;padding:10px 20px;
+    box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards;
+  }
+  .dropdown a{
+    padding:12px 0;border-bottom:1px solid #333;
+    color:#eee;font-size:1rem;
+  }
+  .dropdown a:last-child{border-bottom:none;}
+  .dropdown a:hover,.dropdown a.active{color:#4caf50;}
 
-    nav{display:flex;gap:18px}
-    nav a{
-      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
-    }
-    nav a::after{
-      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
-      background:#4caf50;transition:width .3s
-    }
-    nav a:hover,nav a.active{color:#fff}
-    nav a:hover::after,nav a.active::after{width:100%}
+  .container{max-width:1000px;margin:0 auto;padding:0 20px;}
+  .stock-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:20px;
+  }
+  .item-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;
+    padding:10px;
+    text-align:center;
+    cursor:pointer;
+    transition:transform .3s ease, box-shadow .3s ease;
+    position: relative;
+    z-index: 1;
+  }
+  .item-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(76,175,80,0.5);
+  }
+  .item-card img{
+    width:100%;
+    border-radius:10px;
+    margin-bottom:8px;
+  }
+  .item-card h3{
+    font-size:1rem;
+    color:#4caf50;
+    margin-bottom:4px;
+  }
+  .item-card p{
+    font-size:.85rem;
+    color:#ccc;
+  }
 
-    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+  /* Expanded overlay */
+  .expanded-overlay {
+    position: fixed;
+    top: 60px; /* below header */
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px);
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .expanded-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .expanded-card {
+    background: #222;
+    border-radius: 14px;
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    color: #ccc;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(76,175,80,0.8);
+  }
+  .expanded-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .expanded-card h2 {
+    color: #4caf50;
+    margin-bottom: 10px;
+  }
+  .expanded-card p {
+    margin-bottom: 10px;
+  }
+  .close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: #4caf50;
+    cursor: pointer;
+  }
+  /* Slider arrows */
+  .slider-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .slider-controls button {
+    background: #4caf50;
+    border: none;
+    color: #111;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  /* Hide original item card when expanded */
+  .item-card.hidden {
+    visibility: hidden;
+  }
 
-    .dropdown{
-      position:absolute;top:100%;left:0;right:0;
-      background:#222;display:none;flex-direction:column;padding:10px 20px;
-      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
+  @media(max-width:768px){
+    .menu-toggle{display:block;}
+    nav{display:none;}
+    .expanded-card {
+      max-width: 90vw;
+      height: 80vh;
+      overflow-y: auto;
     }
-    .dropdown a{
-      padding:12px 0;border-bottom:1px solid #333;
-      color:#eee;font-size:1rem
-    }
-    .dropdown a:last-child{border-bottom:none}
-    .dropdown a:hover,.dropdown a.active{color:#4caf50}
-
-    .hero{
-      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
-      position:relative;display:flex;align-items:center;justify-content:center
-    }
-    .hero-content{position:relative;text-align:center;color:#fff}
-    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
-    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
-
-    .container{max-width:1000px;margin:60px auto;padding:0 20px}
-    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
-    section.visible{opacity:1;transform:translateY(0)}
-
-    .stock-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:20px;
-    }
-    .item-card{
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:12px;
-      padding:10px;
-      text-align:center;
-      cursor:pointer;
-      transition:.3s;
-      backdrop-filter:blur(8px);
-      overflow: hidden;
-      position: relative;
-    }
-    .item-card:hover{transform:translateY(-5px)}
-    .item-card img.main-img{
-      width:100%;
-      border-radius:10px;
-      margin-bottom:8px;
-      user-select:none;
-    }
-    .item-card h3{font-size:1rem;color:#4caf50;margin-bottom:4px}
-    .item-card p.price{font-size:.9rem;color:#ccc;margin-bottom:6px}
-
-    /* EXPANDED */
-    .item-card.expanded{
-      grid-column: 1 / -1;
-      background:#222;
-      padding:20px;
-      cursor: default;
-      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.7);
-      transform: translateY(-10px);
-      z-index: 10;
-    }
-
-    /* slider */
-    .slider {
-      position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      height: 250px;
-    }
-    .slider img {
-      display: none;
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 10px;
-      user-select:none;
-    }
-    .slider img.active {
-      display: block;
-    }
-    .slider button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      font-size: 1.8rem;
-      padding: 8px 14px;
-      cursor: pointer;
-      z-index: 2;
-      border-radius: 50%;
-      user-select:none;
-    }
-    .slider .prev { left: 12px; }
-    .slider .next { right: 12px; }
-
-    /* info */
-    .extra-info p.details {
-      color:#ccc;
-      font-size:1rem;
-      margin-bottom: 14px;
-      line-height: 1.4;
-      user-select:text;
-    }
-    .extra-info a.buy-btn {
-      color:#4caf50;
-      font-weight: 600;
-      text-decoration: underline;
-      user-select:none;
-    }
-
-    /* footer */
-    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
-
-    @media(max-width:768px){
-      .menu-toggle{display:block}
-      nav{display:none}
-    }
-
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-  </style>
+  }
+</style>
 </head>
 <body>
 
@@ -178,236 +179,163 @@
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-content">
-    <h1>Our Current Stock</h1>
-    <p>Tap a product to learn more and buy.</p>
-  </div>
-</section>
-
 <div class="container">
   <section>
     <div class="stock-grid" id="stockGrid">
 
-      <!-- ITEMS WILL BE INJECTED HERE BY JS -->
+      <div class="item-card" data-index="0">
+        <img src="https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80" alt="Air Max 90" />
+        <h3>Air Max 90</h3>
+        <p>£85</p>
+      </div>
+
+      <div class="item-card" data-index="1">
+        <img src="https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80" alt="Yeezy Boost 350" />
+        <h3>Yeezy Boost 350</h3>
+        <p>£150</p>
+      </div>
+
+      <div class="item-card" data-index="2">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Dunk Low Panda" />
+        <h3>Dunk Low Panda</h3>
+        <p>£110</p>
+      </div>
+
+      <!-- Add more shoes as needed -->
 
     </div>
   </section>
 </div>
 
-<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+<!-- Expanded shoe overlay -->
+<div class="expanded-overlay" id="expandedOverlay" tabindex="-1" aria-hidden="true">
+  <div class="expanded-card" role="dialog" aria-modal="true" aria-labelledby="expandedTitle">
+    <button class="close-btn" aria-label="Close expanded view" id="closeExpanded">&times;</button>
+    <div class="slider-controls">
+      <button id="prevBtn" aria-label="Previous photo">←</button>
+      <button id="nextBtn" aria-label="Next photo">→</button>
+    </div>
+    <img src="" alt="" id="expandedImg" />
+    <h2 id="expandedTitle"></h2>
+    <p id="expandedPrice"></p>
+    <p id="expandedDesc"></p>
+    <a href="#" target="_blank" id="expandedBuy" style="color:#4caf50; font-weight:bold;">Buy Now on Vinted</a>
+  </div>
+</div>
+
+<footer style="text-align:center; padding:20px 0; font-size:.9rem; color:#aaa; border-top:1px solid #333;">
+  This site is for display only. All orders handled through Vinted or eBay.
+</footer>
 
 <script>
-  const dropdown = document.getElementById('dropdownMenu');
-  function toggleMenu(){
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
-
-  document.querySelectorAll('section').forEach(sec=>{
-    const obs = new IntersectionObserver(e=>{
-      if(e[0].isIntersecting){
-        sec.classList.add('visible');
-        obs.disconnect();
-      }
-    },{threshold:.2});
-    obs.observe(sec);
-  });
-
-  // Shoe data
   const shoes = [
     {
       title: "Air Max 90",
       price: "£85",
       images: [
         "https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1600180758890-bb5a1c8e3a9b?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1617642022322-38f01a32b9d4?auto=format&fit=crop&w=600&q=80"
+        "https://images.unsplash.com/photo-1600180758890-bb5a1c8e3a9b?auto=format&fit=crop&w=600&q=80"
       ],
-      details: "Classic silhouette in great condition. UK 9. Ships in 1-2 days."
+      desc: "Classic silhouette in great condition. UK 9. Ships in 1-2 days.",
+      buyLink: "https://www.vinted.co.uk/member/233654539"
     },
     {
       title: "Yeezy Boost 350",
       price: "£150",
       images: [
         "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1610394212959-df9b20e8cd5e?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1593032465171-8bc1b4fa0c8b?auto=format&fit=crop&w=600&q=80"
+        "https://images.unsplash.com/photo-1617642022322-38f01a32b9d4?auto=format&fit=crop&w=600&q=80"
       ],
-      details: "Lightly worn, UK 10. Includes original box."
+      desc: "Lightly worn, UK 10. Includes original box.",
+      buyLink: "https://www.vinted.co.uk/member/233654539"
     },
     {
       title: "Dunk Low Panda",
       price: "£110",
       images: [
         "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1610394212959-df9b20e8cd5e?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1617642022322-38f01a32b9d4?auto=format&fit=crop&w=600&q=80"
+        "https://images.unsplash.com/photo-1610394212959-df9b20e8cd5e?auto=format&fit=crop&w=600&q=80"
       ],
-      details: "Brand new. UK 8. One of the cleanest looks in rotation right now."
-    },
-    {
-      title: "Jordan 1 Retro",
-      price: "£120",
-      images: [
-        "https://images.unsplash.com/photo-1593032465171-8bc1b4fa0c8b?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1617642022322-38f01a32b9d4?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1600180758890-bb5a1c8e3a9b?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "UK 9, Lightly worn. A timeless classic."
-    },
-    {
-      title: "Air Force 1",
-      price: "£95",
-      images: [
-        "https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1593032465375-504baef6ed72?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1617610223597-3bcb8ff19eac?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "All-white classic. UK 8.5. Ships same day. Includes box and tags."
-    },
-    {
-      title: "New Balance 550",
-      price: "£130",
-      images: [
-        "https://images.unsplash.com/photo-1652166593905-bfd63168e3e1?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "Brand new with tags. UK 10."
-    },
-    {
-      title: "Converse High Top",
-      price: "£60",
-      images: [
-        "https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1652166593905-bfd63168e3e1?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "Classic design. UK 9."
-    },
-    {
-      title: "UltraBoost DNA",
-      price: "£140",
-      images: [
-        "https://images.unsplash.com/photo-1617610223597-3bcb8ff19eac?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1652166593905-bfd63168e3e1?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "Running comfort. UK 11."
-    },
-    {
-      title: "Reebok Club C",
-      price: "£75",
-      images: [
-        "https://images.unsplash.com/photo-1593032465375-504baef6ed72?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "Vintage style. UK 8."
-    },
-    {
-      title: "Vans Old Skool",
-      price: "£65",
-      images: [
-        "https://images.unsplash.com/photo-1551854838-546f8dd6758d?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=600&q=80",
-        "https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05?auto=format&fit=crop&w=600&q=80"
-      ],
-      details: "Black and white classic. UK 9.5."
-    },
+      desc: "Brand new. UK 8. One of the cleanest looks in rotation right now.",
+      buyLink: "https://www.vinted.co.uk/member/233654539"
+    }
   ];
 
   const stockGrid = document.getElementById('stockGrid');
+  const expandedOverlay = document.getElementById('expandedOverlay');
+  const expandedImg = document.getElementById('expandedImg');
+  const expandedTitle = document.getElementById('expandedTitle');
+  const expandedPrice = document.getElementById('expandedPrice');
+  const expandedDesc = document.getElementById('expandedDesc');
+  const expandedBuy = document.getElementById('expandedBuy');
+  const closeExpanded = document.getElementById('closeExpanded');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
 
-  // Render shoes
-  shoes.forEach((shoe, index) => {
-    const div = document.createElement('div');
-    div.className = 'item-card';
-    div.tabIndex = 0;
-    div.innerHTML = `
-      <img class="main-img" src="${shoe.images[0]}" alt="${shoe.title}" />
-      <h3>${shoe.title}</h3>
-      <p class="price">${shoe.price}</p>
-      <div class="extra-info" style="display:none; color:#ccc; margin-top:10px;">
-        <div class="slider" data-index="0">
-          <button class="prev" aria-label="Previous image">←</button>
-          ${shoe.images.map((img, i) =>
-            `<img src="${img}" class="${i === 0 ? 'active' : ''}" alt="${shoe.title} photo ${i + 1}">`
-          ).join('')}
-          <button class="next" aria-label="Next image">→</button>
-        </div>
-        <p class="details">${shoe.details}</p>
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener" class="buy-btn">Buy now</a>
-      </div>
-    `;
-    div.addEventListener('click', e => {
-      // Don't toggle when clicking slider buttons
-      if (e.target.tagName === 'BUTTON') return;
-      toggleExpand(div);
-    });
-    stockGrid.appendChild(div);
-  });
+  let currentIndex = 0;
+  let currentPhotoIndex = 0;
+  let expandedCard = null;
 
-  function toggleExpand(card) {
-    const extra = card.querySelector('.extra-info');
-    const isExpanded = extra.style.display === 'block';
+  function openExpanded(index) {
+    currentIndex = index;
+    currentPhotoIndex = 0;
+    const shoe = shoes[index];
+    expandedImg.src = shoe.images[currentPhotoIndex];
+    expandedImg.alt = shoe.title;
+    expandedTitle.textContent = shoe.title;
+    expandedPrice.textContent = shoe.price;
+    expandedDesc.textContent = shoe.desc;
+    expandedBuy.href = shoe.buyLink;
+    expandedOverlay.classList.add('show');
+    expandedOverlay.setAttribute('aria-hidden', 'false');
 
-    // Collapse all first
-    document.querySelectorAll('.extra-info').forEach(e => e.style.display = 'none');
-    document.querySelectorAll('.item-card').forEach(c => {
-      c.classList.remove('expanded');
-    });
-
-    if (!isExpanded) {
-      extra.style.display = 'block';
-      card.classList.add('expanded');
-      // reset slider index to 0
-      const slider = extra.querySelector('.slider');
-      slider.dataset.index = 0;
-      updateSlider(slider, 0);
-    }
+    // Hide original card
+    if(expandedCard) expandedCard.classList.remove('hidden');
+    expandedCard = stockGrid.querySelector(`.item-card[data-index="${index}"]`);
+    if (expandedCard) expandedCard.classList.add('hidden');
   }
 
-  function updateSlider(slider, newIndex) {
-    const imgs = slider.querySelectorAll('img');
-    imgs.forEach((img, i) => {
-      img.classList.toggle('active', i === newIndex);
-    });
+  function closeExpandedView() {
+    expandedOverlay.classList.remove('show');
+    expandedOverlay.setAttribute('aria-hidden', 'true');
+    if(expandedCard) expandedCard.classList.remove('hidden');
+    expandedCard = null;
   }
 
-  // Delegate slider button clicks
-  document.body.addEventListener('click', e => {
-    if (e.target.classList.contains('prev') || e.target.classList.contains('next')) {
-      e.stopPropagation();
-      const slider = e.target.closest('.slider');
-      let current = parseInt(slider.dataset.index, 10);
-      const imgs = slider.querySelectorAll('img');
-      if (e.target.classList.contains('next')) {
-        current = (current + 1) % imgs.length;
+  stockGrid.querySelectorAll('.item-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.getAttribute('data-index'));
+      if (expandedOverlay.classList.contains('show') && expandedCard === card) {
+        closeExpandedView();
       } else {
-        current = (current - 1 + imgs.length) % imgs.length;
+        openExpanded(idx);
       }
-      slider.dataset.index = current;
-      updateSlider(slider, current);
-    }
+    });
   });
 
-  // Animate hero text fade-in
-  document.querySelectorAll('section').forEach(sec=>{
-    const obs = new IntersectionObserver(e=>{
-      if(e[0].isIntersecting){
-        sec.classList.add('visible');
-        obs.disconnect();
-      }
-    },{threshold:.2});
-    obs.observe(sec);
+  closeExpanded.addEventListener('click', closeExpandedView);
+  expandedOverlay.addEventListener('click', e => {
+    if (e.target === expandedOverlay) closeExpandedView();
   });
 
-  // Mobile menu toggle
-  function toggleMenu(){
+  prevBtn.addEventListener('click', () => {
+    const shoe = shoes[currentIndex];
+    currentPhotoIndex = (currentPhotoIndex - 1 + shoe.images.length) % shoe.images.length;
+    expandedImg.src = shoe.images[currentPhotoIndex];
+  });
+
+  nextBtn.addEventListener('click', () => {
+    const shoe = shoes[currentIndex];
+    currentPhotoIndex = (currentPhotoIndex + 1) % shoe.images.length;
+    expandedImg.src = shoe.images[currentPhotoIndex];
+  });
+
+  // Hamburger menu toggle
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu() {
     dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
   }
-</script>
 
+</script>
 </body>
 </html>
