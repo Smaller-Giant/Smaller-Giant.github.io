@@ -191,36 +191,9 @@
       color: #ccc;
       margin-bottom: 8px;
     }
-    .extra-info {
-      color: #ccc;
-      margin-top: 10px;
-      font-size: 0.9rem;
-      display: none;
-      text-align: left;
-      overflow-y: auto;
-      max-height: 280px;
-    }
-    .image-gallery {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-      overflow-x: auto;
-    }
-    .image-gallery img {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.3s;
-    }
-    .image-gallery img.selected {
-      border-color: #4caf50;
-    }
     .expanded {
       grid-column: 1 / -1 !important;
-      height: 480px;
+      height: 360px; /* Much smaller height */
       padding: 20px;
       display: flex;
       gap: 20px;
@@ -230,18 +203,19 @@
       flex-wrap: nowrap;
     }
     .expanded img.main-img {
-      width: 50%;
+      width: 55%;
       height: 100%;
       border-radius: 15px;
       object-fit: contain;
       margin-bottom: 0;
       flex-shrink: 0;
       position: relative;
+      background: #222;
     }
     /* Arrows for main image */
     .expanded .main-img-container {
       position: relative;
-      width: 50%;
+      width: 55%;
       height: 100%;
     }
     .expanded .main-img {
@@ -259,10 +233,10 @@
       background: rgba(0,0,0,0.5);
       color: #4caf50;
       font-size: 2rem;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      line-height: 40px;
+      line-height: 36px;
       text-align: center;
       cursor: pointer;
       user-select: none;
@@ -282,19 +256,30 @@
       right: 10px;
     }
     .expanded .details {
-      width: 50%;
+      width: 45%;
       overflow-y: auto;
       color: #ccc;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .expanded .details h3 {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: #4caf50;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .expanded .details p {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       line-height: 1.3;
+    }
+    .expanded .details a {
+      color: #4caf50;
+      font-weight: 600;
+      margin-top: 15px;
+      text-decoration: none;
+      font-size: 1.1rem;
     }
     footer {
       text-align: center;
@@ -321,15 +306,6 @@
       }
       .item-card {
         height: auto;
-      }
-      .extra-info {
-        max-height: none;
-      }
-      .arrow {
-        font-size: 1.5rem;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
       }
     }
     @keyframes fadeInUp {
@@ -403,7 +379,6 @@
       {
         title: "Air Max 90",
         price: "£85",
-        mainImg: "images/IMG-20250620-WA0001.jpg",
         images: [
           "images/IMG-20250620-WA0001.jpg",
           "images/IMG-20250620-WA0002.jpg",
@@ -412,207 +387,167 @@
           "images/IMG-20250620-WA0007.jpg",
         ],
         info:
-          "Size UK 9. Classic shape. Ships in 1-2 days.<br>Condition: New<br>Color: White/Black<br>Material: Leather and mesh<br>Includes original box and tags.<br>Authenticity guaranteed.",
+          "Size UK 9<br>" +
+          "Condition: New<br>" +
+          "Color: White/Black<br>" +
+          "Material: Leather and mesh<br>" +
+          "Ships in 1-2 days<br>" +
+          "Includes original box and tags<br>" +
+          "Authenticity guaranteed",
       },
       {
         title: "Yeezy Boost 350",
         price: "£150",
-        mainImg: "images/IMG-20250620-WA0002.jpg",
-        images: [
-          "images/IMG-20250620-WA0002.jpg",
-          "images/IMG-20250620-WA0001.jpg",
-          "images/IMG-20250620-WA0003.jpg",
-          "images/IMG-20250620-WA0006.jpg",
-          "images/IMG-20250620-WA0007.jpg",
-        ],
-        info:
-          "Size UK 10. Lightly worn. Box included.<br>Condition: Very good<br>Color: Beige<br>Material: Primeknit<br>Comfortable and stylish.",
+        images: [],
+        info: "",
       },
       {
         title: "Dunk Low Panda",
         price: "£110",
-        mainImg: "images/IMG-20250620-WA0003.jpg",
-        images: [
-          "images/IMG-20250620-WA0003.jpg",
-          "images/IMG-20250620-WA0001.jpg",
-          "images/IMG-20250620-WA0002.jpg",
-          "images/IMG-20250620-WA0006.jpg",
-          "images/IMG-20250620-WA0007.jpg",
-        ],
-        info:
-          "Size UK 8. Brand new.<br>Condition: New<br>Color: Black and white<br>Material: Leather<br>Rare colorway.",
+        images: [],
+        info: "",
       },
       {
         title: "Jordan 1 Retro",
         price: "£125",
-        mainImg: "images/IMG-20250620-WA0006.jpg",
-        images: [
-          "images/IMG-20250620-WA0006.jpg",
-          "images/IMG-20250620-WA0001.jpg",
-          "images/IMG-20250620-WA0002.jpg",
-          "images/IMG-20250620-WA0003.jpg",
-          "images/IMG-20250620-WA0007.jpg",
-        ],
-        info:
-          "Size UK 9. Good condition.<br>Condition: Used<br>Color: Red/Black/White<br>Material: Leather<br>Classic retro style.",
+        images: [],
+        info: "",
       },
       {
         title: "New Balance 550",
         price: "£95",
-        mainImg: "images/IMG-20250620-WA0007.jpg",
-        images: [
-          "images/IMG-20250620-WA0007.jpg",
-          "images/IMG-20250620-WA0001.jpg",
-          "images/IMG-20250620-WA0002.jpg",
-          "images/IMG-20250620-WA0003.jpg",
-          "images/IMG-20250620-WA0006.jpg",
-        ],
-        info:
-          "Size UK 10. Clean and trendy.<br>Condition: New<br>Color: White/Green<br>Material: Leather<br>Limited edition.",
+        images: [],
+        info: "",
       },
     ];
 
     const grid = document.getElementById('stockGrid');
     let expandedIndex = null;
-    let currentMainImgIndex = 0;
+    let currentImgIndex = 0;
 
     function closeExpanded() {
       if (expandedIndex !== null) {
-        const expandedCard = grid.children[expandedIndex];
-        expandedCard.classList.remove('expanded');
-        const details = expandedCard.querySelector('.details');
-        details.style.display = 'none';
-        const gallery = expandedCard.querySelector('.image-gallery');
-        gallery.style.display = 'none';
-        expandedCard.querySelector('img.main-img').style.display = 'none';
-        expandedCard.querySelector('.main-img-container').style.display = 'none';
-        expandedCard.querySelector('img.thumb').style.display = 'block';
-        expandedCard.querySelector('h3').style.display = 'block';
-        expandedCard.querySelector('p').style.display = 'block';
+        const card = grid.children[expandedIndex];
+        card.classList.remove('expanded');
+
+        // reset card contents for normal display
+        card.querySelector('.main-img-container').style.display = 'none';
+        card.querySelector('img.main-img').style.display = 'none';
+        card.querySelector('h3').style.display = 'block';
+        card.querySelector('p').style.display = 'block';
+        card.querySelector('.details').style.display = 'none';
+
         expandedIndex = null;
       }
     }
 
-    function showMainImage(card, index, imgIndex) {
+    function showMainImage(card, shoeIndex, imgIndex) {
       const mainImg = card.querySelector('img.main-img');
-      mainImg.src = shoes[index].images[imgIndex];
+      mainImg.src = shoes[shoeIndex].images[imgIndex];
       mainImg.dataset.index = imgIndex;
     }
 
     function expandItem(index) {
       if (expandedIndex !== null) {
-        closeExpanded();
-        if (expandedIndex === index) return; // clicking same closes it
+        if (expandedIndex === index) {
+          closeExpanded();
+          return;
+        } else {
+          closeExpanded();
+        }
       }
-
       expandedIndex = index;
-      currentMainImgIndex = 0;
+      currentImgIndex = 0;
 
       const card = grid.children[index];
       card.classList.add('expanded');
 
-      // Show main big image container & hide thumbnail and text
-      card.querySelector('img.main-img').style.display = 'block';
-      card.querySelector('.main-img-container').style.display = 'flex';
-      card.querySelector('img.thumb').style.display = 'none';
+      // Show main image container and main image for first shoe only
+      if (index === 0) {
+        card.querySelector('.main-img-container').style.display = 'block';
+        card.querySelector('img.main-img').style.display = 'block';
+        showMainImage(card, index, currentImgIndex);
+      } else {
+        card.querySelector('.main-img-container').style.display = 'none';
+        card.querySelector('img.main-img').style.display = 'none';
+      }
+
       card.querySelector('h3').style.display = 'none';
       card.querySelector('p').style.display = 'none';
 
-      // Set main image
-      showMainImage(card, index, currentMainImgIndex);
-
-      // Show details and gallery
       const details = card.querySelector('.details');
-      details.innerHTML = `
-        <h3>${shoes[index].title}</h3>
-        <p><strong>Price:</strong> ${shoes[index].price}</p>
-        <p>${shoes[index].info}</p>
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" style="color:#4caf50;">Buy now</a>
-      `;
-      details.style.display = 'block';
-
-      const gallery = card.querySelector('.image-gallery');
-      gallery.innerHTML = '';
-      shoes[index].images.forEach((imgSrc, i) => {
-        const thumb = document.createElement('img');
-        thumb.src = imgSrc;
-        thumb.classList.add('thumb');
-        if (i === currentMainImgIndex) thumb.classList.add('selected');
-        thumb.addEventListener('click', () => {
-          currentMainImgIndex = i;
-          showMainImage(card, index, i);
-          // Update selection border
-          gallery.querySelectorAll('img.thumb').forEach((t, idx) => {
-            t.classList.toggle('selected', idx === i);
-          });
-        });
-        gallery.appendChild(thumb);
-      });
-      gallery.style.display = 'flex';
+      if (index === 0) {
+        details.innerHTML = `
+          <h3>${shoes[index].title}</h3>
+          <p><strong>Price:</strong> ${shoes[index].price}</p>
+          <p>${shoes[index].info}</p>
+          <a href="https://www.vinted.co.uk/member/233654539" target="_blank">Buy now on Vinted</a>
+        `;
+        details.style.display = 'flex';
+      } else {
+        details.style.display = 'none';
+      }
     }
 
     function changeMainImage(direction) {
-      if (expandedIndex === null) return;
-      currentMainImgIndex += direction;
-      if (currentMainImgIndex < 0) currentMainImgIndex = shoes[expandedIndex].images.length - 1;
-      if (currentMainImgIndex >= shoes[expandedIndex].images.length) currentMainImgIndex = 0;
-      const card = grid.children[expandedIndex];
-      showMainImage(card, expandedIndex, currentMainImgIndex);
+      if (expandedIndex === null || expandedIndex !== 0) return;
+      currentImgIndex += direction;
+      if (currentImgIndex < 0) currentImgIndex = shoes[0].images.length - 1;
+      if (currentImgIndex >= shoes[0].images.length) currentImgIndex = 0;
 
-      // Update gallery highlight
-      const gallery = card.querySelector('.image-gallery');
-      gallery.querySelectorAll('img.thumb').forEach((t, idx) => {
-        t.classList.toggle('selected', idx === currentMainImgIndex);
-      });
+      const card = grid.children[0];
+      showMainImage(card, 0, currentImgIndex);
     }
 
     function createCard(shoe, index) {
       const card = document.createElement('div');
       card.className = 'item-card';
 
-      // Thumbnail image
+      // Thumbnail or blank placeholder
       const thumbImg = document.createElement('img');
-      thumbImg.src = shoe.mainImg;
+      if (shoe.images.length > 0) {
+        thumbImg.src = shoe.images[0];
+      } else {
+        thumbImg.src = 'https://via.placeholder.com/300x160?text=No+Image';
+      }
       thumbImg.alt = shoe.title;
-      thumbImg.className = 'thumb';
       card.appendChild(thumbImg);
 
-      // Main large image container (hidden initially)
+      // Main large image container with arrows for first shoe only
       const mainImgContainer = document.createElement('div');
       mainImgContainer.className = 'main-img-container';
       mainImgContainer.style.display = 'none';
 
-      // Left arrow
-      const arrowLeft = document.createElement('div');
-      arrowLeft.className = 'arrow arrow-left';
-      arrowLeft.textContent = '‹';
-      arrowLeft.title = 'Previous Image';
-      arrowLeft.addEventListener('click', (e) => {
-        e.stopPropagation();
-        changeMainImage(-1);
-      });
-      mainImgContainer.appendChild(arrowLeft);
+      if (index === 0) {
+        const arrowLeft = document.createElement('div');
+        arrowLeft.className = 'arrow arrow-left';
+        arrowLeft.textContent = '‹';
+        arrowLeft.title = 'Previous Image';
+        arrowLeft.addEventListener('click', e => {
+          e.stopPropagation();
+          changeMainImage(-1);
+        });
+        mainImgContainer.appendChild(arrowLeft);
 
-      // Main big image
-      const mainImg = document.createElement('img');
-      mainImg.className = 'main-img';
-      mainImg.style.display = 'none';
-      mainImgContainer.appendChild(mainImg);
+        const mainImg = document.createElement('img');
+        mainImg.className = 'main-img';
+        mainImg.style.display = 'none';
+        mainImgContainer.appendChild(mainImg);
 
-      // Right arrow
-      const arrowRight = document.createElement('div');
-      arrowRight.className = 'arrow arrow-right';
-      arrowRight.textContent = '›';
-      arrowRight.title = 'Next Image';
-      arrowRight.addEventListener('click', (e) => {
-        e.stopPropagation();
-        changeMainImage(1);
-      });
-      mainImgContainer.appendChild(arrowRight);
+        const arrowRight = document.createElement('div');
+        arrowRight.className = 'arrow arrow-right';
+        arrowRight.textContent = '›';
+        arrowRight.title = 'Next Image';
+        arrowRight.addEventListener('click', e => {
+          e.stopPropagation();
+          changeMainImage(1);
+        });
+        mainImgContainer.appendChild(arrowRight);
+      }
 
       card.appendChild(mainImgContainer);
 
-      // Title & Price (visible in normal card)
+      // Title & price
       const title = document.createElement('h3');
       title.textContent = shoe.title;
       card.appendChild(title);
@@ -621,16 +556,11 @@
       price.textContent = shoe.price;
       card.appendChild(price);
 
-      // Details + gallery container (hidden initially)
+      // Details container for expanded info
       const details = document.createElement('div');
       details.className = 'details';
       details.style.display = 'none';
       card.appendChild(details);
-
-      const gallery = document.createElement('div');
-      gallery.className = 'image-gallery';
-      gallery.style.display = 'none';
-      card.appendChild(gallery);
 
       card.addEventListener('click', () => {
         if (expandedIndex === index) {
@@ -643,6 +573,7 @@
       return card;
     }
 
+    // Populate grid with shoe cards
     shoes.forEach((shoe, i) => {
       const card = createCard(shoe, i);
       grid.appendChild(card);
