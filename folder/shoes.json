@@ -1,1 +1,84 @@
+[
+  {
+    "title": "Air Max 90",
+    "price": "£85",
+    "images": [
+      "images/IMG-20250620-WA0001.jpg",
+      "images/IMG-20250620-WA0002.jpg",
+      "images/IMG-20250620-WA0003.jpg",
+      "images/IMG-20250620-WA0006.jpg",
+      "images/IMG-20250620-WA0007.jpg"
+    ],
+    "info": {
+      "size": "UK 9",
+      "condition": "New",
+      "color": "White/Black",
+      "material": "Leather and mesh",
+      "shipping": "Ships in 1-2 days",
+      "box": "Includes original box and tags",
+      "authenticity": "Authenticity guaranteed"
+    },
+    "buyLink": "https://www.vinted.co.uk/member/233654539"
+  },
+  {
+    "title": "Yeezy Boost 350",
+    "price": "£150",
+    "images": [],
+    "info": {
+      "size": "UK 10",
+      "condition": "Like new",
+      "color": "Cream White",
+      "material": "Primeknit",
+      "shipping": "Ships in 2 days",
+      "box": "No original box",
+      "authenticity": "Guaranteed"
+    },
+    "buyLink": "#"
+  },
+  {
+    "title": "Dunk Low Panda",
+    "price": "£110",
+    "images": [],
+    "info": {
+      "size": "UK 8",
+      "condition": "Used - Good",
+      "color": "Black/White",
+      "material": "Leather",
+      "shipping": "Ships in 3-5 days",
+      "box": "No box included",
+      "authenticity": "Verified seller"
+    },
+    "buyLink": "#"
+  },
+  {
+    "title": "Jordan 1 Retro",
+    "price": "£125",
+    "images": [],
+    "info": {
+      "size": "UK 9.5",
+      "condition": "Very good",
+      "color": "Red/Black",
+      "material": "Leather",
+      "shipping": "Ships next day",
+      "box": "Original box",
+      "authenticity": "Authenticity guaranteed"
+    },
+    "buyLink": "#"
+  },
+  {
+    "title": "New Balance 550",
+    "price": "£95",
+    "images": [],
+    "info": {
+      "size": "UK 9",
+      "condition": "Brand new",
+      "color": "White/Green",
+      "material": "Leather",
+      "shipping": "Ships in 1-3 days",
+      "box": "With box",
+      "authenticity": "Certified authentic"
+    },
+    "buyLink": "#"
+  }
+]
 
