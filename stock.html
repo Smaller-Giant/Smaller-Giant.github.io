@@ -271,6 +271,7 @@
 
   const stockGrid = document.getElementById('stockGrid');
   let currentPanel = null;
+  let currentCard = null;
 
   shoes.forEach((shoe, index) => {
     const wrapper = document.createElement('div');
@@ -284,6 +285,73 @@
       <p>${shoe.price}</p>
     `;
     wrapper.appendChild(card);
+
+    const panel = document.createElement('div');
+    panel.className = 'expanded-panel';
+
+    panel.innerHTML = `
+      <div class="image-viewer">
+        <div class="arrow arrow-left">&#10094;</div>
+        <img src="${shoe.images[0] || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${shoe.title}" />
+        <div class="arrow arrow-right">&#10095;</div>
+      </div>
+      <div class="details">
+        <h2>${shoe.title}</h2>
+        <p><strong>Price:</strong> ${shoe.price}</p>
+        ${shoe.info.size ? `<p><strong>Size:</strong> ${shoe.info.size}</p>` : ''}
+        ${shoe.info.condition ? `<p><strong>Condition:</strong> ${shoe.info.condition}</p>` : ''}
+        ${shoe.info.color ? `<p><strong>Color:</strong> ${shoe.info.color}</p>` : ''}
+        ${shoe.info.material ? `<p><strong>Material:</strong> ${shoe.info.material}</p>` : ''}
+        ${shoe.info.shipping ? `<p><strong>Shipping:</strong> ${shoe.info.shipping}</p>` : ''}
+        ${shoe.info.box ? `<p><strong>Box:</strong> ${shoe.info.box}</p>` : ''}
+        ${shoe.info.authenticity ? `<p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>` : ''}
+        <a href="${shoe.buyLink}" target="_blank" class="buy-link">Buy now on Vinted</a>
+      </div>
+    `;
+
+    const mainImg = panel.querySelector('img');
+    const left = panel.querySelector('.arrow-left');
+    const right = panel.querySelector('.arrow-right');
+    let imgIndex = 0;
+
+    left.onclick = () => {
+      if (shoe.images.length > 1) {
+        imgIndex = (imgIndex - 1 + shoe.images.length) % shoe.images.length;
+        mainImg.src = shoe.images[imgIndex];
+      }
+    };
+    right.onclick = () => {
+      if (shoe.images.length > 1) {
+        imgIndex = (imgIndex + 1) % shoe.images.length;
+        mainImg.src = shoe.images[imgIndex];
+      }
+    };
+
+    card.addEventListener('click', () => {
+      // Hide previous panel and restore previous card
+      if (currentPanel && currentPanel !== panel) {
+        currentPanel.classList.remove('visible');
+        if (currentCard) currentCard.style.display = 'block';
+      }
+
+      // Toggle current
+      if (panel.classList.contains('visible')) {
+        panel.classList.remove('visible');
+        card.style.display = 'block';
+        currentPanel = null;
+        currentCard = null;
+      } else {
+        panel.classList.add('visible');
+        card.style.display = 'none';
+        currentPanel = panel;
+        currentCard = card;
+      }
+    });
+
+    wrapper.appendChild(panel);
+    stockGrid.appendChild(wrapper);
+  });
+</script>
 
     const panel = document.createElement('div');
     panel.className = 'expanded-panel';
