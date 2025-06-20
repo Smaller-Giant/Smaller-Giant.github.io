@@ -136,6 +136,43 @@
       transform: translateY(0);
     }
 
+    /* Search & Filter container */
+    .filter-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(10px);
+      background: rgba(255 255 255 / 0.05);
+      border: 1px solid rgba(255 255 255 / 0.15);
+      border-radius: 15px;
+      padding: 12px 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-bar label {
+      color: #ccc;
+      font-weight: 600;
+      font-size: 0.9rem;
+      min-width: 60px;
+    }
+    .filter-bar input[type="search"],
+    .filter-bar select {
+      flex-grow: 1;
+      background: rgba(255 255 255 / 0.1);
+      border: 1px solid rgba(255 255 255 / 0.25);
+      color: #eee;
+      font-size: 1rem;
+      border-radius: 10px;
+      padding: 8px 15px;
+      transition: background 0.3s, border-color 0.3s;
+      outline-offset: 2px;
+    }
+    .filter-bar input[type="search"]:focus,
+    .filter-bar select:focus {
+      background: rgba(255 255 255 / 0.15);
+      border-color: #4caf50;
+      color: #fff;
+    }
     /* Grid for items */
     .stock-grid {
       display: grid;
@@ -303,6 +340,14 @@
       .arrow-right {
         right: 5px;
       }
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .filter-bar label {
+        min-width: auto;
+        margin-bottom: 6px;
+      }
     }
 
     @keyframes fadeInUp {
@@ -355,6 +400,20 @@
 
 <div class="container">
   <section>
+    <!-- FILTER & SEARCH BAR -->
+    <div class="filter-bar" role="region" aria-label="Search and filter trainers">
+      <label for="searchInput">Search:</label>
+      <input type="search" id="searchInput" placeholder="Search by shoe title…" aria-describedby="searchHelp" />
+
+      <label for="priceFilter">Filter by price:</label>
+      <select id="priceFilter" aria-describedby="filterHelp">
+        <option value="all">All Prices</option>
+        <option value="under100">Under £100</option>
+        <option value="100to125">£100 - £125</option>
+        <option value="above125">Above £125</option>
+      </select>
+    </div>
+
     <div class="stock-grid" id="stockGrid">
       <!-- Shoe cards will be added here -->
     </div>
@@ -384,7 +443,8 @@
   const shoes = [
     {
       title: "Air Max 90",
-      price: "£85",
+      price: 85,
+      priceText: "£85",
       images: [
         "images/IMG-20250620-WA0001.jpg",
         "images/IMG-20250620-WA0002.jpg",
@@ -405,28 +465,32 @@
     },
     {
       title: "Yeezy Boost 350",
-      price: "£150",
+      price: 150,
+      priceText: "£150",
       images: [],
       info: {},
       buyLink: "#"
     },
     {
       title: "Dunk Low Panda",
-      price: "£110",
+      price: 110,
+      priceText: "£110",
       images: [],
       info: {},
       buyLink: "#"
     },
     {
       title: "Jordan 1 Retro",
-      price: "£125",
+      price: 125,
+      priceText: "£125",
       images: [],
       info: {},
       buyLink: "#"
     },
     {
       title: "New Balance 550",
-      price: "£95",
+      price: 95,
+      priceText: "£95",
       images: [],
       info: {},
       buyLink: "#"
@@ -443,11 +507,12 @@
   let currentIndex = null;   // currently expanded shoe index
   let currentImageIndex = 0; // which image is shown in expanded panel
 
-  // Create shoe cards grid
-  shoes.forEach((shoe, idx) => {
+  // Function to create and return a shoe card element
+  function createShoeCard(shoe, idx) {
     const card = document.createElement('div');
     card.className = 'item-card';
-    card.setAttribute('tabindex', '0'); // keyboard focusable
+    card.setAttribute('tabindex', '0');
+    card.dataset.index = idx;
 
     const thumb = document.createElement('img');
     if (shoe.images.length > 0) {
@@ -463,7 +528,7 @@
     card.appendChild(title);
 
     const price = document.createElement('p');
-    price.textContent = shoe.price;
+    price.textContent = shoe.priceText;
     card.appendChild(price);
 
     card.addEventListener('click', () => openExpanded(idx));
@@ -474,107 +539,20 @@
       }
     });
 
-    stockGrid.appendChild(card);
-  });
-
-  function openExpanded(idx) {
-    if (currentIndex === idx) {
-      closeExpanded();
-      return;
-    }
-    currentIndex = idx;
-    currentImageIndex = 0;
-
-    const shoe = shoes[idx];
-
-    if (shoe.images.length > 0) {
-      mainImage.src = shoe.images[currentImageIndex];
-      mainImage.alt = shoe.title + " image " + (currentImageIndex + 1);
-      arrowLeft.style.display = 'flex';
-      arrowRight.style.display = 'flex';
-    } else {
-      mainImage.src = 'https://via.placeholder.com/600x400?text=No+Image';
-      mainImage.alt = "No image available";
-      arrowLeft.style.display = 'none';
-      arrowRight.style.display = 'none';
-    }
-
-    // Build details HTML
-    let detailsHTML = `<h2>${shoe.title}</h2>`;
-    detailsHTML += `<p><strong>Price:</strong> ${shoe.price}</p>`;
-
-    if (idx === 0 && shoe.info) {
-      detailsHTML += `<p><strong>Size:</strong> ${shoe.info.size}</p>`;
-      detailsHTML += `<p><strong>Condition:</strong> ${shoe.info.condition}</p>`;
-      detailsHTML += `<p><strong>Color:</strong> ${shoe.info.color}</p>`;
-      detailsHTML += `<p><strong>Material:</strong> ${shoe.info.material}</p>`;
-      detailsHTML += `<p><strong>Shipping:</strong> ${shoe.info.shipping}</p>`;
-      detailsHTML += `<p><strong>Box:</strong> ${shoe.info.box}</p>`;
-      detailsHTML += `<p><strong>Authenticity:</strong> ${shoe.info.authenticity}</p>`;
-    }
-
-    detailsHTML += `<a href="${shoe.buyLink}" target="_blank" class="buy-link" rel="noopener">Buy now on Vinted</a>`;
-
-    shoeDetails.innerHTML = detailsHTML;
-
-    expandedPanel.style.display = 'flex';
-
-    // Scroll to expanded panel
-    expandedPanel.scrollIntoView({behavior: "smooth", block: "start"});
+    return card;
   }
 
-  function closeExpanded() {
-    expandedPanel.style.display = 'none';
-    currentIndex = null;
+  // Initially populate the grid with all shoes
+  function populateGrid(shoesToShow) {
+    stockGrid.innerHTML = '';
+    shoesToShow.forEach((shoe, idx) => {
+      const card = createShoeCard(shoe, idx);
+      stockGrid.appendChild(card);
+    });
   }
 
-  arrowLeft.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (currentIndex === null) return;
-    const images = shoes[currentIndex].images;
-    if (!images.length) return;
+  // Initial render
+  populateGrid(shoes);
 
-    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-    mainImage.src = images[currentImageIndex];
-    mainImage.alt = shoes[currentIndex].title + " image " + (currentImageIndex + 1);
-  });
-
-  arrowRight.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (currentIndex === null) return;
-    const images = shoes[currentIndex].images;
-    if (!images.length) return;
-
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    mainImage.src = images[currentImageIndex];
-    mainImage.alt = shoes[currentIndex].title + " image " + (currentImageIndex + 1);
-  });
-
-  // Close expanded if clicking outside the panel or cards
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.item-card') && !e.target.closest('#expandedPanel')) {
-      closeExpanded();
-    }
-  });
-
-  // Keyboard accessible close on ESC
-  document.addEventListener('keydown', (e) => {
-    if(e.key === "Escape" && currentIndex !== null) {
-      closeExpanded();
-    }
-  });
-
-  // Animate section on scroll
-  document.querySelectorAll('section').forEach(sec => {
-    const obs = new IntersectionObserver(e => {
-      if(e[0].isIntersecting) {
-        sec.classList.add('visible');
-        obs.disconnect();
-      }
-    }, {threshold: 0.2});
-    obs.observe(sec);
-  });
-</script>
-
-</body>
-</html>
+  // Filtering and searching
+  const searchInput
