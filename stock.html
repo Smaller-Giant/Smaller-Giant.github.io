@@ -5,87 +5,285 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
   <style>
-    /* ... include previous CSS unchanged ... */
-
-    /* Make sure filter-options == correct display */
-    .filter-option { /* existing styles */ }
-    .filter-option:hover, .filter-option.selected {
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-height: 100vh; }
+    header { ... /* keep your existing header CSS */ }
+    .search-bar { display: flex; gap:12px; flex-wrap: wrap; margin: 80px 0 25px; }
+    .search-bar input {
+      flex:1 1 150px;
+      padding: 12px 18px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      border: none;
+      color: #eee;
+      backdrop-filter: blur(10px);
+    }
+    .filter-wrapper {
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .filter-button {
+      padding:12px 18px;
+      background: rgba(255,255,255,0.08);
+      color:#eee;
+      border:none;
+      border-radius:12px;
+      backdrop-filter:blur(10px);
+      cursor: pointer;
+    }
+    .filter-options {
+      position: absolute;
+      top: 100%; left:0;
+      background: rgba(30,30,30,0.95);
+      border-radius: 10px;
+      margin-top: 8px;
+      display: none;
+      min-width: 150px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      z-index: 100;
+    }
+    .filter-wrapper.open .filter-options {
+      display: block;
+    }
+    .filter-option {
+      padding:8px 12px;
+      cursor: pointer;
+      color: #ccc;
+      transition: background .3s ease, color .3s ease;
+    }
+    .filter-option:hover,
+    .filter-option.selected {
       background: rgba(255,255,255,0.15);
       color: #4caf50;
+    }
+    .stock-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap:18px; }
+    .item-card {
+      background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:10px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      transition:transform .3s ease;
+    }
+    .item-card:hover { transform: translateY(-6px); }
+    .item-card img { width:100%; height:120px; object-fit:cover; border-radius:8px; margin-bottom:8px; }
+    .item-card h3 { font-size:1rem; color:#4caf50 }
+    .item-card p { font-size:.9rem; color:#ccc }
+
+    #expandedPanel {
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,0.85);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      z-index:2000;
+    }
+    #expandedPanel.active { display:flex; }
+    .expanded-content {
+      background:rgba(30,30,30,0.95);
+      border-radius:16px;
+      width:100%;
+      max-width:800px;
+      display:flex;
+      overflow:hidden;
+      color:#ccc;
+    }
+    .image-viewer { position:relative; flex:1; background:#222; display:flex; justify-content:center; align-items:center; }
+    .image-viewer img { max-width:100%; max-height:90vh; object-fit:contain; }
+    .arrow {
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,0.55);
+      color:#4caf50;
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:1.5rem;
+      cursor:pointer;
+    }
+    .arrow-left { left:8px; }
+    .arrow-right { right:8px; }
+    .details { flex:1; padding:20px; overflow-y:auto; }
+    .details h2 { color:#4caf50; margin-bottom:12px }
+    .details p { margin-bottom:8px; line-height:1.4 }
+    .buy-link {
+      display:inline-block;
+      margin-top:16px;
+      background:#4caf50;
+      color:#111;
+      padding:10px 18px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:600;
+    }
+    .buy-link:hover { background:#388e3c }
+
+    @media(max-width:600px) {
+      .search-bar { flex-direction:column; }
+      .stock-grid { grid-template-columns: repeat(auto-fill,minmax(120px,1fr)); }
+      .item-card img { height:100px; }
+      .expanded-content { flex-direction:column; max-height:90vh; }
+      .image-viewer img { max-height:50vh; }
+      .arrow-left { left:4px; }
+      .arrow-right { right:4px; }
     }
   </style>
 </head>
 <body>
-  <!-- header, hero, search-bar same as before -->
 
-  <div class="container">
-    <div class="search-bar">
-      <input id="searchInput" placeholder="Search shoes…" autocomplete="off" />
-      <div class="filter-wrapper">
-        <button type="button" class="filter-button">All Conditions</button>
-        <div class="filter-options">
-          <div class="filter-option selected" data-val="">All Conditions</div>
-          <div class="filter-option" data-val="New">New</div>
-          <div class="filter-option" data-val="Used">Used</div>
-        </div>
+<header><!-- your header HTML --></header>
+<section class="hero">
+  <div><h1>Our Current Stock</h1><p>Premium Trainers from leading brands</p></div>
+</section>
+
+<div class="container">
+  <div class="search-bar">
+    <input id="searchInput" placeholder="Search shoes..." autocomplete="off" />
+    <div class="filter-wrapper">
+      <button type="button" class="filter-button">All Conditions</button>
+      <div class="filter-options">
+        <div class="filter-option selected" data-val="">All Conditions</div>
+        <div class="filter-option" data-val="New">New</div>
+        <div class="filter-option" data-val="Used">Used</div>
       </div>
     </div>
-
-    <div class="stock-grid" id="stockGrid"></div>
-    <div class="no-results" id="noResults">No shoes found.</div>
   </div>
 
-  <!-- expandedPanel same as before -->
+  <div class="stock-grid" id="stockGrid"></div>
+  <div class="no-results" id="noResults" style="display:none; text-align:center; margin-top:30px; color:#777;">No shoes found.</div>
+</div>
 
-  <script>
-    // DOM refs + load JSON code same as before
+<div id="expandedPanel" tabindex="-1">
+  <div class="expanded-content">
+    <div class="image-viewer">
+      <div class="arrow arrow-left">&#10094;</div>
+      <img src="" alt="" id="mainImage">
+      <div class="arrow arrow-right">&#10095;</div>
+    </div>
+    <div class="details" id="shoeDetails"></div>
+  </div>
+</div>
 
-    // FIX: use filtered data index mapping!
-    let shoes = [], currentList = [], filterVal = '';
+<footer><!-- your footer --></footer>
 
-    fetch('folder/shoes.json?v=' + Date.now())
-      .then(r => r.json())
-      .then(data => {
-        shoes = data;
-        renderGrid();
-      })
-      .catch(err => {
-        document.getElementById('stockGrid').innerHTML = '<p style="color:#f44;">Failed loading shoes.</p>';
-      });
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  menuToggle.addEventListener('click', ()=> dropdownMenu.classList.toggle('show'));
 
-    function renderGrid() {
-      const term = searchInput.value.trim().toLowerCase();
-      currentList = shoes.filter(s =>
-        s.title.toLowerCase().includes(term) &&
-        (filterVal === '' || s.info.condition === filterVal)
-      );
-      stockGrid.innerHTML = '';
-      noResults.style.display = currentList.length ? 'none' : 'block';
-      currentList.forEach((s, idx) => {
-        const c = document.createElement('div');
-        c.className = 'item-card'; c.tabIndex = 0;
-        c.innerHTML = `
-          <img src="${s.images?.[0] || 'https://via.placeholder.com/300x160?text=No+Image'}" alt="${s.title}">
-          <h3>${s.title}</h3><p>${s.price}</p>`;
-        c.onclick = () => openShoe(idx);
-        c.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') openShoe(idx); };
-        stockGrid.appendChild(c);
-      });
+  const searchInput = document.getElementById('searchInput');
+  const filterBtn = document.querySelector('.filter-button');
+  const filterWrapper = document.querySelector('.filter-wrapper');
+  const filterOpts = document.querySelectorAll('.filter-option');
+  const stockGrid = document.getElementById('stockGrid');
+  const noResults = document.getElementById('noResults');
+  const expandedPanel = document.getElementById('expandedPanel');
+  const mainImage = document.getElementById('mainImage');
+  const shoeDetails = document.getElementById('shoeDetails');
+  const prevArrow = expandedPanel.querySelector('.arrow-left');
+  const nextArrow = expandedPanel.querySelector('.arrow-right');
+
+  let shoes = [], currentList = [], filterVal = '', currentIndex = 0, imgIndex = 0;
+
+  fetch('folder/shoes.json?v='+Date.now())
+    .then(r=>r.json())
+    .then(data=> { shoes=data; updateGrid(); })
+    .catch(err=> stockGrid.innerHTML='<p style="color:#f44;">Failed loading shoes.</p>');
+
+  function updateGrid(){
+    const term = searchInput.value.toLowerCase().trim();
+    currentList = shoes.filter(s=>
+      s.title.toLowerCase().includes(term) &&
+      (filterVal === '' || (s.info?.condition === filterVal))
+    );
+    stockGrid.innerHTML = '';
+    if (!currentList.length){
+      noResults.style.display = 'block'; return;
     }
-
-    filterWrapper.onclick = () => filterWrapper.classList.toggle('open');
-    filterOpts.forEach(opt => {
-      opt.onclick = () => {
-        filterOpts.forEach(o => o.classList.remove('selected'));
-        opt.classList.add('selected');
-        filterVal = opt.dataset.val;
-        filterBtn.textContent = opt.textContent;
-        filterWrapper.classList.remove('open');
-        renderGrid();
-      };
+    noResults.style.display = 'none';
+    currentList.forEach((s, i)=>{
+      const c = document.createElement('div');
+      c.className = 'item-card';
+      c.tabIndex=0;
+      c.innerHTML = `
+        <img src="${s.images?.[0]||'https://via.placeholder.com/300x160?text=No+Image'}" alt="${s.title}">
+        <h3>${s.title}</h3><p>${s.price}</p>`;
+      c.onclick = ()=> openDetails(i);
+      c.onkeydown = e=> { if(e.key==='Enter'||e.key===' ') openDetails(i); };
+      stockGrid.appendChild(c);
     });
+  }
 
-    // expanded openShoe, showDetails, navigation, close logic same as before
-  </script>
+  searchInput.addEventListener('input', updateGrid);
+
+  filterWrapper.addEventListener('click', ()=> filterWrapper.classList.toggle('open'));
+  filterOpts.forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      filterOpts.forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      filterVal = opt.dataset.val;
+      filterBtn.textContent = opt.textContent;
+      filterWrapper.classList.remove('open');
+      updateGrid();
+    });
+  });
+
+  function openDetails(idx){
+    currentIndex = idx;
+    imgIndex = 0;
+    showDetails();
+    expandedPanel.classList.add('active');
+    expandedPanel.focus();
+  }
+
+  function showDetails(){
+    const shoe = currentList[currentIndex];
+    const src = shoe.images?.[imgIndex]||'https://via.placeholder.com/600x400?text=No+Image';
+    mainImage.src = src;
+    mainImage.alt = `${shoe.title} image ${imgIndex+1}`;
+    shoeDetails.innerHTML = `
+      <h2>${shoe.title}</h2>
+      <p><strong>Price:</strong> ${shoe.price}</p>
+      <p><strong>Condition:</strong> ${shoe.info?.condition||'N/A'}</p>
+      <p><strong>Size:</strong> ${shoe.info?.size||'N/A'}</p>
+      <p><strong>Color:</strong> ${shoe.info?.color||'N/A'}</p>
+      <p><strong>Material:</strong> ${shoe.info?.material||'N/A'}</p>
+      <p><strong>Shipping:</strong> ${shoe.info?.shipping||'N/A'}</p>
+      <p><strong>Box:</strong> ${shoe.info?.box||'N/A'}</p>
+      <p><strong>Authenticity:</strong> ${shoe.info?.authenticity||'N/A'}</p>
+      <a href="${shoe.buyLink||'#'}" class="buy-link" target="_blank">Buy now</a>`;
+  }
+
+  prevArrow.addEventListener('click', e=>{
+    e.stopPropagation();
+    const imgs = currentList[currentIndex].images||[];
+    if (!imgs.length) return;
+    imgIndex = (imgIndex-1+imgs.length)%imgs.length; showDetails();
+  });
+  nextArrow.addEventListener('click', e=>{
+    e.stopPropagation();
+    const imgs = currentList[currentIndex].images||[];
+    if (!imgs.length) return;
+    imgIndex = (imgIndex+1)%imgs.length; showDetails();
+  });
+
+  expandedPanel.addEventListener('click',e=>{
+    if (e.target === expandedPanel) expandedPanel.classList.remove('active');
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape' && expandedPanel.classList.contains('active'))
+      expandedPanel.classList.remove('active');
+  });
+
+</script>
 </body>
 </html>
