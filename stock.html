@@ -20,7 +20,12 @@
     .dropdown { display:none; position:absolute; top:100%; left:0; right:0; background:rgba(0,0,0,0.9); flex-direction:column; padding:10px 20px; box-shadow:0 4px 10px rgba(0,0,0,0.7); z-index:1100; }
     .dropdown a { padding:10px 0; border-bottom:1px solid #333; color:#eee; font-size:1rem; text-decoration:none; }
     .dropdown a:last-child { border-bottom:none; }
-    .dropdown a:hover, .dropdown a.active { color:#4caf50; }
+    .dropdown a:hover
+    {
+      color: #515e52;
+      background-color: #515e52;
+    }
+    .dropdown a.active { color:#4caf50; }
     .hero { margin-top:56px; height:40vh; background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat; display:flex; align-items:center; justify-content:center; text-align:center; }
     .hero h1 { font-size:2.2rem; }
     .hero p { font-size:1.1rem; }
