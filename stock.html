@@ -6,78 +6,248 @@
   <title>SoleZone | Stock</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:'Poppins', sans-serif; background:#111; color:#eee; min-height:100vh; }
-    header { position:fixed;top:0;width:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:space-between;align-items:center;padding:12px 20px;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,0.7); }
-    header h1 { font-size:1.4rem; }
-    header h1 span { display:block;font-size:0.75rem;color:#4caf50;font-weight:300; }
-    nav { display:flex;gap:18px; }
-    nav a { color:#ccc;position:relative;text-decoration:none;padding-bottom:2px; }
-    nav a::after { content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:#4caf50;transition:width .3s ease; }
-    nav a:hover,nav a.active { color:#fff; }
-    nav a:hover::after,nav a.active::after { width:100%; }
-    .menu-toggle { display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer; }
-    .dropdown { display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,0,0.9);flex-direction:column;padding:10px 20px;box-shadow:0 4px 10px rgba(0,0,0,0.7);z-index:1100; }
-    .dropdown a { padding:10px 0;border-bottom:1px solid #333;color:#eee; }
-    .dropdown a:last-child { border-bottom:none; }
-    .dropdown a:hover, .dropdown a.active { color:#4caf50; }
-    .hero { margin-top:56px;height:40vh;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;display:flex;align-items:center;justify-content:center; }
-    .hero h1 { font-size:2.2rem; }
-    .hero p { font-size:1.1rem; }
-    .container { max-width:1200px;margin:40px auto 60px;padding:0 20px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-height: 100vh; }
+    header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+    header h1 { font-size: 1.4rem; }
+    header h1 span { display: block; font-size: 0.75rem; color: #4caf50; font-weight: 300; }
+    nav { display: flex; gap: 18px; }
+    nav a { color: #ccc; position: relative; text-decoration: none; padding-bottom: 2px; }
+    nav a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #4caf50; transition: width .3s; }
+    nav a:hover, nav a.active { color: #fff; }
+    nav a:hover::after, nav a.active::after { width: 100%; }
+    .menu-toggle { display: none; font-size: 1.5rem; color: #ccc; background: none; border: none; cursor: pointer; }
+    .dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0,0,0,0.9); flex-direction: column; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.7); z-index: 1100; }
+    .dropdown a { padding: 10px 0; border-bottom: 1px solid #333; color: #eee; }
+    .dropdown a:last-child { border-bottom: none; }
+    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
+    .hero { margin-top: 56px; height: 40vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat; display: flex; align-items: center; justify-content: center; text-align: center; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero p { font-size: 1.1rem; }
+    .container { max-width: 1200px; margin: 40px auto 60px; padding: 0 20px; }
 
-    .search-bar { display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px; }
-    .search-bar input { flex:1 1 auto;padding:8px 12px;font-size:0.95rem;border:none;background:rgba(255,255,255,0.08);color:#eee;border-radius:10px;backdrop-filter:blur(10px); height:36px; max-width:100%; }
-    .search-bar input::placeholder { color:#bbb; }
-    .search-bar input:focus { background:rgba(255,255,255,0.15);outline:none; }
-    .filter-wrapper { position:relative;flex:1 1 140px;max-width:200px; }
-    .filter-button { width:100%;padding:8px 12px;font-size:0.95rem;text-align:left;border:none;background:rgba(255,255,255,0.08);color:#eee;border-radius:10px;backdrop-filter:blur(10px);height:36px;cursor:pointer; }
-    .filter-button:after { content:'▼';float:right;font-size:0.8rem;transition:transform .2s; }
-    .filter-wrapper.open .filter-button:after { transform:rotate(180deg); }
-    .filter-options { display:none;position:absolute;top:calc(100% + 4px);left:0;width:100%;background:rgba(30,30,30,0.95);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.6);z-index:100;max-height:150px;overflow-y:auto; }
-    .filter-wrapper.open .filter-options { display:block; }
-    .filter-option { padding:8px 12px;font-size:0.95rem;color:#eee;cursor:pointer; }
-    .filter-option:hover, .filter-option.selected { background:#333; color:#4caf50; }
+    /* Search + Filter */
+    .search-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+    .search-bar input {
+      flex: 1 1 250px;
+      padding: 10px 14px;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: #eee;
+      backdrop-filter: blur(10px);
+      height: 42px;
+    }
+    .search-bar input::placeholder { color: #bbb; }
+    .search-bar input:focus { outline: none; background: rgba(255,255,255,0.15); }
 
-    .stock-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px; }
-    .item-card { background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:10px;border-radius:10px;cursor:pointer;display:flex;flex-direction:column;height:100%;transition:transform .3s; }
-    .item-card:hover { transform:translateY(-4px); }
-    .item-card img { width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:6px; }
-    .item-card h3 { font-size:1.05rem;color:#4caf50;margin-bottom:4px; }
-    .item-card p { color:#ccc;font-size:0.9rem;margin-top:auto; }
-    .no-results { text-align:center;color:#777;margin-top:30px;font-size:1.1rem; display:none; }
+    .filter-wrapper {
+      position: relative;
+      flex: 1 1 150px;
+      min-width: 150px;
+    }
+    .filter-button {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 1rem;
+      text-align: left;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: #eee;
+      border-radius: 12px;
+      cursor: pointer;
+      height: 42px;
+    }
+    .filter-button::after {
+      content: "▼";
+      float: right;
+      font-size: 0.8rem;
+    }
+    .filter-options {
+      display: none;
+      position: absolute;
+      top: 105%;
+      left: 0;
+      width: 100%;
+      background: rgba(20,20,20,0.97);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      z-index: 200;
+    }
+    .filter-wrapper.open .filter-options {
+      display: block;
+    }
+    .filter-option {
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      color: #eee;
+      cursor: pointer;
+    }
+    .filter-option:hover,
+    .filter-option.selected {
+      background: rgba(100,255,100,0.15);
+      color: #4caf50;
+    }
 
-    #expandedPanel { position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;padding:8px;z-index:2000; }
-    #expandedPanel.active { display:flex; }
-    .expanded-content { background:rgba(30,30,30,0.95);border-radius:12px;width:90%;max-width:650px;max-height:75vh;display:flex;overflow:hidden;color:#ccc; }
-    .image-viewer { flex:1;position:relative;background:#222;display:flex;align-items:center;justify-content:center; }
-    .image-viewer img { max-width:100%;max-height:100%;object-fit:contain; }
-    .arrow { position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;background:rgba(0,0,0,0.55);color:#4caf50;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem; }
-    .arrow-left { left:6px; }
-    .arrow-right { right:6px; }
-    .details { flex:1;padding:12px;overflow-y:auto; }
-    .details h2 { color:#4caf50;margin-bottom:8px;font-size:1.1rem; }
-    .details p { margin-bottom:6px;line-height:1.4;font-size:0.9rem; }
-    .buy-link { display:inline-block;margin-top:12px;background:#4caf50;padding:8px 14px;border-radius:6px;color:#111;font-weight:600;text-decoration:none;font-size:0.9rem; }
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px;
+    }
+    .item-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+    .item-card:hover { transform: translateY(-6px); }
+    .item-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .item-card h3 {
+      font-size: 1.1rem;
+      color: #4caf50;
+      margin-bottom: 4px;
+    }
+    .item-card p {
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-top: auto;
+    }
 
-    footer { text-align:center;padding:16px 0;color:#aaa;font-size:0.9rem;border-top:1px solid #333; }
+    .no-results {
+      text-align: center;
+      font-size: 1.3rem;
+      color: #777;
+      margin-top: 40px;
+    }
 
-    @media(max-width:600px){
-      .menu-toggle { display:block; }
-      nav { display:none; }
-      .dropdown { top:56px; }
-      .search-bar { flex-direction:column; }
-      .filter-wrapper, .search-bar input { width:100%; }
-      .expanded-content { flex-direction:column;width:95%;max-height:70vh;}
-      .arrow-left { left:4px; }
-      .arrow-right { right:4px; }
+    /* Expanded Panel */
+    #expandedPanel {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      padding: 10px;
+    }
+    #expandedPanel.active {
+      display: flex;
+    }
+    .expanded-content {
+      background: rgba(30,30,30,0.97);
+      border-radius: 16px;
+      max-width: 720px;
+      width: 95%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+    }
+    .image-viewer {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #222;
+    }
+    .image-viewer img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.55);
+      color: #4caf50;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .arrow-left { left: 10px; }
+    .arrow-right { right: 10px; }
+    .details {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .details h2 {
+      color: #4caf50;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+    .details p {
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .buy-link {
+      display: inline-block;
+      margin-top: 12px;
+      background: #4caf50;
+      color: #111;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.9rem;
+      color: #aaa;
+      border-top: 1px solid #333;
+    }
+
+    @media(max-width: 768px) {
+      nav { display: none; }
+      .menu-toggle { display: block; }
+      .dropdown.show { display: flex; flex-direction: column; position: fixed; top: 56px; }
+      .search-bar { flex-direction: column; }
+      .search-bar input, .filter-wrapper { width: 100%; }
+      .expanded-content {
+        flex-direction: column;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .arrow-left { left: 6px; }
+      .arrow-right { right: 6px; }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle">☰</button>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="stock.html" class="active">Stock</a>
@@ -93,122 +263,267 @@
   </header>
 
   <section class="hero">
-    <div><h1>Our Current Stock</h1><p>Premium Trainers from leading brands</p></div>
+    <div>
+      <h1>Our Current Stock</h1>
+      <p>Premium Trainers from leading brands</p>
+    </div>
   </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SoleZone | Stock</title>
+<style>
+/* ---------- Base ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
+/* ---------- Header ---------- */
+header{
+  position:fixed;inset:0 0 auto 0;height:56px;
+  background:rgba(0,0,0,.85);display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;z-index:1000;
+  box-shadow:0 2px 8px rgba(0,0,0,.7)
+}
+header h1{font-size:1.4rem}
+header h1 span{display:block;font-size:.75rem;color:#4caf50;font-weight:300}
+nav{display:flex;gap:18px}
+nav a{color:#ccc;text-decoration:none;position:relative;padding-bottom:2px}
+nav a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:2px;background:#4caf50;transition:width .3s}
+nav a:hover,nav a.active{color:#fff}
+nav a:hover::after,nav a.active::after{width:100%}
+.menu-toggle{display:none;font-size:1.6rem;color:#ccc;background:none;border:none;cursor:pointer}
+.dropdown{display:none;position:absolute;top:56px;left:0;right:0;background:rgba(0,0,0,.95);flex-direction:column;gap:10px;padding:14px 20px;z-index:1100}
+.dropdown a{color:#eee;text-decoration:none;font-size:1rem}
+.dropdown a:hover,.dropdown a.active{color:#4caf50}
+/* ---------- Hero ---------- */
+.hero{margin-top:56px;height:40vh;min-height:220px;background:
+  linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+  url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.hero h1{font-size:2.2rem}.hero p{font-size:1.1rem}
+/* ---------- Container ---------- */
+.container{max-width:1200px;margin:40px auto 60px;padding:0 20px}
+.search-bar{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:25px}
+.search-bar input{
+  flex:1 1 240px;padding:10px 14px;font-size:1rem;height:42px;
+  background:rgba(255,255,255,.08);color:#eee;border:none;border-radius:12px;
+  backdrop-filter:blur(10px)
+}
+.search-bar input::placeholder{color:#bbb}
+.search-bar input:focus{outline:none;background:rgba(255,255,255,.15)}
+/* ---------- Custom filter dropdown ---------- */
+.filter-wrapper{position:relative;flex:1 1 150px;min-width:150px}
+.filter-button{
+  width:100%;height:42px;padding:10px 14px;font-size:1rem;text-align:left;
+  background:rgba(255,255,255,.08);color:#eee;border:none;border-radius:12px;
+  backdrop-filter:blur(10px);cursor:pointer
+}
+.filter-button::after{content:"▼";float:right;font-size:.8rem;transition:transform .2s}
+.filter-wrapper.open .filter-button::after{transform:rotate(180deg)}
+.filter-options{
+  display:none;position:absolute;top:105%;left:0;width:100%;
+  background:rgba(20,20,20,.97);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.6);
+  overflow-y:auto;max-height:160px;z-index:200
+}
+.filter-wrapper.open .filter-options{display:block}
+.filter-option{padding:10px 12px;font-size:.95rem;color:#eee;cursor:pointer}
+.filter-option:hover,.filter-option.selected{background:rgba(76,175,80,.18);color:#4caf50}
+/* ---------- Grid ---------- */
+.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+.item-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:10px;display:flex;flex-direction:column;cursor:pointer;
+  transition:transform .3s
+}
+.item-card:hover{transform:translateY(-6px)}
+.item-card img{width:100%;height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px}
+.item-card h3{font-size:1.05rem;color:#4caf50;margin-bottom:4px}
+.item-card p{font-size:.9rem;color:#ccc;margin-top:auto}
+.no-results{text-align:center;font-size:1.25rem;color:#777;margin-top:40px;display:none}
+/* ---------- Expanded modal ---------- */
+#expandedPanel{position:fixed;inset:0;background:rgba(0,0,0,.87);display:none;
+  justify-content:center;align-items:center;padding:10px;z-index:3000}
+#expandedPanel.active{display:flex}
+.expanded-content{
+  background:rgba(30,30,30,.97);border-radius:16px;max-width:720px;width:95%;max-height:85vh;
+  display:flex;overflow:hidden
+}
+.image-viewer{flex:1;display:flex;align-items:center;justify-content:center;background:#222;position:relative}
+.image-viewer img{max-width:100%;max-height:100%;object-fit:contain}
+.arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);
+  color:#4caf50;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer
+}
+.arrow-left{left:10px}.arrow-right{right:10px}
+.details{flex:1;padding:16px;overflow-y:auto}
+.details h2{color:#4caf50;margin-bottom:10px;font-size:1.15rem}
+.details p{margin-bottom:6px;font-size:.95rem;line-height:1.45}
+.buy-link{display:inline-block;margin-top:12px;padding:10px 16px;background:#4caf50;color:#111;
+  border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem}
+/* ---------- Footer ---------- */
+footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
+/* ---------- Responsive ---------- */
+@media(max-width:768px){
+  .menu-toggle{display:block}
+  nav{display:none}
+  .dropdown.show{display:flex;flex-direction:column;gap:12px}
+  .search-bar{flex-direction:column}
+  .search-bar input,.filter-wrapper{width:100%}
+  .expanded-content{flex-direction:column;max-height:80vh}
+  .arrow-left{left:6px}.arrow-right{right:6px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
+  <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
 
-  <div class="container">
-    <div class="search-bar">
-      <input id="searchInput" placeholder="Search shoes…" autocomplete="off" />
-      <div class="filter-wrapper">
-        <button class="filter-button">All Conditions</button>
-        <div class="filter-options">
-          <div class="filter-option selected" data-val="">All Conditions</div>
-          <div class="filter-option" data-val="New">New</div>
-          <div class="filter-option" data-val="Used">Used</div>
-        </div>
+<section class="hero" aria-label="Stock hero">
+  <div>
+    <h1>Our Current Stock</h1>
+    <p>Premium Trainers from leading brands</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="search-bar">
+    <input id="searchInput" type="text" placeholder="Search shoes…" autocomplete="off" />
+    <div class="filter-wrapper" id="filterWrapper">
+      <button class="filter-button" id="filterButton">All Conditions</button>
+      <div class="filter-options" id="filterOptions">
+        <div class="filter-option selected" data-val="">All Conditions</div>
+        <div class="filter-option" data-val="New">New</div>
+        <div class="filter-option" data-val="Used">Used</div>
       </div>
     </div>
-    <div class="stock-grid" id="stockGrid"></div>
-    <div class="no-results" id="noResults">No shoes found.</div>
   </div>
 
-  <div id="expandedPanel">
-    <div class="expanded-content">
-      <div class="image-viewer">
-        <div class="arrow arrow-left">&#10094;</div>
-        <img id="mainImage" src="" alt="" />
-        <div class="arrow arrow-right">&#10095;</div>
-      </div>
-      <div class="details" id="shoeDetails"></div>
+  <div class="stock-grid" id="stockGrid" aria-live="polite" aria-relevant="additions"></div>
+  <div class="no-results" id="noResults">No shoes found.</div>
+</div>
+
+<!-- Expanded view -->
+<div id="expandedPanel" role="dialog" aria-modal="true" tabindex="-1">
+  <div class="expanded-content">
+    <div class="image-viewer">
+      <div class="arrow arrow-left" aria-label="Previous image">&#10094;</div>
+      <img id="mainImage" src="" alt="" />
+      <div class="arrow arrow-right" aria-label="Next image">&#10095;</div>
     </div>
+    <div class="details" id="shoeDetails"></div>
   </div>
+</div>
 
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+<footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <script>
-    // DOM references
-    const menuToggle = document.querySelector('.menu-toggle'),
-          dropdown = document.getElementById('dropdownMenu'),
-          searchInput = document.getElementById('searchInput'),
-          filterWrapper = document.querySelector('.filter-wrapper'),
-          filterBtn = filterWrapper.querySelector('.filter-button'),
-          filterOpts = filterWrapper.querySelectorAll('.filter-option'),
-          stockGrid = document.getElementById('stockGrid'),
-          noResults = document.getElementById('noResults'),
-          expanded = document.getElementById('expandedPanel'),
-          mainImage = document.getElementById('mainImage'),
-          shoeDetails = document.getElementById('shoeDetails'),
-          prevArrow = expanded.querySelector('.arrow-left'),
-          nextArrow = expanded.querySelector('.arrow-right');
+<script>
+/* ---------- DOM refs ---------- */
+const menuBtn  = document.querySelector('.menu-toggle'),
+      dropMenu = document.getElementById('dropdownMenu'),
+      searchIn = document.getElementById('searchInput'),
+      filterWrap = document.getElementById('filterWrapper'),
+      filterBtn  = document.getElementById('filterButton'),
+      filterOps  = document.getElementById('filterOptions'),
+      grid   = document.getElementById('stockGrid'),
+      noRes  = document.getElementById('noResults'),
+      panel  = document.getElementById('expandedPanel'),
+      mainImg= document.getElementById('mainImage'),
+      details= document.getElementById('shoeDetails'),
+      prev   = panel.querySelector('.arrow-left'),
+      next   = panel.querySelector('.arrow-right');
 
-    let shoes = [], filterVal = '', currentList = [], curIdx = 0, curImg = 0;
+/* ---------- Mobile nav ---------- */
+menuBtn.onclick = () => dropMenu.classList.toggle('show');
 
-    menuToggle.onclick = () => dropdown.classList.toggle('show');
+/* ---------- Data & state ---------- */
+let shoes=[], currentList=[], curIdx=0, curImg=0, filterVal='';
 
-    // Load JSON
-    fetch('folder/shoes.json?v=' + Date.now())
-      .then(r => r.json())
-      .then(data => { shoes = data; renderGrid(); })
-      .catch(e => stockGrid.innerHTML = '<p style="color:#f44;">Failed loading shoes.</p>');
+/* ---------- Fetch shoes.json ---------- */
+fetch('folder/shoes.json?v='+Date.now())
+  .then(r=>r.json())
+  .then(d=>{ shoes=d; render(); })
+  .catch(()=>{ grid.innerHTML='<p style="color:#f44;">Failed to load shoe data.</p>'; });
 
-    function renderGrid() {
-      const term = searchInput.value.trim().toLowerCase();
-      currentList = shoes.filter(s => s.title.toLowerCase().includes(term) && (filterVal === '' || s.info.condition === filterVal));
-      stockGrid.innerHTML = '';
-      noResults.style.display = currentList.length ? 'none' : 'block';
-      currentList.forEach((s,i) => {
-        const c = document.createElement('div');
-        c.className='item-card'; c.tabIndex=0;
-        c.innerHTML=`
-          <img src="${s.images[0]||'https://via.placeholder.com/300x160?text=No+Image'}" alt="${s.title}">
-          <h3>${s.title}</h3><p>${s.price}</p>`;
-        c.onclick = ()=>openShoe(i);
-        c.onkeydown = e=>{ if(e.key==='Enter'||e.key===' ') openShoe(i); };
-        stockGrid.appendChild(c);
-      });
-    }
+/* ---------- Render grid ---------- */
+function render(){
+  const term = searchIn.value.trim().toLowerCase();
+  currentList = shoes.filter(s=>{
+    const matchText = s.title.toLowerCase().includes(term);
+    const matchCond = !filterVal || (s.info && s.info.condition===filterVal);
+    return matchText && matchCond;
+  });
+  grid.innerHTML='';
+  if(!currentList.length){ noRes.style.display='block'; return; }
+  noRes.style.display='none';
+  currentList.forEach((s,i)=>{
+    const c=document.createElement('div');
+    c.className='item-card'; c.tabIndex=0;
+    c.innerHTML=`<img src="${(s.images&&s.images[0])||'https://via.placeholder.com/300x160?text=No+Image'}" alt="${s.title}">
+                 <h3>${s.title}</h3><p>${s.price}</p>`;
+    c.onclick=_=>open(i);
+    c.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') open(i);};
+    grid.appendChild(c);
+  });
+}
 
-    searchInput.oninput = renderGrid;
+/* ---------- Search & filter ---------- */
+searchIn.oninput = render;
+filterBtn.onclick = ()=>filterWrap.classList.toggle('open');
+filterOps.querySelectorAll('.filter-option').forEach(opt=>{
+  opt.onclick=_=>{
+    filterOps.querySelectorAll('.filter-option').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    filterVal=opt.dataset.val;
+    filterBtn.textContent=opt.textContent;
+    filterWrap.classList.remove('open');
+    render();
+  };
+});
 
-    filterBtn.onclick = ()=> filterWrapper.classList.toggle('open');
-    filterOpts.forEach(opt=>{
-      opt.onclick = ()=>{
-        filterOpts.forEach(o=>o.classList.remove('selected'));
-        opt.classList.add('selected');
-        filterVal = opt.dataset.val;
-        filterBtn.textContent = opt.textContent;
-        filterWrapper.classList.remove('open');
-        renderGrid();
-      };
-    });
+/* ---------- Expanded view ---------- */
+function open(i){curIdx=i;curImg=0;updatePanel();panel.classList.add('active');}
+function updatePanel(){
+  const s=currentList[curIdx];
+  mainImg.src=(s.images&&s.images[curImg])||'https://via.placeholder.com/600x400?text=No+Image';
+  mainImg.alt=`${s.title} image ${curImg+1}`;
+  details.innerHTML=`
+    <h2>${s.title}</h2>
+    <p><strong>Price:</strong> ${s.price}</p>
+    <p><strong>Condition:</strong> ${s.info?.condition||'N/A'}</p>
+    <p><strong>Size:</strong> ${s.info?.size||'N/A'}</p>
+    <p><strong>Color:</strong> ${s.info?.color||'N/A'}</p>
+    <p><strong>Material:</strong> ${s.info?.material||'N/A'}</p>
+    <p><strong>Shipping:</strong> ${s.info?.shipping||'N/A'}</p>
+    <p><strong>Box:</strong> ${s.info?.box||'N/A'}</p>
+    <p><strong>Authenticity:</strong> ${s.info?.authenticity||'N/A'}</p>
+    <a class="buy-link" href="${s.buyLink||'#'}" target="_blank" rel="noopener">Buy now</a>`;
+}
+prev.onclick=_=>{const imgs=currentList[curIdx].images||[];if(imgs.length){curImg=(curImg-1+imgs.length)%imgs.length;updatePanel();}};
+next.onclick=_=>{const imgs=currentList[curIdx].images||[];if(imgs.length){curImg=(curImg+1)%imgs.length;updatePanel();}};
+panel.onclick=e=>{if(e.target===panel)panel.classList.remove('active');};
+document.onkeydown=e=>{if(e.key==='Escape')panel.classList.remove('active');};
 
-    function openShoe(i) {
-      curIdx = i; curImg = 0;
-      const s = currentList[curIdx];
-      mainImage.src = s.images[curImg] || '';
-      showDetails(s);
-      expanded.classList.add('active');
-    }
-
-    function showDetails(shoe) {
-      mainImage.src = shoe.images[curImg] || 'https://via.placeholder.com/600x400?text=No+Image';
-      shoeDetails.innerHTML = `
-        <h2>${shoe.title}</h2><p><strong>Price:</strong> ${shoe.price}</p>
-        <p><strong>Condition:</strong> ${shoe.info.condition||'N/A'}</p>
-        <p><strong>Size:</strong> ${shoe.info.size||'N/A'}</p>
-        <p><strong>Color:</strong> ${shoe.info.color||'N/A'}</p>
-        <p><strong>Material:</strong> ${shoe.info.material||'N/A'}</p>
-        <p><strong>Shipping:</strong> ${shoe.info.shipping||'N/A'}</p>
-        <p><strong>Box:</strong> ${shoe.info.box||'N/A'}</p>
-        <p><strong>Authenticity:</strong> ${shoe.info.authenticity||'N/A'}</p>
-        <a href="${shoe.buyLink}" class="buy-link" target="_blank">Buy now</a>`;
-    }
-
-    prevArrow.onclick = e => { e.stopPropagation(); const imgs=currentList[curIdx].images||[]= []; curImg=(curImg-1+imgs.length)%imgs.length; showDetails(currentList[curIdx]); };
-    nextArrow.onclick = e => { e.stopPropagation(); const imgs=currentList[curIdx].images||[]= []; curImg=(curImg+1)%imgs.length; showDetails(currentList[curIdx]); };
-
-    expanded.onclick = e => { if(e.target===expanded) expanded.classList.remove('active'); };
-    document.onkeydown = e => { if(e.key==='Escape') expanded.classList.remove('active'); };
-  </script>
+/* ---------- Close filter on outside click ---------- */
+document.addEventListener('click',e=>{
+  if(!filterWrap.contains(e.target)) filterWrap.classList.remove('open');
+});
+</script>
 </body>
 </html>
