@@ -3,156 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trainer Store | Stock</title>
+  <title>SoleZone | Stock</title>
 
+  <!-- simple “S” favicon -->
+  <link rel="icon" href="https://via.placeholder.com/32x32.png?text=S" type="image/png" />
+
+  <!-- ---------- BASIC STYLES ---------- -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
 
+    /* header / nav */
     header{
       position:fixed;top:0;width:100%;z-index:1000;
       background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
       padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
     header h1{font-size:1.4rem;color:#fff}
-
-    a{color:inherit;text-decoration:none;transition:color .3s}
-    a:visited{color:inherit}
-
     nav{display:flex;gap:18px}
-    nav a{
-      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
-    }
-    nav a::after{
-      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
-      background:#4caf50;transition:width .3s
-    }
+    nav a{color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px;text-decoration:none}
+    nav a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:#4caf50;transition:width .3s}
     nav a:hover,nav a.active{color:#fff}
     nav a:hover::after,nav a.active::after{width:100%}
-
     .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
-
-    .dropdown{
-      position:absolute;top:100%;left:0;right:0;
-      background:#222;display:none;flex-direction:column;padding:10px 20px;
-      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
-    }
-    .dropdown a{
-      padding:12px 0;border-bottom:1px solid #333;
-      color:#eee;font-size:1rem
-    }
+    .dropdown{position:absolute;top:100%;left:0;right:0;background:#222;display:none;flex-direction:column;padding:10px 20px;box-shadow:0 4px 10px rgba(0,0,0,.7)}
+    .dropdown a{padding:12px 0;border-bottom:1px solid #333;color:#eee;font-size:1rem}
     .dropdown a:last-child{border-bottom:none}
-    .dropdown a:hover,.dropdown a.active{color:#4caf50}
+    .dropdown a:hover{color:#4caf50}
 
-    .hero{
-      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
-      position:relative;display:flex;align-items:center;justify-content:center
-    }
+    /* hero */
+    .hero{height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;display:flex;align-items:center;justify-content:center;position:relative}
+    .hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.6)}
     .hero-content{position:relative;text-align:center;color:#fff}
-    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
-    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
+    .hero-content h1{font-size:2rem;margin-bottom:8px}
+    .hero-content p{font-size:1rem}
 
+    /* grid */
     .container{max-width:1000px;margin:60px auto;padding:0 20px}
-    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
-    section.visible{opacity:1;transform:translateY(0)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px}
+    .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;cursor:pointer;transition:.3s;text-align:center}
+    .card img{width:100%;height:150px;object-fit:cover;border-radius:12px 12px 0 0}
+    .card h3{color:#4caf50;font-size:1rem;margin:8px 0 2px}
+    .card p{color:#ccc;font-size:.85rem;margin-bottom:8px}
 
-    .stock-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-      gap:20px;
-    }
-    .item-card{
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.1);
-      border-radius:12px;
-      padding:10px;
-      text-align:center;
-      cursor:pointer;
-      transition:.3s;
-      backdrop-filter:blur(8px);
-      position: relative;
-      overflow: hidden;
-    }
-    .item-card:hover:not(.expanded){transform:translateY(-5px)}
-    .item-card img{
-      width:100%;
-      border-radius:10px;
-      margin-bottom:8px;
-      max-height: 120px;
-      object-fit: cover;
-      transition: filter .3s;
-    }
-    .item-card.expanded img{
-      filter: brightness(0.7);
-    }
-    .item-card h3{font-size:1rem;color:#4caf50;margin-bottom: 4px;}
-    .item-card p.price{font-size:.9rem;color:#ccc;margin-bottom:0;}
+    /* expanded overlay */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;justify-content:center;align-items:center;z-index:9999}
+    .overlay.open{display:flex}
+    .overlay-inner{background:#222;border-radius:14px;padding:20px;max-width:500px;width:90%;text-align:center;position:relative}
+    .overlay-inner img{width:100%;border-radius:10px}
+    .overlay-inner .close{position:absolute;top:10px;right:14px;font-size:1.6rem;color:#aaa;cursor:pointer}
+    .overlay-inner h2{color:#4caf50;margin:12px 0 6px}
+    .overlay-inner p{font-size:.9rem;margin:6px 0;color:#ccc}
+    .slider{display:flex;gap:10px;overflow-x:auto;margin:10px 0}
+    .slider img{height:90px;border-radius:8px;flex-shrink:0}
+    .arrows{display:flex;justify-content:space-between;margin:6px 0;font-size:1.6rem;color:#4caf50}
+    .buy{display:inline-block;margin-top:10px;padding:8px 22px;background:#4caf50;color:#111;font-weight:600;border:none;border-radius:8px;text-decoration:none}
 
-    .extra-info {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(20, 20, 20, 0.95);
-      color: #ccc;
-      padding: 15px;
-      border-radius: 12px;
-      overflow-y: auto;
-      text-align: left;
-      font-size: 0.9rem;
-      box-shadow: 0 0 10px 3px rgba(76,175,80,0.6);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      z-index: 10;
-    }
-    .item-card.expanded .extra-info {
-      opacity: 1;
-      pointer-events: auto;
-      display: flex;
-    }
-    .extra-info h4 {
-      color: #4caf50;
-      margin-bottom: 8px;
-    }
-    .extra-info p {
-      margin-bottom: 8px;
-    }
-    .extra-info a {
-      color:#4caf50;
-      text-decoration:none;
-      font-weight:600;
-      align-self: flex-start;
-    }
-    .extra-info a:hover {
-      text-decoration:underline;
-    }
+    footer{text-align:center;padding:20px 0;color:#aaa;font-size:.9rem;border-top:1px solid #333}
 
-    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
-
-    @media(max-width:768px){
-      .menu-toggle{display:block}
-      nav{display:none}
-    }
-
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:768px){.menu-toggle{display:block}nav{display:none}}
   </style>
 </head>
 <body>
 
+<!-- ---------- HEADER ---------- -->
 <header>
-  <h1>Trainer Store</h1>
-  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+  <h1>SoleZone</h1>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
     <a href="info.html">Info</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <div class="dropdown" id="dropdownMenu">
+  <div class="dropdown" id="drop">
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
     <a href="info.html">Info</a>
@@ -160,102 +85,93 @@
   </div>
 </header>
 
+<!-- ---------- HERO ---------- -->
 <section class="hero">
   <div class="hero-content">
     <h1>Our Current Stock</h1>
-    <p>Tap a product to learn more and buy.</p>
+    <p>Premium Trainers from leading brands</p>
   </div>
 </section>
 
+<!-- ---------- GRID ---------- -->
 <div class="container">
-  <section>
-    <div class="stock-grid" id="stockGrid">
-      <!-- Cards will be injected here -->
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- ---------- EXPANDED OVERLAY ---------- -->
+<div class="overlay" id="overlay">
+  <div class="overlay-inner">
+    <span class="close" onclick="closeOverlay()">×</span>
+    <img id="bigImg" src="" alt="shoe">
+    <div class="arrows">
+      <span onclick="prevImg()">‹</span>
+      <span onclick="nextImg()">›</span>
     </div>
-  </section>
+    <h2 id="bigTitle"></h2>
+    <p id="bigPrice"></p>
+    <p id="bigDesc"></p>
+    <a id="buyBtn" class="buy" href="#" target="_blank">Buy on Vinted</a>
+  </div>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
+<!-- ---------- SCRIPT ---------- -->
 <script>
-  const dropdown = document.getElementById('dropdownMenu');
-  function toggleMenu(){
-    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-  }
+/* responsive nav */
+function toggleMenu(){
+  const d=document.getElementById('drop');
+  d.style.display=d.style.display==='flex'?'none':'flex';
+}
 
-  document.querySelectorAll('section').forEach(sec=>{
-    const obs = new IntersectionObserver(e=>{
-      if(e[0].isIntersecting){
-        sec.classList.add('visible');
-        obs.disconnect();
-      }
-    },{threshold:.2});
-    obs.observe(sec);
-  });
+/* product data */
+const products=[
+  {t:"Air Max 90",p:"£85",d:"UK 9 • Great condition • 1‑2 day ship",imgs:["https://images.unsplash.com/photo-1528701800489-5658abf85527","https://images.unsplash.com/photo-1600180758890-bb5a1c8e3a9b"]},
+  {t:"Yeezy Boost 350",p:"£150",d:"UK 10 • Lightly worn • Box included",imgs:["https://images.unsplash.com/photo-1590080877777-fda3f9099e58","https://images.unsplash.com/photo-1617642022322-38f01a32b9d4"]},
+  {t:"Dunk Low Panda",p:"£110",d:"UK 8 • Brand new",imgs:["https://images.unsplash.com/photo-1542291026-7eec264c27ff","https://images.unsplash.com/photo-1610394212959-df9b20e8cd5e"]},
+  {t:"Jordan 1 Retro",p:"£125",d:"UK 9 • Good condition",imgs:["https://images.unsplash.com/photo-1611324212454-9b342ca7739e"]},
+  {t:"NB 550 White/Green",p:"£95",d:"UK 10 • Like new",imgs:["https://images.unsplash.com/photo-1652166593905-bfd63168e3e1"]},
+  {t:"UltraBoost DNA",p:"£140",d:"UK 11 • Running comfort",imgs:["https://images.unsplash.com/photo-1617610223597-3bcb8ff19eac"]},
+  {t:"Air Force 1",p:"£90",d:"UK 8 • All‑white classic",imgs:["https://images.unsplash.com/photo-1606813903282-03b8f12f5b79"]},
+  {t:"Converse Chuck 70",p:"£65",d:"UK 9 • Worn once",imgs:["https://images.unsplash.com/photo-1612977030373-dfba3cf7cf05"]},
+  {t:"Reebok Club C",p:"£75",d:"UK 8 • Vintage vibe",imgs:["https://images.unsplash.com/photo-1593032465375-504baef6ed72"]},
+  {t:"Vans Old Skool",p:"£65",d:"UK 9.5 • Classic B&W",imgs:["https://images.unsplash.com/photo-1551854838-546f8dd6758d"]}
+];
 
-  const stockItems = [
-    {
-      title: 'Air Max 90',
-      price: '£85',
-      img: 'https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80',
-      condition: 'Excellent',
-      size: 'UK 9',
-      shipping: 'Ships in 1-2 days',
-      desc: 'Classic silhouette in great condition.'
-    },
-    {
-      title: 'Yeezy Boost 350',
-      price: '£150',
-      img: 'https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80',
-      condition: 'Lightly worn',
-      size: 'UK 10',
-      shipping: 'Ships in 3-4 days',
-      desc: 'Includes original box.'
-    },
-    {
-      title: 'Dunk Low Panda',
-      price: '£110',
-      img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80',
-      condition: 'Brand new',
-      size: 'UK 8',
-      shipping: 'Ships in 1 day',
-      desc: 'One of the cleanest looks in rotation right now.'
-    },
-    // Add more items here if needed...
-  ];
+/* build cards */
+const grid=document.getElementById('grid');
+products.forEach((prod,i)=>{
+  const card=document.createElement('div');card.className='card';card.tabIndex=0;
+  card.innerHTML=`<img src="${prod.imgs[0]}"><h3>${prod.t}</h3><p>${prod.p}</p>`;
+  card.onclick=()=>openOverlay(i);
+  card.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')openOverlay(i)};
+  grid.appendChild(card);
+});
 
-  const stockGrid = document.getElementById('stockGrid');
+/* overlay logic */
+const overlay=document.getElementById('overlay');
+const bigImg=document.getElementById('bigImg');
+const bigTitle=document.getElementById('bigTitle');
+const bigPrice=document.getElementById('bigPrice');
+const bigDesc=document.getElementById('bigDesc');
+const buyBtn=document.getElementById('buyBtn');
+let current=0,imgIndex=0;
 
-  // Generate cards
-  stockItems.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.innerHTML = `
-      <img src="${item.img}" alt="${item.title}" />
-      <h3>${item.title}</h3>
-      <p class="price">${item.price}</p>
-      <div class="extra-info">
-        <h4>Details:</h4>
-        <p><strong>Condition:</strong> ${item.condition}</p>
-        <p><strong>Size:</strong> ${item.size}</p>
-        <p><strong>Shipping:</strong> ${item.shipping}</p>
-        <p>${item.desc}</p>
-        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer">Buy now</a>
-      </div>
-    `;
-    card.addEventListener('click', () => {
-      // Toggle expanded state for this card
-      const isExpanded = card.classList.contains('expanded');
-      // Collapse all cards first
-      document.querySelectorAll('.item-card.expanded').forEach(c => {
-        c.classList.remove('expanded');
-      });
-      // If not expanded before, expand this one
-      if(!isExpanded) card.classList.add('expanded');
-    });
-    stockGrid.appendChild(card);
-  });
+function openOverlay(idx){
+  current=idx;imgIndex=0;showBig();
+  overlay.classList.add('open');
+}
+function closeOverlay(){overlay.classList.remove('open');}
+function nextImg(){imgIndex=(imgIndex+1)%products[current].imgs.length;showBig();}
+function prevImg(){imgIndex=(imgIndex+products[current].imgs.length-1)%products[current].imgs.length;showBig();}
+function showBig(){
+  const prod=products[current];
+  bigImg.src=prod.imgs[imgIndex];
+  bigTitle.textContent=prod.t;
+  bigPrice.textContent=prod.p;
+  bigDesc.textContent=prod.d;
+  buyBtn.href="https://www.vinted.co.uk/member/233654539";
+}
 </script>
-
 </body>
 </html>
