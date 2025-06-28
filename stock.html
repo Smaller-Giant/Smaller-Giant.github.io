@@ -3,384 +3,149 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SoleZone | Stock</title>
+  <title>Trainer Store | Stock</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-height: 100vh; }
-    header { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.7); }
-    header h1 { font-size: 1.4rem; }
-    header h1 span { display: block; font-size: 0.75rem; color: #4caf50; font-weight: 300; }
-    nav { display: flex; gap: 18px; }
-    nav a { color: #ccc; position: relative; text-decoration: none; padding-bottom: 2px; }
-    nav a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #4caf50; transition: width .3s; }
-    nav a:hover, nav a.active { color: #fff; }
-    nav a:hover::after, nav a.active::after { width: 100%; }
-    .menu-toggle { display: none; font-size: 1.5rem; color: #ccc; background: none; border: none; cursor: pointer; }
-    .dropdown { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0,0,0,0.9); flex-direction: column; padding: 10px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.7); z-index: 1100; }
-    .dropdown a { padding: 10px 0; border-bottom: 1px solid #333; color: #eee; }
-    .dropdown a:last-child { border-bottom: none; }
-    .dropdown a:hover, .dropdown a.active { color: #4caf50; }
-    .hero { margin-top: 56px; height: 40vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat; display: flex; align-items: center; justify-content: center; text-align: center; }
-    .hero h1 { font-size: 2.2rem; }
-    .hero p { font-size: 1.1rem; }
-    .container { max-width: 1200px; margin: 40px auto 60px; padding: 0 20px; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
 
-    /* Search + Filter */
-    .search-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 25px;
+    header{
+      position:fixed;top:0;width:100%;z-index:1000;
+      background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;box-shadow:0 2px 8px rgba(0,0,0,.7)
     }
-    .search-bar input {
-      flex: 1 1 250px;
-      padding: 10px 14px;
-      font-size: 1rem;
-      border-radius: 12px;
-      border: none;
-      background: rgba(255,255,255,0.08);
-      color: #eee;
-      backdrop-filter: blur(10px);
-      height: 42px;
-    }
-    .search-bar input::placeholder { color: #bbb; }
-    .search-bar input:focus { outline: none; background: rgba(255,255,255,0.15); }
+    header h1{font-size:1.4rem;color:#fff}
 
-    .filter-wrapper {
+    a{color:inherit;text-decoration:none;transition:color .3s}
+    a:visited{color:inherit}
+
+    nav{display:flex;gap:18px}
+    nav a{
+      color:#ccc;font-size:.95rem;position:relative;padding-bottom:2px
+    }
+    nav a::after{
+      content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+      background:#4caf50;transition:width .3s
+    }
+    nav a:hover,nav a.active{color:#fff}
+    nav a:hover::after,nav a.active::after{width:100%}
+
+    .menu-toggle{display:none;font-size:1.5rem;color:#ccc;background:none;border:none;cursor:pointer}
+
+    .dropdown{
+      position:absolute;top:100%;left:0;right:0;
+      background:#222;display:none;flex-direction:column;padding:10px 20px;
+      box-shadow:0 4px 10px rgba(0,0,0,.7);animation:fadeInDown .3s ease-out forwards
+    }
+    .dropdown a{
+      padding:12px 0;border-bottom:1px solid #333;
+      color:#eee;font-size:1rem
+    }
+    .dropdown a:last-child{border-bottom:none}
+    .dropdown a:hover,.dropdown a.active{color:#4caf50}
+
+    .hero{
+      height:40vh;min-height:220px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)), url('https://via.placeholder.com/1200x600?text=Stock') center/cover no-repeat;
+      position:relative;display:flex;align-items:center;justify-content:center
+    }
+    .hero-content{position:relative;text-align:center;color:#fff}
+    .hero-content h1{font-size:2.2rem;margin-bottom:10px;opacity:0;animation:fadeInUp 1s forwards}
+    .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
+
+    .container{max-width:1000px;margin:60px auto;padding:0 20px}
+    section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+    section.visible{opacity:1;transform:translateY(0)}
+
+    .stock-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      gap:20px;
+    }
+    .item-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;
+      padding:10px;
+      text-align:center;
+      cursor:pointer;
+      transition:.3s;
+      backdrop-filter:blur(8px);
       position: relative;
-      flex: 1 1 150px;
-      min-width: 150px;
-    }
-    .filter-button {
-      width: 100%;
-      padding: 10px 14px;
-      font-size: 1rem;
-      text-align: left;
-      border: none;
-      background: rgba(255,255,255,0.08);
-      color: #eee;
-      border-radius: 12px;
-      cursor: pointer;
-      height: 42px;
-    }
-    .filter-button::after {
-      content: "▼";
-      float: right;
-      font-size: 0.8rem;
-    }
-    .filter-options {
-      display: none;
-      position: absolute;
-      top: 105%;
-      left: 0;
-      width: 100%;
-      background: rgba(20,20,20,0.97);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      z-index: 200;
-    }
-    .filter-wrapper.open .filter-options {
-      display: block;
-    }
-    .filter-option {
-      padding: 10px 12px;
-      font-size: 0.95rem;
-      color: #eee;
-      cursor: pointer;
-    }
-    .filter-option:hover,
-    .filter-option.selected {
-      background: rgba(100,255,100,0.15);
-      color: #4caf50;
-    }
-
-    .stock-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 24px;
-    }
-    .item-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease;
-    }
-    .item-card:hover { transform: translateY(-6px); }
-    .item-card img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      user-select: none;
-    }
-    .item-card h3 {
-      font-size: 1.1rem;
-      color: #4caf50;
-      margin-bottom: 4px;
-    }
-    .item-card p {
-      font-size: 0.95rem;
-      color: #ccc;
-      margin-top: auto;
-    }
-
-    .no-results {
-      text-align: center;
-      font-size: 1.3rem;
-      color: #777;
-      margin-top: 40px;
-    }
-
-    /* Expanded Panel */
-    #expandedPanel {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 3000;
-      padding: 10px;
-    }
-    #expandedPanel.active {
-      display: flex;
-    }
-    .expanded-content {
-      background: rgba(30,30,30,0.97);
-      border-radius: 16px;
-      max-width: 720px;
-      width: 95%;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: row;
       overflow: hidden;
     }
-    .image-viewer {
-      position: relative;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #222;
+    .item-card:hover:not(.expanded){transform:translateY(-5px)}
+    .item-card img{
+      width:100%;
+      border-radius:10px;
+      margin-bottom:8px;
+      max-height: 120px;
+      object-fit: cover;
+      transition: filter .3s;
     }
-    .image-viewer img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+    .item-card.expanded img{
+      filter: brightness(0.7);
     }
-    .arrow {
+    .item-card h3{font-size:1rem;color:#4caf50;margin-bottom: 4px;}
+    .item-card p.price{font-size:.9rem;color:#ccc;margin-bottom:0;}
+
+    .extra-info {
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.55);
-      color: #4caf50;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-    .arrow-left { left: 10px; }
-    .arrow-right { right: 10px; }
-    .details {
-      flex: 1;
-      padding: 16px;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(20, 20, 20, 0.95);
+      color: #ccc;
+      padding: 15px;
+      border-radius: 12px;
       overflow-y: auto;
-    }
-    .details h2 {
-      color: #4caf50;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
-    .details p {
-      margin-bottom: 6px;
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-    .buy-link {
-      display: inline-block;
-      margin-top: 12px;
-      background: #4caf50;
-      color: #111;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px 0;
+      text-align: left;
       font-size: 0.9rem;
-      color: #aaa;
-      border-top: 1px solid #333;
+      box-shadow: 0 0 10px 3px rgba(76,175,80,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    .item-card.expanded .extra-info {
+      opacity: 1;
+      pointer-events: auto;
+      display: flex;
+    }
+    .extra-info h4 {
+      color: #4caf50;
+      margin-bottom: 8px;
+    }
+    .extra-info p {
+      margin-bottom: 8px;
+    }
+    .extra-info a {
+      color:#4caf50;
+      text-decoration:none;
+      font-weight:600;
+      align-self: flex-start;
+    }
+    .extra-info a:hover {
+      text-decoration:underline;
     }
 
-    @media(max-width: 768px) {
-      nav { display: none; }
-      .menu-toggle { display: block; }
-      .dropdown.show { display: flex; flex-direction: column; position: fixed; top: 56px; }
-      .search-bar { flex-direction: column; }
-      .search-bar input, .filter-wrapper { width: 100%; }
-      .expanded-content {
-        flex-direction: column;
-        max-height: 80vh;
-        overflow-y: auto;
-      }
-      .arrow-left { left: 6px; }
-      .arrow-right { right: 6px; }
+    footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
+
+    @media(max-width:768px){
+      .menu-toggle{display:block}
+      nav{display:none}
     }
+
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
   </style>
 </head>
 <body>
-  <header>
-    <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div>
-      <h1>Our Current Stock</h1>
-      <p>Premium Trainers from leading brands</p>
-    </div>
-  </section>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SoleZone | Stock</title>
-<style>
-/* ---------- Base ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;background:#111;color:#eee;min-height:100vh}
-/* ---------- Header ---------- */
-header{
-  position:fixed;inset:0 0 auto 0;height:56px;
-  background:rgba(0,0,0,.85);display:flex;align-items:center;
-  justify-content:space-between;padding:0 20px;z-index:1000;
-  box-shadow:0 2px 8px rgba(0,0,0,.7)
-}
-header h1{font-size:1.4rem}
-header h1 span{display:block;font-size:.75rem;color:#4caf50;font-weight:300}
-nav{display:flex;gap:18px}
-nav a{color:#ccc;text-decoration:none;position:relative;padding-bottom:2px}
-nav a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:2px;background:#4caf50;transition:width .3s}
-nav a:hover,nav a.active{color:#fff}
-nav a:hover::after,nav a.active::after{width:100%}
-.menu-toggle{display:none;font-size:1.6rem;color:#ccc;background:none;border:none;cursor:pointer}
-.dropdown{display:none;position:absolute;top:56px;left:0;right:0;background:rgba(0,0,0,.95);flex-direction:column;gap:10px;padding:14px 20px;z-index:1100}
-.dropdown a{color:#eee;text-decoration:none;font-size:1rem}
-.dropdown a:hover,.dropdown a.active{color:#4caf50}
-/* ---------- Hero ---------- */
-.hero{margin-top:56px;height:40vh;min-height:220px;background:
-  linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-  url('https://via.placeholder.com/1200x600?text=SoleZone+Stock') center/cover no-repeat;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.hero h1{font-size:2.2rem}.hero p{font-size:1.1rem}
-/* ---------- Container ---------- */
-.container{max-width:1200px;margin:40px auto 60px;padding:0 20px}
-.search-bar{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:25px}
-.search-bar input{
-  flex:1 1 240px;padding:10px 14px;font-size:1rem;height:42px;
-  background:rgba(255,255,255,.08);color:#eee;border:none;border-radius:12px;
-  backdrop-filter:blur(10px)
-}
-.search-bar input::placeholder{color:#bbb}
-.search-bar input:focus{outline:none;background:rgba(255,255,255,.15)}
-/* ---------- Custom filter dropdown ---------- */
-.filter-wrapper{position:relative;flex:1 1 150px;min-width:150px}
-.filter-button{
-  width:100%;height:42px;padding:10px 14px;font-size:1rem;text-align:left;
-  background:rgba(255,255,255,.08);color:#eee;border:none;border-radius:12px;
-  backdrop-filter:blur(10px);cursor:pointer
-}
-.filter-button::after{content:"▼";float:right;font-size:.8rem;transition:transform .2s}
-.filter-wrapper.open .filter-button::after{transform:rotate(180deg)}
-.filter-options{
-  display:none;position:absolute;top:105%;left:0;width:100%;
-  background:rgba(20,20,20,.97);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.6);
-  overflow-y:auto;max-height:160px;z-index:200
-}
-.filter-wrapper.open .filter-options{display:block}
-.filter-option{padding:10px 12px;font-size:.95rem;color:#eee;cursor:pointer}
-.filter-option:hover,.filter-option.selected{background:rgba(76,175,80,.18);color:#4caf50}
-/* ---------- Grid ---------- */
-.stock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
-.item-card{
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  border-radius:12px;padding:10px;display:flex;flex-direction:column;cursor:pointer;
-  transition:transform .3s
-}
-.item-card:hover{transform:translateY(-6px)}
-.item-card img{width:100%;height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px}
-.item-card h3{font-size:1.05rem;color:#4caf50;margin-bottom:4px}
-.item-card p{font-size:.9rem;color:#ccc;margin-top:auto}
-.no-results{text-align:center;font-size:1.25rem;color:#777;margin-top:40px;display:none}
-/* ---------- Expanded modal ---------- */
-#expandedPanel{position:fixed;inset:0;background:rgba(0,0,0,.87);display:none;
-  justify-content:center;align-items:center;padding:10px;z-index:3000}
-#expandedPanel.active{display:flex}
-.expanded-content{
-  background:rgba(30,30,30,.97);border-radius:16px;max-width:720px;width:95%;max-height:85vh;
-  display:flex;overflow:hidden
-}
-.image-viewer{flex:1;display:flex;align-items:center;justify-content:center;background:#222;position:relative}
-.image-viewer img{max-width:100%;max-height:100%;object-fit:contain}
-.arrow{
-  position:absolute;top:50%;transform:translateY(-50%);
-  width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);
-  color:#4caf50;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer
-}
-.arrow-left{left:10px}.arrow-right{right:10px}
-.details{flex:1;padding:16px;overflow-y:auto}
-.details h2{color:#4caf50;margin-bottom:10px;font-size:1.15rem}
-.details p{margin-bottom:6px;font-size:.95rem;line-height:1.45}
-.buy-link{display:inline-block;margin-top:12px;padding:10px 16px;background:#4caf50;color:#111;
-  border-radius:8px;text-decoration:none;font-weight:600;font-size:.95rem}
-/* ---------- Footer ---------- */
-footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1px solid #333}
-/* ---------- Responsive ---------- */
-@media(max-width:768px){
-  .menu-toggle{display:block}
-  nav{display:none}
-  .dropdown.show{display:flex;flex-direction:column;gap:12px}
-  .search-bar{flex-direction:column}
-  .search-bar input,.filter-wrapper{width:100%}
-  .expanded-content{flex-direction:column;max-height:80vh}
-  .arrow-left{left:6px}.arrow-right{right:6px}
-}
-</style>
-</head>
-<body>
 <header>
-  <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-  <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  <h1>Trainer Store</h1>
+  <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
   <nav>
     <a href="index.html">Home</a>
     <a href="stock.html" class="active">Stock</a>
@@ -395,135 +160,102 @@ footer{text-align:center;padding:20px 0;font-size:.9rem;color:#aaa;border-top:1p
   </div>
 </header>
 
-<section class="hero" aria-label="Stock hero">
-  <div>
+<section class="hero">
+  <div class="hero-content">
     <h1>Our Current Stock</h1>
-    <p>Premium Trainers from leading brands</p>
+    <p>Tap a product to learn more and buy.</p>
   </div>
 </section>
 
 <div class="container">
-  <div class="search-bar">
-    <input id="searchInput" type="text" placeholder="Search shoes…" autocomplete="off" />
-    <div class="filter-wrapper" id="filterWrapper">
-      <button class="filter-button" id="filterButton">All Conditions</button>
-      <div class="filter-options" id="filterOptions">
-        <div class="filter-option selected" data-val="">All Conditions</div>
-        <div class="filter-option" data-val="New">New</div>
-        <div class="filter-option" data-val="Used">Used</div>
-      </div>
+  <section>
+    <div class="stock-grid" id="stockGrid">
+      <!-- Cards will be injected here -->
     </div>
-  </div>
-
-  <div class="stock-grid" id="stockGrid" aria-live="polite" aria-relevant="additions"></div>
-  <div class="no-results" id="noResults">No shoes found.</div>
-</div>
-
-<!-- Expanded view -->
-<div id="expandedPanel" role="dialog" aria-modal="true" tabindex="-1">
-  <div class="expanded-content">
-    <div class="image-viewer">
-      <div class="arrow arrow-left" aria-label="Previous image">&#10094;</div>
-      <img id="mainImage" src="" alt="" />
-      <div class="arrow arrow-right" aria-label="Next image">&#10095;</div>
-    </div>
-    <div class="details" id="shoeDetails"></div>
-  </div>
+  </section>
 </div>
 
 <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 <script>
-/* ---------- DOM refs ---------- */
-const menuBtn  = document.querySelector('.menu-toggle'),
-      dropMenu = document.getElementById('dropdownMenu'),
-      searchIn = document.getElementById('searchInput'),
-      filterWrap = document.getElementById('filterWrapper'),
-      filterBtn  = document.getElementById('filterButton'),
-      filterOps  = document.getElementById('filterOptions'),
-      grid   = document.getElementById('stockGrid'),
-      noRes  = document.getElementById('noResults'),
-      panel  = document.getElementById('expandedPanel'),
-      mainImg= document.getElementById('mainImage'),
-      details= document.getElementById('shoeDetails'),
-      prev   = panel.querySelector('.arrow-left'),
-      next   = panel.querySelector('.arrow-right');
+  const dropdown = document.getElementById('dropdownMenu');
+  function toggleMenu(){
+    dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+  }
 
-/* ---------- Mobile nav ---------- */
-menuBtn.onclick = () => dropMenu.classList.toggle('show');
-
-/* ---------- Data & state ---------- */
-let shoes=[], currentList=[], curIdx=0, curImg=0, filterVal='';
-
-/* ---------- Fetch shoes.json ---------- */
-fetch('folder/shoes.json?v='+Date.now())
-  .then(r=>r.json())
-  .then(d=>{ shoes=d; render(); })
-  .catch(()=>{ grid.innerHTML='<p style="color:#f44;">Failed to load shoe data.</p>'; });
-
-/* ---------- Render grid ---------- */
-function render(){
-  const term = searchIn.value.trim().toLowerCase();
-  currentList = shoes.filter(s=>{
-    const matchText = s.title.toLowerCase().includes(term);
-    const matchCond = !filterVal || (s.info && s.info.condition===filterVal);
-    return matchText && matchCond;
+  document.querySelectorAll('section').forEach(sec=>{
+    const obs = new IntersectionObserver(e=>{
+      if(e[0].isIntersecting){
+        sec.classList.add('visible');
+        obs.disconnect();
+      }
+    },{threshold:.2});
+    obs.observe(sec);
   });
-  grid.innerHTML='';
-  if(!currentList.length){ noRes.style.display='block'; return; }
-  noRes.style.display='none';
-  currentList.forEach((s,i)=>{
-    const c=document.createElement('div');
-    c.className='item-card'; c.tabIndex=0;
-    c.innerHTML=`<img src="${(s.images&&s.images[0])||'https://via.placeholder.com/300x160?text=No+Image'}" alt="${s.title}">
-                 <h3>${s.title}</h3><p>${s.price}</p>`;
-    c.onclick=_=>open(i);
-    c.onkeydown=e=>{ if(e.key==='Enter'||e.key===' ') open(i);};
-    grid.appendChild(c);
+
+  const stockItems = [
+    {
+      title: 'Air Max 90',
+      price: '£85',
+      img: 'https://images.unsplash.com/photo-1528701800489-5658abf85527?auto=format&fit=crop&w=400&q=80',
+      condition: 'Excellent',
+      size: 'UK 9',
+      shipping: 'Ships in 1-2 days',
+      desc: 'Classic silhouette in great condition.'
+    },
+    {
+      title: 'Yeezy Boost 350',
+      price: '£150',
+      img: 'https://images.unsplash.com/photo-1590080877777-fda3f9099e58?auto=format&fit=crop&w=400&q=80',
+      condition: 'Lightly worn',
+      size: 'UK 10',
+      shipping: 'Ships in 3-4 days',
+      desc: 'Includes original box.'
+    },
+    {
+      title: 'Dunk Low Panda',
+      price: '£110',
+      img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80',
+      condition: 'Brand new',
+      size: 'UK 8',
+      shipping: 'Ships in 1 day',
+      desc: 'One of the cleanest looks in rotation right now.'
+    },
+    // Add more items here if needed...
+  ];
+
+  const stockGrid = document.getElementById('stockGrid');
+
+  // Generate cards
+  stockItems.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <img src="${item.img}" alt="${item.title}" />
+      <h3>${item.title}</h3>
+      <p class="price">${item.price}</p>
+      <div class="extra-info">
+        <h4>Details:</h4>
+        <p><strong>Condition:</strong> ${item.condition}</p>
+        <p><strong>Size:</strong> ${item.size}</p>
+        <p><strong>Shipping:</strong> ${item.shipping}</p>
+        <p>${item.desc}</p>
+        <a href="https://www.vinted.co.uk/member/233654539" target="_blank" rel="noopener noreferrer">Buy now</a>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      // Toggle expanded state for this card
+      const isExpanded = card.classList.contains('expanded');
+      // Collapse all cards first
+      document.querySelectorAll('.item-card.expanded').forEach(c => {
+        c.classList.remove('expanded');
+      });
+      // If not expanded before, expand this one
+      if(!isExpanded) card.classList.add('expanded');
+    });
+    stockGrid.appendChild(card);
   });
-}
-
-/* ---------- Search & filter ---------- */
-searchIn.oninput = render;
-filterBtn.onclick = ()=>filterWrap.classList.toggle('open');
-filterOps.querySelectorAll('.filter-option').forEach(opt=>{
-  opt.onclick=_=>{
-    filterOps.querySelectorAll('.filter-option').forEach(o=>o.classList.remove('selected'));
-    opt.classList.add('selected');
-    filterVal=opt.dataset.val;
-    filterBtn.textContent=opt.textContent;
-    filterWrap.classList.remove('open');
-    render();
-  };
-});
-
-/* ---------- Expanded view ---------- */
-function open(i){curIdx=i;curImg=0;updatePanel();panel.classList.add('active');}
-function updatePanel(){
-  const s=currentList[curIdx];
-  mainImg.src=(s.images&&s.images[curImg])||'https://via.placeholder.com/600x400?text=No+Image';
-  mainImg.alt=`${s.title} image ${curImg+1}`;
-  details.innerHTML=`
-    <h2>${s.title}</h2>
-    <p><strong>Price:</strong> ${s.price}</p>
-    <p><strong>Condition:</strong> ${s.info?.condition||'N/A'}</p>
-    <p><strong>Size:</strong> ${s.info?.size||'N/A'}</p>
-    <p><strong>Color:</strong> ${s.info?.color||'N/A'}</p>
-    <p><strong>Material:</strong> ${s.info?.material||'N/A'}</p>
-    <p><strong>Shipping:</strong> ${s.info?.shipping||'N/A'}</p>
-    <p><strong>Box:</strong> ${s.info?.box||'N/A'}</p>
-    <p><strong>Authenticity:</strong> ${s.info?.authenticity||'N/A'}</p>
-    <a class="buy-link" href="${s.buyLink||'#'}" target="_blank" rel="noopener">Buy now</a>`;
-}
-prev.onclick=_=>{const imgs=currentList[curIdx].images||[];if(imgs.length){curImg=(curImg-1+imgs.length)%imgs.length;updatePanel();}};
-next.onclick=_=>{const imgs=currentList[curIdx].images||[];if(imgs.length){curImg=(curImg+1)%imgs.length;updatePanel();}};
-panel.onclick=e=>{if(e.target===panel)panel.classList.remove('active');};
-document.onkeydown=e=>{if(e.key==='Escape')panel.classList.remove('active');};
-
-/* ---------- Close filter on outside click ---------- */
-document.addEventListener('click',e=>{
-  if(!filterWrap.contains(e.target)) filterWrap.classList.remove('open');
-});
 </script>
+
 </body>
 </html>
