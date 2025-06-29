@@ -47,6 +47,46 @@ nav a:hover::after, nav a.active::after { width: 100%; }
   font-size: 1.1rem; opacity: 0; animation-delay: .3s;
 }
 
+.hero {
+  margin-top: 56px;
+  height: 40vh;
+  min-height: 280px;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+              url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #fff;
+  text-align: center;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-content {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  opacity: 0;
+  animation: fadeInUp 1s forwards;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.3s forwards;
+}
+
 /* Homepage layout */
 .container { max-width: 900px; margin: 60px auto 60px; padding: 0 20px; }
 section { opacity: 0; transform: translateY(20px); transition: all .6s ease-out; margin-bottom: 60px; }
