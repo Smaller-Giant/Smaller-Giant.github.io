@@ -2,18 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <script defer src="js/global.js"></script>
-  <script defer src="js/stock.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/stock.js"></script>
 </head>
 <body>
 
-  <!-- ---------- HEADER ---------- -->
+  <!-- HEADER -->
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="stock.html" class="active">Stock</a>
@@ -28,16 +27,16 @@
     </div>
   </header>
 
-  <!-- ---------- HERO SECTION ---------- -->
-  <section class="hero stock-hero">
-    <div class="stock-hero-content">
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-content">
       <h1>Our Stock</h1>
       <p>Browse all available trainers.</p>
     </div>
   </section>
 
-  <!-- ---------- MAIN CONTENT ---------- -->
-  <div class="container">
+  <!-- MAIN CONTENT -->
+  <main class="container">
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search shoes…" autocomplete="off" />
       <div class="filter-wrapper" id="filterWrapper">
@@ -52,21 +51,21 @@
 
     <div class="stock-grid" id="stockGrid"></div>
     <div class="no-results" id="noResults">No shoes found.</div>
-  </div>
+  </main>
 
-  <!-- ---------- EXPANDED VIEW ---------- -->
+  <!-- EXPANDED VIEW MODAL -->
   <div id="expandedPanel">
     <div class="expanded-content">
       <div class="image-viewer">
         <div class="arrow arrow-left">&#10094;</div>
-        <img src="" alt="" id="mainImage"/>
+        <img src="" alt="Shoe image" id="mainImage" />
         <div class="arrow arrow-right">&#10095;</div>
       </div>
       <div class="details" id="shoeDetails"></div>
     </div>
   </div>
 
-  <!-- ---------- FOOTER ---------- -->
+  <!-- FOOTER -->
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
 </body>
