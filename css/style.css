@@ -185,6 +185,11 @@ footer { text-align:center; padding:20px 0; color:#aaa; border-top:1px solid #33
   .search-bar, .filter-wrapper, input { width: 100%; flex: none; }
   .expanded-content { flex-direction: column; max-height: 60vh; width: 95%; }
 }
+@media (max-width: 480px) {
+  .hero-content h1 { font-size: 1.8rem; }
+  .hero-content p { font-size: 1rem; }
+}
+
 
 /* Animations */
 @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform: translateY(0); } }
