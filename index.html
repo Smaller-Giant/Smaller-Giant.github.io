@@ -4,12 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Home</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3534/3534066.png" type="image/png" />
+  
+  <!-- ✅ External stylesheet -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+
+  <!-- ---------- HEADER ---------- -->
   <header>
-    <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+    <h1>SoleZone<span>Premium Trainers from leading brands</span></h1>
+    <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
     <nav>
       <a href="index.html" class="active">Home</a>
       <a href="stock.html">Stock</a>
@@ -24,40 +29,65 @@
     </div>
   </header>
 
+  <!-- ---------- HERO ---------- -->
   <section class="hero">
-    <div>
-      <h1>Welcome to SoleZone</h1>
-      <p>Premium trainers from leading brands — your one-stop sneaker hub</p>
+    <div class="hero-content">
+      <h1>Discover Your Next Trainers</h1>
+      <p>Authentic. Stylish. Delivered fast.</p>
     </div>
   </section>
 
+  <!-- ---------- CONTENT ---------- -->
   <div class="container">
-    <h2>Featured Stock</h2>
-    <div class="stock-grid">
-      <div class="item-card">
-        <img src="images/IMG-20250620-WA0001.jpg" alt="Air Max 90">
-        <h3>Air Max 90</h3>
-        <p>£85</p>
+
+    <!-- features -->
+    <section>
+      <h2>Why Choose SoleZone?</h2>
+      <div class="features">
+        <div class="feature">
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png" alt="Authentic">
+          <h3>100% Authentic</h3>
+          <p>Every pair verified by sneaker experts.</p>
+        </div>
+        <div class="feature">
+          <img src="https://cdn-icons-png.flaticon.com/512/679/679720.png" alt="Shipping">
+          <h3>Fast Shipping</h3>
+          <p>Quick dispatch via trusted carriers.</p>
+        </div>
+        <div class="feature">
+          <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Secure">
+          <h3>Secure Payments</h3>
+          <p>Buyer‑protection on every order.</p>
+        </div>
       </div>
-      <!-- Duplicate or adjust with more featured shoes -->
-    </div>
+    </section>
+
+    <!-- arrivals -->
+    <section>
+      <h2>New Arrivals</h2>
+      <div class="arrivals">
+        <img src="https://images.unsplash.com/photo-1610394212959-df9b20e8cd5e?auto=format&fit=crop&w=600&q=80" alt="Sneaker 1">
+        <img src="https://images.unsplash.com/photo-1600180758890-bb5a1c8e3a9b?auto=format&fit=crop&w=600&q=80" alt="Sneaker 2">
+        <img src="https://images.unsplash.com/photo-1617642022322-38f01a32b9d4?auto=format&fit=crop&w=600&q=80" alt="Sneaker 3">
+        <img src="https://images.unsplash.com/photo-1593032465171-8bc1b4fa0c8b?auto=format&fit=crop&w=600&q=80" alt="Sneaker 4">
+      </div>
+    </section>
+
+    <!-- testimonial -->
+    <section>
+      <h2>What Customers Say</h2>
+      <div class="testimonial">
+        <p>"Quick delivery and exactly as described—awesome experience!"</p>
+        <span>— Jamie P.</span>
+      </div>
+    </section>
+
   </div>
 
+  <!-- ---------- FOOTER ---------- -->
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <script>
-    const menuBtn = document.querySelector('.menu-toggle');
-    const dropdown = document.getElementById('dropdownMenu');
-
-    menuBtn.addEventListener('click', () => {
-      dropdown.classList.toggle('show');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('header')) {
-        dropdown.classList.remove('show');
-      }
-    });
-  </script>
+  <!-- ✅ External JS for homepage only -->
+  <script src="js/index.js"></script>
 </body>
 </html>
