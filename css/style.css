@@ -63,6 +63,41 @@ nav a:hover::after,nav a.active::after{width:100%}
 .hero-content h1{font-size:2.5rem;margin-bottom:15px;opacity:0;animation:fadeInUp 1s forwards}
 .hero-content p{font-size:1.1rem;opacity:0;animation:fadeInUp 1s .3s forwards}
 
+/* Hero section adjustments for homepage and stock page */
+.hero, .stock-hero {
+  margin-top: 40px; /* less space so it’s higher */
+  height: 40vh;
+  min-height: 280px;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+              url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #fff;
+  text-align: center;
+}
+
+/* Hero content & stock hero content */
+.hero-content, .stock-hero-content {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-content h1, .stock-hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  opacity: 0;
+  animation: fadeInUp 1s forwards;
+}
+
+.hero-content p, .stock-hero-content p {
+  font-size: 1.1rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.3s forwards;
+}
+
 /* ===== Homepage blocks ===== */
 .container{max-width:900px;margin:60px auto 60px;padding:0 20px}
 section{margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .6s ease-out}
