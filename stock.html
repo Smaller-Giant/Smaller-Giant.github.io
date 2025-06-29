@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script defer src="js/global.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
   <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/global.js"></script>
-  <script defer src="js/stock.js"></script>
 </head>
 <body>
 
@@ -28,9 +27,9 @@
     </div>
   </header>
 
-  <!-- ---------- HERO SECTION (outside header!) ---------- -->
-  <section class="hero">
-    <div class="hero-content">
+  <!-- ---------- HERO SECTION ---------- -->
+  <section class="hero stock-hero">
+    <div class="stock-hero-content">
       <h1>Our Stock</h1>
       <p>Browse all available trainers.</p>
     </div>
@@ -44,30 +43,5 @@
         <button class="filter-button" id="filterButton">All Conditions</button>
         <div class="filter-options" id="filterOptions">
           <div class="filter-option selected" data-val="">All Conditions</div>
-          <div class="filter-option" data-val="New">New</div>
-          <div class="filter-option" data-val="Used">Used</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="stock-grid" id="stockGrid"></div>
-    <div class="no-results" id="noResults">No shoes found.</div>
-  </div>
-
-  <!-- ---------- EXPANDED VIEW ---------- -->
-  <div id="expandedPanel">
-    <div class="expanded-content">
-      <div class="image-viewer">
-        <div class="arrow arrow-left">&#10094;</div>
-        <img src="" alt="" id="mainImage"/>
-        <div class="arrow arrow-right">&#10095;</div>
-      </div>
-      <div class="details" id="shoeDetails"></div>
-    </div>
-  </div>
-
-  <!-- ---------- FOOTER ---------- -->
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
-
-</body>
-</html>
+          <div class="filter-option" data-val="New">New</div> 
+          <
