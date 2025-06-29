@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Stock</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
     <button class="menu-toggle">☰</button>
@@ -25,13 +26,15 @@
     </div>
   </header>
 
+  <!-- HERO SECTION -->
   <section class="hero">
-    <div>
-      <h1>Our Current Stock</h1>
-      <p>Premium Trainers from leading brands</p>
+    <div class="hero-content">
+      <h1>Explore Our Stock</h1>
+      <p>Browse our latest trainers in stock now.</p>
     </div>
   </section>
 
+  <!-- MAIN CONTAINER -->
   <div class="container">
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search shoes…" autocomplete="off" />
@@ -49,19 +52,22 @@
     <div class="no-results" id="noResults">No shoes found.</div>
   </div>
 
+  <!-- EXPANDED VIEW -->
   <div id="expandedPanel">
     <div class="expanded-content">
       <div class="image-viewer">
         <div class="arrow arrow-left">&#10094;</div>
-        <img src="" alt="" id="mainImage"/>
+        <img src="" alt="" id="mainImage" />
         <div class="arrow arrow-right">&#10095;</div>
       </div>
       <div class="details" id="shoeDetails"></div>
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
+  <!-- SCRIPTS -->
   <script src="js/stock.js"></script>
 </body>
 </html>
