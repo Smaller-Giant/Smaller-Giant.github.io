@@ -25,6 +25,16 @@ nav a:hover::after, nav a.active::after { width: 100%; }
   position: fixed; top: 56px; left: 0; right: 0; display: none;
   flex-direction: column; background: rgba(0,0,0,0.95); padding: 10px 20px; z-index: 1100;
 }
+.dropdown {
+  display: none;
+  flex-direction: column;
+  /* existing styles */
+}
+
+.dropdown.show {
+  display: flex;
+}
+
 .dropdown a {
   padding: 12px 0; border-bottom: 1px solid #333; color: #eee;
 }
