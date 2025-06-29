@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SoleZone | Stock</title>
+  <title>SoleZone | Home</title>
 
-  <!-- ✅ Link to external CSS -->
+  <!-- Link to external CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle">☰</button>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
+      <a href="index.html" class="active">Home</a>
+      <a href="stock.html">Stock</a>
       <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
+      <a href="index.html" class="active">Home</a>
+      <a href="stock.html">Stock</a>
       <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
     </div>
@@ -28,42 +28,20 @@
 
   <section class="hero">
     <div>
-      <h1>Our Current Stock</h1>
+      <h1>Welcome to SoleZone</h1>
       <p>Premium Trainers from leading brands</p>
     </div>
   </section>
 
   <div class="container">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search shoes…" autocomplete="off" />
-      <div class="filter-wrapper" id="filterWrapper">
-        <button class="filter-button" id="filterButton">All Conditions</button>
-        <div class="filter-options" id="filterOptions">
-          <div class="filter-option selected" data-val="">All Conditions</div>
-          <div class="filter-option" data-val="New">New</div>
-          <div class="filter-option" data-val="Used">Used</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="stock-grid" id="stockGrid"></div>
-    <div class="no-results" id="noResults">No shoes found.</div>
-  </div>
-
-  <div id="expandedPanel">
-    <div class="expanded-content">
-      <div class="image-viewer">
-        <div class="arrow arrow-left">&#10094;</div>
-        <img src="" alt="" id="mainImage"/>
-        <div class="arrow arrow-right">&#10095;</div>
-      </div>
-      <div class="details" id="shoeDetails"></div>
-    </div>
+    <p style="text-align:center; color:#ccc; font-size:1.1rem; margin-top:40px;">
+      Explore our latest stock page to find your perfect trainers.
+    </p>
   </div>
 
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <!-- ✅ Link to external JS -->
-  <script src="js/stock.js"></script>
+  <!-- Link to external JS -->
+  <script src="js/index.js"></script>
 </body>
 </html>
