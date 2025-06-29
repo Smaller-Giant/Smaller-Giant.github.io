@@ -94,6 +94,9 @@ nav a.active::after {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
   z-index: 1100;
 }
+.dropdown.show {
+  display: flex;
+}
 .dropdown a {
   padding: 12px 0;
   border-bottom: 1px solid #333;
@@ -109,16 +112,13 @@ nav a.active::after {
   color: #4caf50;
 }
 
-/* ===== Hero section shared styles ===== */
+/* ===== Hero Section (Homepage and Stock) ===== */
 .hero,
 .stock-hero {
-  margin-top: 56px; /* account for fixed header */
+  margin-top: 40px; /* smaller top margin for higher placement */
   height: 40vh;
   min-height: 280px;
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.6)
-    ),
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80')
       center/cover no-repeat;
   display: flex;
@@ -128,40 +128,32 @@ nav a.active::after {
   color: #fff;
   text-align: center;
 }
-
 .hero-content,
 .stock-hero-content {
   position: relative;
   max-width: 900px;
-  margin: 0 20px;
+  margin: 0 auto;
 }
-
-/* Hero headings */
 .hero-content h1,
 .stock-hero-content h1 {
   font-size: 2.5rem;
   margin-bottom: 15px;
   opacity: 0;
   animation: fadeInUp 1s forwards;
-  font-weight: 600;
-  line-height: 1.1;
 }
-
 .hero-content p,
 .stock-hero-content p {
   font-size: 1.1rem;
   opacity: 0;
   animation: fadeInUp 1s 0.3s forwards;
-  font-weight: 300;
 }
 
-/* ===== Homepage blocks ===== */
+/* ===== Container and Sections ===== */
 .container {
   max-width: 900px;
   margin: 60px auto 60px;
   padding: 0 20px;
 }
-
 section {
   margin-bottom: 60px;
   opacity: 0;
@@ -173,73 +165,7 @@ section.visible {
   transform: translateY(0);
 }
 
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-}
-.feature {
-  background: #222;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  transition: transform 0.3s;
-}
-.feature:hover {
-  transform: translateY(-8px);
-}
-.feature img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 12px;
-  filter: invert(1);
-}
-.feature h3 {
-  color: #4caf50;
-  margin-bottom: 8px;
-  font-size: 1.2rem;
-}
-.feature p {
-  color: #ccc;
-  font-size: 0.95rem;
-}
-
-.arrivals {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  padding-bottom: 16px;
-}
-.arrivals img {
-  height: 180px;
-  border-radius: 10px;
-  filter: brightness(0.9);
-  cursor: pointer;
-  transition: filter 0.3s;
-}
-.arrivals img:hover {
-  filter: brightness(1);
-}
-
-.testimonial {
-  background: #222;
-  padding: 24px;
-  border-radius: 12px;
-  color: #ccc;
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
-}
-.testimonial p {
-  font-style: italic;
-  margin-bottom: 12px;
-}
-.testimonial span {
-  color: #4caf50;
-  font-weight: 600;
-}
-
-/* ===== Stock-page specific ===== */
+/* ===== Stock Page Specific ===== */
 .search-bar {
   display: flex;
   gap: 12px;
@@ -247,7 +173,7 @@ section.visible {
   margin-bottom: 25px;
 }
 .search-bar input {
-  flex: 1 1 200px;
+  flex: 1 1 150px;
   padding: 10px 14px;
   font-size: 0.95rem;
   border: none;
@@ -255,7 +181,7 @@ section.visible {
   color: #eee;
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  height: 40px;
+  height: 36px;
   transition: background-color 0.3s;
 }
 .search-bar input::placeholder {
@@ -268,7 +194,7 @@ section.visible {
 
 .filter-wrapper {
   position: relative;
-  flex: 1 1 150px;
+  flex: 0 0 150px;
   min-width: 150px;
 }
 .filter-button {
@@ -282,9 +208,8 @@ section.visible {
   border-radius: 12px;
   backdrop-filter: blur(10px);
   cursor: pointer;
-  height: 40px;
+  height: 36px;
   transition: background-color 0.3s;
-  user-select: none;
 }
 .filter-button:after {
   content: '▼';
@@ -295,7 +220,6 @@ section.visible {
 .filter-wrapper.open .filter-button:after {
   transform: rotate(180deg);
 }
-
 .filter-options {
   display: none;
   position: absolute;
@@ -324,6 +248,7 @@ section.visible {
   background: rgba(76, 175, 80, 0.25);
 }
 
+/* Stock grid & items */
 .stock-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -359,7 +284,6 @@ section.visible {
   font-size: 0.9rem;
   margin-top: auto;
 }
-
 .no-results {
   text-align: center;
   color: #777;
@@ -368,7 +292,7 @@ section.visible {
   display: none;
 }
 
-/* Expanded modal */
+/* Expanded modal (stock) */
 #expandedPanel {
   position: fixed;
   inset: 0;
@@ -393,7 +317,6 @@ section.visible {
   color: #ccc;
   animation: fadeIn 0.25s ease;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -416,7 +339,6 @@ section.visible {
   max-height: 100%;
   object-fit: contain;
 }
-
 .arrow {
   position: absolute;
   top: 50%;
@@ -431,8 +353,7 @@ section.visible {
   justify-content: center;
   cursor: pointer;
   font-size: 1.5rem;
-  transition: background-color 0.3s ease;
-  user-select: none;
+  transition: background-color 0.3s;
 }
 .arrow:hover {
   background: #4caf50;
@@ -470,7 +391,7 @@ section.visible {
   font-weight: 600;
   text-decoration: none;
   font-size: 0.95rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 .buy-link:hover {
   background: #388e3c;
@@ -493,12 +414,6 @@ footer {
   nav {
     display: none;
   }
-  .dropdown {
-    position: fixed;
-    top: 56px;
-    left: 0;
-    right: 0;
-  }
   .search-bar {
     flex-direction: column;
   }
@@ -517,18 +432,19 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .hero-content h1 {
-    font-size: 1.8rem;
+  .hero h1,
+  .stock-hero h1 {
+    font-size: 2rem;
   }
-  .hero-content p {
-    font-size: 0.95rem;
+  .hero p,
+  .stock-hero p {
+    font-size: 1rem;
   }
-  /* Stock hero text bigger */
-  .stock-hero-content h1 {
-    font-size: 2.2rem;
+  .search-bar input {
+    height: 34px;
   }
-  .stock-hero-content p {
-    font-size: 1.1rem;
+  .filter-button {
+    height: 34px;
   }
 }
 
@@ -547,13 +463,6 @@ footer {
   .stock-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
-  }
-  /* Stock hero smaller on tiny screens */
-  .stock-hero-content h1 {
-    font-size: 1.8rem;
-  }
-  .stock-hero-content p {
-    font-size: 1rem;
   }
 }
 
