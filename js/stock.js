@@ -14,15 +14,10 @@ const menuToggle = document.querySelector('.menu-toggle'),
 
 let shoes = [], filterVal = '', currentList = [], curIdx = 0, curImg = 0;
 
-// Toggle mobile menu
+// Mobile menu toggle
 menuToggle.onclick = () => dropdownMenu.classList.toggle('show');
 
-// Hide dropdown when a link is clicked
-dropdownMenu.querySelectorAll('a').forEach(link => {
-  link.onclick = () => dropdownMenu.classList.remove('show');
-});
-
-// Load shoes JSON file
+// Load shoes JSON
 fetch('folder/shoes.json?v=' + Date.now())
   .then(res => res.json())
   .then(data => {
@@ -31,7 +26,7 @@ fetch('folder/shoes.json?v=' + Date.now())
   })
   .catch(() => stockGrid.innerHTML = '<p style="color:#f44;">Failed loading shoes.</p>');
 
-// Render shoe cards
+// Populate grid
 function renderGrid() {
   const term = searchInput.value.trim().toLowerCase();
   currentList = shoes.filter(shoe => {
@@ -39,15 +34,9 @@ function renderGrid() {
           matchFilter = !filterVal || shoe.info.condition === filterVal;
     return matchSearch && matchFilter;
   });
-
   stockGrid.innerHTML = '';
-  if (!currentList.length) {
-    noResults.style.display = 'block';
-    return;
-  }
-
+  if (!currentList.length) return noResults.style.display = 'block';
   noResults.style.display = 'none';
-
   currentList.forEach((shoe, i) => {
     const card = document.createElement('div');
     card.className = 'item-card';
@@ -64,27 +53,23 @@ function renderGrid() {
   });
 }
 
-// Live search
+// Live search filtering
 searchInput.oninput = renderGrid;
 
-// Toggle filter dropdown
+// Filter dropdown toggle
 filterButton.onclick = (e) => {
   e.stopPropagation();
   filterWrapper.classList.toggle('open');
 };
 
-// Close filter when clicking outside (mobile fix)
+// Close filter when clicking outside
 document.addEventListener('click', function (e) {
   if (!filterWrapper.contains(e.target)) {
     filterWrapper.classList.remove('open');
   }
 });
 
-};
-  }
-});
-
-
+// Filter selection
 filterOptions.querySelectorAll('.filter-option').forEach(opt => {
   opt.onclick = () => {
     filterOptions.querySelectorAll('.filter-option').forEach(o => o.classList.remove('selected'));
@@ -96,14 +81,7 @@ filterOptions.querySelectorAll('.filter-option').forEach(opt => {
   };
 });
 
-// Close filter when clicking outside
-document.addEventListener('click', e => {
-  if (!filterWrapper.contains(e.target)) {
-    filterWrapper.classList.remove('open');
-  }
-});
-
-// Show expanded shoe panel
+// Expand a shoe
 function openShoe(idx) {
   curIdx = idx;
   curImg = 0;
@@ -128,13 +106,12 @@ function showExpanded() {
   expanded.classList.add('active');
 }
 
-// Carousel controls
+// Image carousel controls
 prevArrow.onclick = () => {
   const imgs = currentList[curIdx]?.images || [];
   curImg = imgs.length ? (curImg - 1 + imgs.length) % imgs.length : 0;
   showExpanded();
 };
-
 nextArrow.onclick = () => {
   const imgs = currentList[curIdx]?.images || [];
   curImg = imgs.length ? (curImg + 1) % imgs.length : 0;
@@ -145,12 +122,6 @@ nextArrow.onclick = () => {
 expanded.onclick = e => {
   if (e.target === expanded) expanded.classList.remove('active');
 };
-
 document.onkeydown = e => {
   if (e.key === 'Escape') expanded.classList.remove('active');
 };
-
-// Fix scroll jump on mobile load
-window.addEventListener('load', () => {
-  setTimeout(() => window.scrollTo(0, 0), 10);
-});
