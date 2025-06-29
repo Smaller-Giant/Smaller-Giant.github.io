@@ -28,9 +28,9 @@
     </div>
   </header>
 
-  <!-- ---------- HERO ---------- -->
-  <section class="hero">
-    <div class="hero-content">
+  <!-- ---------- HERO SECTION ---------- -->
+  <section class="hero stock-hero">
+    <div class="stock-hero-content">
       <h1>Our Stock</h1>
       <p>Browse all available trainers.</p>
     </div>
@@ -67,49 +67,33 @@
   </div>
 
   <!-- ---------- FOOTER ---------- -->
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+  <footer>
+    This site is for display only. All orders handled through Vinted or eBay.
+  </footer>
 
-  <!-- ---------- JS Scripts ---------- -->
+  <!-- ---------- JS: Inline scroll animation ---------- -->
   <script>
-    // Toggle mobile menu
     function toggleMenu() {
-      const dropdown = document.getElementById("dropdownMenu");
-      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Close mobile menu if clicking outside
-    document.addEventListener("click", function (e) {
-      const toggle = document.querySelector(".menu-toggle");
-      const dropdown = document.getElementById("dropdownMenu");
+    document.addEventListener('click', function (e) {
+      const toggle = document.querySelector('.menu-toggle');
+      const dropdown = document.getElementById('dropdownMenu');
       if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.style.display = "none";
+        dropdown.style.display = 'none';
       }
     });
 
-    // Intersection scroll animation
-    document.querySelectorAll("section").forEach(sec => {
+    document.querySelectorAll('section').forEach(sec => {
       const obs = new IntersectionObserver(e => {
         if (e[0].isIntersecting) {
-          sec.classList.add("visible");
+          sec.classList.add('visible');
           obs.disconnect();
         }
       }, { threshold: 0.2 });
       obs.observe(sec);
-    });
-
-    // Filter dropdown
-    const filterWrapper = document.getElementById("filterWrapper");
-    const filterButton = document.getElementById("filterButton");
-    const filterOptions = document.getElementById("filterOptions");
-
-    filterButton.addEventListener("click", () => {
-      filterWrapper.classList.toggle("open");
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!filterWrapper.contains(e.target)) {
-        filterWrapper.classList.remove("open");
-      }
     });
   </script>
 
