@@ -1,14 +1,31 @@
-// Dropdown toggle for mobile nav
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.menu-toggle');
-  const dropdown = document.getElementById('dropdownMenu');
+// Dropdown mobile menu toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const dropdownMenu = document.getElementById('dropdownMenu');
 
-  if (toggle && dropdown) {
-    toggle.addEventListener('click', () => {
-      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-    });
+menuToggle.addEventListener('click', () => {
+  if (dropdownMenu.style.display === 'flex') {
+    dropdownMenu.style.display = 'none';
+  } else {
+    dropdownMenu.style.display = 'flex';
   }
+});
 
-  // Prevent auto scroll on mobile reload
-  window.scrollTo(0, 0);
+// Close dropdown menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    dropdownMenu.style.display = 'none';
+  }
+});
+
+// Scroll animation for sections (fadeInUp)
+document.querySelectorAll('section').forEach(section => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  observer.observe(section);
 });
