@@ -177,17 +177,27 @@
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
   <!-- ---------- SCRIPTS ---------- -->
-  <script>
-    function toggleMenu(){
-      const d = document.getElementById('dropdownMenu');
-      d.style.display = d.style.display === 'flex' ? 'none' : 'flex';
+<script>
+  const menuToggle = document.querySelector('.menu-toggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  menuToggle.addEventListener('click', () => {
+    if (dropdownMenu.style.display === 'flex') {
+      dropdownMenu.style.display = 'none';
+    } else {
+      dropdownMenu.style.display = 'flex';
+      dropdownMenu.style.flexDirection = 'column';
     }
-    document.querySelectorAll('section').forEach(sec=>{
-      const obs=new IntersectionObserver(e=>{
-        if(e[0].isIntersecting){sec.classList.add('visible');obs.disconnect()}
-      },{threshold:.2});
-      obs.observe(sec);
-    });
-  </script>
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!dropdownMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+      dropdownMenu.style.display = 'none';
+    }
+  });
+</script>
+</body>
+
+  
 </body>
 </html>
