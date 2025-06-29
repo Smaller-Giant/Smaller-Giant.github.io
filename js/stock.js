@@ -72,6 +72,20 @@ filterButton.onclick = () => {
   filterWrapper.classList.toggle('open');
 };
 
+// Toggle filter dropdown
+filterButton.onclick = (e) => {
+  e.stopPropagation();
+  filterWrapper.classList.toggle('open');
+};
+
+// Close filter when clicking outside (mobile fix)
+document.addEventListener('click', function (e) {
+  if (!filterWrapper.contains(e.target)) {
+    filterWrapper.classList.remove('open');
+  }
+});
+
+
 filterOptions.querySelectorAll('.filter-option').forEach(opt => {
   opt.onclick = () => {
     filterOptions.querySelectorAll('.filter-option').forEach(o => o.classList.remove('selected'));
