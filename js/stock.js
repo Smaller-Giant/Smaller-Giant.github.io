@@ -57,10 +57,36 @@ function renderGrid() {
 searchInput.oninput = renderGrid;
 
 // Filter dropdown toggle
-filterButton.onclick = (e) => {
+// Toggle filter dropdown
+filterButton.addEventListener('click', (e) => {
   e.stopPropagation();
   filterWrapper.classList.toggle('open');
-};
+});
+
+// Close filter dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!filterWrapper.contains(e.target)) {
+    filterWrapper.classList.remove('open');
+  }
+});
+
+// Handle filter option selection
+filterOptions.querySelectorAll('.filter-option').forEach(option => {
+  option.addEventListener('click', () => {
+    // Clear existing selection
+    filterOptions.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
+    option.classList.add('selected');
+
+    // Update filter value
+    filterVal = option.dataset.val;
+    filterButton.textContent = option.textContent;
+
+    // Close dropdown and re-render
+    filterWrapper.classList.remove('open');
+    renderGrid();
+  });
+});
+
 
 // Close filter when clicking outside
 document.addEventListener('click', function (e) {
