@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone | Home</title>
-
-  <!-- Link to external CSS -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -29,19 +27,37 @@
   <section class="hero">
     <div>
       <h1>Welcome to SoleZone</h1>
-      <p>Premium Trainers from leading brands</p>
+      <p>Premium trainers from leading brands — your one-stop sneaker hub</p>
     </div>
   </section>
 
   <div class="container">
-    <p style="text-align:center; color:#ccc; font-size:1.1rem; margin-top:40px;">
-      Explore our latest stock page to find your perfect trainers.
-    </p>
+    <h2>Featured Stock</h2>
+    <div class="stock-grid">
+      <div class="item-card">
+        <img src="images/IMG-20250620-WA0001.jpg" alt="Air Max 90">
+        <h3>Air Max 90</h3>
+        <p>£85</p>
+      </div>
+      <!-- Duplicate or adjust with more featured shoes -->
+    </div>
   </div>
 
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <!-- Link to external JS -->
-  <script src="js/index.js"></script>
+  <script>
+    const menuBtn = document.querySelector('.menu-toggle');
+    const dropdown = document.getElementById('dropdownMenu');
+
+    menuBtn.addEventListener('click', () => {
+      dropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('header')) {
+        dropdown.classList.remove('show');
+      }
+    });
+  </script>
 </body>
 </html>
