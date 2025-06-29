@@ -2,11 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
 /* ===== Base ===== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Poppins', sans-serif;
   background: #111;
@@ -81,7 +77,6 @@ nav a.active::after {
   user-select: none;
 }
 
-/* Mobile dropdown */
 .dropdown {
   position: fixed;
   top: 56px;
@@ -109,18 +104,13 @@ nav a.active::after {
   color: #4caf50;
 }
 
-/* ===== Hero section shared styles ===== */
-.hero,
-.stock-hero {
-  margin-top: 56px; /* account for fixed header */
+/* ===== Hero Section (shared by homepage & stock) ===== */
+.hero {
+  margin-top: 56px;
   height: 40vh;
   min-height: 280px;
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.6)
-    ),
-    url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80')
-      center/cover no-repeat;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,40 +118,34 @@ nav a.active::after {
   color: #fff;
   text-align: center;
 }
-
-.hero-content,
-.stock-hero-content {
-  position: relative;
-  max-width: 900px;
-  margin: 0 20px;
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
 }
-
-/* Hero headings */
-.hero-content h1,
-.stock-hero-content h1 {
-  font-size: 2.5rem;
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+.hero-content h1 {
+  font-size: 2.4rem;
   margin-bottom: 15px;
   opacity: 0;
   animation: fadeInUp 1s forwards;
-  font-weight: 600;
-  line-height: 1.1;
 }
-
-.hero-content p,
-.stock-hero-content p {
+.hero-content p {
   font-size: 1.1rem;
   opacity: 0;
   animation: fadeInUp 1s 0.3s forwards;
-  font-weight: 300;
 }
 
-/* ===== Homepage blocks ===== */
+/* ===== Container & Sections ===== */
 .container {
   max-width: 900px;
-  margin: 60px auto 60px;
+  margin: 40px auto 60px;
   padding: 0 20px;
 }
-
 section {
   margin-bottom: 60px;
   opacity: 0;
@@ -172,92 +156,27 @@ section.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-}
-.feature {
-  background: #222;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  transition: transform 0.3s;
-}
-.feature:hover {
-  transform: translateY(-8px);
-}
-.feature img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 12px;
-  filter: invert(1);
-}
-.feature h3 {
-  color: #4caf50;
-  margin-bottom: 8px;
-  font-size: 1.2rem;
-}
-.feature p {
-  color: #ccc;
-  font-size: 0.95rem;
-}
-
-.arrivals {
-  display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  padding-bottom: 16px;
-}
-.arrivals img {
-  height: 180px;
-  border-radius: 10px;
-  filter: brightness(0.9);
-  cursor: pointer;
-  transition: filter 0.3s;
-}
-.arrivals img:hover {
-  filter: brightness(1);
-}
-
-.testimonial {
-  background: #222;
-  padding: 24px;
-  border-radius: 12px;
-  color: #ccc;
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
-}
-.testimonial p {
-  font-style: italic;
-  margin-bottom: 12px;
-}
-.testimonial span {
-  color: #4caf50;
-  font-weight: 600;
-}
-
-/* ===== Stock-page specific ===== */
+/* ===== Stock Page Search / Filter ===== */
 .search-bar {
   display: flex;
-  gap: 12px;
   flex-wrap: wrap;
+  gap: 10px;
   margin-bottom: 25px;
 }
+
 .search-bar input {
   flex: 1 1 200px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   font-size: 0.95rem;
   border: none;
   background: rgba(255, 255, 255, 0.08);
   color: #eee;
   border-radius: 12px;
   backdrop-filter: blur(10px);
-  height: 40px;
-  transition: background-color 0.3s;
+  height: 36px;
+  transition: background-color 0.3s ease;
 }
+
 .search-bar input::placeholder {
   color: #bbb;
 }
@@ -268,13 +187,13 @@ section.visible {
 
 .filter-wrapper {
   position: relative;
-  flex: 1 1 150px;
-  min-width: 150px;
+  flex: 1 1 140px;
+  min-width: 140px;
 }
 .filter-button {
   width: 100%;
-  padding: 10px 14px;
-  font-size: 0.95rem;
+  padding: 8px 12px;
+  font-size: 0.9rem;
   text-align: left;
   border: none;
   background: rgba(255, 255, 255, 0.08);
@@ -282,52 +201,52 @@ section.visible {
   border-radius: 12px;
   backdrop-filter: blur(10px);
   cursor: pointer;
-  height: 40px;
-  transition: background-color 0.3s;
+  height: 36px;
+  transition: background-color 0.3s ease;
   user-select: none;
 }
-.filter-button:after {
+.filter-button::after {
   content: '▼';
   float: right;
   font-size: 0.8rem;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
-.filter-wrapper.open .filter-button:after {
+.filter-wrapper.open .filter-button::after {
   transform: rotate(180deg);
 }
-
 .filter-options {
   display: none;
   position: absolute;
-  top: calc(100% + 4px);
+  top: 110%;
   left: 0;
   width: 100%;
   background: rgba(30, 30, 30, 0.95);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  z-index: 100;
   max-height: 150px;
   overflow-y: auto;
-  z-index: 100;
 }
 .filter-wrapper.open .filter-options {
   display: block;
 }
 .filter-option {
   padding: 8px 12px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #eee;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 .filter-option:hover,
 .filter-option.selected {
   background: rgba(76, 175, 80, 0.25);
 }
 
+/* ===== Stock Grid ===== */
 .stock-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 .item-card {
   background: rgba(255, 255, 255, 0.05);
@@ -337,14 +256,14 @@ section.visible {
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease;
 }
 .item-card:hover {
   transform: translateY(-6px);
 }
 .item-card img {
   width: 100%;
-  height: 140px;
+  height: 130px;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 8px;
@@ -356,10 +275,9 @@ section.visible {
 }
 .item-card p {
   color: #ccc;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin-top: auto;
 }
-
 .no-results {
   text-align: center;
   color: #777;
@@ -368,7 +286,7 @@ section.visible {
   display: none;
 }
 
-/* Expanded modal */
+/* ===== Expanded Modal ===== */
 #expandedPanel {
   position: fixed;
   inset: 0;
@@ -385,7 +303,7 @@ section.visible {
 .expanded-content {
   background: rgba(30, 30, 30, 0.95);
   border-radius: 16px;
-  width: 90%;
+  width: 95%;
   max-width: 700px;
   max-height: 80vh;
   display: flex;
@@ -393,16 +311,10 @@ section.visible {
   color: #ccc;
   animation: fadeIn 0.25s ease;
 }
-
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-
 .image-viewer {
   flex: 1;
   position: relative;
@@ -416,7 +328,6 @@ section.visible {
   max-height: 100%;
   object-fit: contain;
 }
-
 .arrow {
   position: absolute;
   top: 50%;
@@ -431,19 +342,13 @@ section.visible {
   justify-content: center;
   cursor: pointer;
   font-size: 1.5rem;
-  transition: background-color 0.3s ease;
-  user-select: none;
 }
 .arrow:hover {
   background: #4caf50;
   color: #111;
 }
-.arrow-left {
-  left: 8px;
-}
-.arrow-right {
-  right: 8px;
-}
+.arrow-left { left: 8px; }
+.arrow-right { right: 8px; }
 
 .details {
   flex: 1;
@@ -453,12 +358,12 @@ section.visible {
 .details h2 {
   color: #4caf50;
   margin-bottom: 10px;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
 .details p {
   margin-bottom: 6px;
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 .buy-link {
   display: inline-block;
@@ -473,7 +378,7 @@ section.visible {
   transition: background-color 0.3s ease;
 }
 .buy-link:hover {
-  background: #388e3c;
+  background-color: #388e3c;
 }
 
 /* ===== Footer ===== */
@@ -485,96 +390,55 @@ footer {
   border-top: 1px solid #333;
 }
 
-/* ===== Responsive tweaks ===== */
+/* ===== Responsive Tweaks ===== */
 @media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-  nav {
-    display: none;
-  }
-  .dropdown {
-    position: fixed;
-    top: 56px;
-    left: 0;
-    right: 0;
-  }
+  .menu-toggle { display: block; }
+  nav { display: none; }
   .search-bar {
     flex-direction: column;
+    gap: 8px;
   }
   .filter-wrapper,
-  input {
+  .search-bar input {
     width: 100%;
   }
   .expanded-content {
     flex-direction: column;
     max-height: 70vh;
-    width: 95%;
   }
-  #expandedPanel.active .expanded-content {
-    max-height: 60vh;
-  }
+  .arrow-left { left: 4px; }
+  .arrow-right { right: 4px; }
 }
 
 @media (max-width: 480px) {
   .hero-content h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   .hero-content p {
     font-size: 0.95rem;
   }
-  /* Stock hero text bigger */
-  .stock-hero-content h1 {
-    font-size: 2.2rem;
+  .search-bar input {
+    font-size: 0.9rem;
+    height: 34px;
   }
-  .stock-hero-content p {
-    font-size: 1.1rem;
+  .filter-button {
+    height: 34px;
+    font-size: 0.9rem;
   }
-}
-
-@media (max-width: 350px) {
-  header h1 {
-    font-size: 1.1rem;
+  .item-card img {
+    height: 120px;
   }
-  nav a {
-    font-size: 0.85rem;
-    padding: 8px 6px;
-  }
-  .container {
-    padding: 0 12px;
-    max-width: 320px;
-  }
-  .stock-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
-  }
-  /* Stock hero smaller on tiny screens */
-  .stock-hero-content h1 {
-    font-size: 1.8rem;
-  }
-  .stock-hero-content p {
-    font-size: 1rem;
+  .expanded-content {
+    max-height: 60vh;
   }
 }
 
 /* ===== Animations ===== */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
