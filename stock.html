@@ -11,7 +11,7 @@
   <!-- ---------- HEADER ---------- -->
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle">☰</button>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="stock.html" class="active">Stock</a>
@@ -26,7 +26,7 @@
     </div>
   </header>
 
-  <!-- ---------- HERO SECTION (with fade-in animation) ---------- -->
+  <!-- ---------- HERO SECTION (copied from homepage) ---------- -->
   <section class="hero">
     <div class="hero-content">
       <h1>Explore Our Stock</h1>
@@ -34,7 +34,7 @@
     </div>
   </section>
 
-  <!-- ---------- SEARCH + FILTER ---------- -->
+  <!-- ---------- MAIN CONTENT ---------- -->
   <div class="container">
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search shoes…" autocomplete="off" />
@@ -52,7 +52,7 @@
     <div class="no-results" id="noResults">No shoes found.</div>
   </div>
 
-  <!-- ---------- EXPANDED PANEL ---------- -->
+  <!-- ---------- EXPANDED VIEW ---------- -->
   <div id="expandedPanel">
     <div class="expanded-content">
       <div class="image-viewer">
@@ -67,7 +67,34 @@
   <!-- ---------- FOOTER ---------- -->
   <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <!-- ---------- SCRIPT ---------- -->
+  <!-- ---------- JS ---------- -->
   <script src="js/stock.js"></script>
+  <script>
+    // Dropdown mobile menu toggle
+    function toggleMenu() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Optional: close dropdown on outside click
+    document.addEventListener('click', function (e) {
+      const toggle = document.querySelector('.menu-toggle');
+      const dropdown = document.getElementById('dropdownMenu');
+      if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+
+    // Scroll animation for sections
+    document.querySelectorAll('section').forEach(sec => {
+      const obs = new IntersectionObserver(e => {
+        if (e[0].isIntersecting) {
+          sec.classList.add('visible');
+          obs.disconnect();
+        }
+      }, { threshold: 0.2 });
+      obs.observe(sec);
+    });
+  </script>
 </body>
 </html>
