@@ -1,100 +1,140 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <script src="js/global.js"></script>
-  <script src="js/stock.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SoleZone | Stock</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
+const menuToggle = document.querySelector('.menu-toggle'),
+      dropdownMenu = document.getElementById('dropdownMenu'),
+      searchInput = document.getElementById('searchInput'),
+      filterWrapper = document.getElementById('filterWrapper'),
+      filterButton = document.getElementById('filterButton'),
+      filterOptions = document.getElementById('filterOptions'),
+      stockGrid = document.getElementById('stockGrid'),
+      noResults = document.getElementById('noResults'),
+      expanded = document.getElementById('expandedPanel'),
+      mainImage = document.getElementById('mainImage'),
+      shoeDetails = document.getElementById('shoeDetails'),
+      prevArrow = expanded.querySelector('.arrow-left'),
+      nextArrow = expanded.querySelector('.arrow-right');
 
-  <!-- ---------- HEADER ---------- -->
-  <header>
-    <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="stock.html" class="active">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </header>
+let shoes = [], filterVal = '', currentList = [], curIdx = 0, curImg = 0;
 
-  <!-- ---------- HERO SECTION ---------- -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Our Stock</h1>
-      <p>Browse all available trainers.</p>
-    </div>
-  </section>
+// Toggle mobile menu
+menuToggle.onclick = () => {
+  dropdownMenu.classList.toggle('show');
+};
 
-  <!-- ---------- MAIN CONTENT ---------- -->
-  <div class="container">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search shoes…" autocomplete="off" />
-      <div class="filter-wrapper" id="filterWrapper">
-        <button class="filter-button" id="filterButton">All Conditions</button>
-        <div class="filter-options" id="filterOptions">
-          <div class="filter-option selected" data-val="">All Conditions</div>
-          <div class="filter-option" data-val="New">New</div>
-          <div class="filter-option" data-val="Used">Used</div>
-        </div>
-      </div>
-    </div>
+// Close menu if clicking outside
+document.addEventListener('click', e => {
+  if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    dropdownMenu.classList.remove('show');
+  }
+});
 
-    <div class="stock-grid" id="stockGrid"></div>
-    <div class="no-results" id="noResults">No shoes found.</div>
-  </div>
+// Load shoes data
+fetch('folder/shoes.json?v=' + Date.now())
+  .then(res => res.json())
+  .then(data => {
+    shoes = data;
+    renderGrid();
+  })
+  .catch(() => {
+    stockGrid.innerHTML = '<p style="color:#f44;">Failed loading shoes.</p>';
+  });
 
-  <!-- ---------- EXPANDED VIEW ---------- -->
-  <div id="expandedPanel">
-    <div class="expanded-content">
-      <div class="image-viewer">
-        <div class="arrow arrow-left">&#10094;</div>
-        <img src="" alt="" id="mainImage"/>
-        <div class="arrow arrow-right">&#10095;</div>
-      </div>
-      <div class="details" id="shoeDetails"></div>
-    </div>
-  </div>
+// Render shoes grid with search and filter
+function renderGrid() {
+  const term = searchInput.value.trim().toLowerCase();
+  currentList = shoes.filter(shoe => {
+    const matchesSearch = shoe.title.toLowerCase().includes(term);
+    const matchesFilter = !filterVal || shoe.info.condition === filterVal;
+    return matchesSearch && matchesFilter;
+  });
 
-  <!-- ---------- FOOTER ---------- -->
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+  stockGrid.innerHTML = '';
 
-  <!-- ---------- JS ---------- -->
-  <script src="js/stock.js"></script>
-  <script>
-    function toggleMenu() {
-      const dropdown = document.getElementById('dropdownMenu');
-      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-    }
+  if (!currentList.length) {
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
 
-    document.addEventListener('click', function (e) {
-      const toggle = document.querySelector('.menu-toggle');
-      const dropdown = document.getElementById('dropdownMenu');
-      if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.style.display = 'none';
-      }
-    });
+  currentList.forEach((shoe, i) => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <img src="${shoe.images[0] || 'https://via.placeholder.com/300x160?text=No+Image'}" alt="${shoe.title}">
+      <h3>${shoe.title}</h3>
+      <p>${shoe.price}</p>
+    `;
+    card.onclick = () => openShoe(i);
+    card.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') openShoe(i);
+    };
+    stockGrid.appendChild(card);
+  });
+}
 
-    document.querySelectorAll('section').forEach(sec => {
-      const obs = new IntersectionObserver(e => {
-        if (e[0].isIntersecting) {
-          sec.classList.add('visible');
-          obs.disconnect();
-        }
-      }, { threshold: 0.2 });
-      obs.observe(sec);
-    });
-  </script>
+// Search input live update
+searchInput.oninput = renderGrid;
 
-</body>
-</html>
+// Filter dropdown toggle
+filterButton.onclick = () => filterWrapper.classList.toggle('open');
+
+// Filter option selection
+filterOptions.querySelectorAll('.filter-option').forEach(opt => {
+  opt.onclick = () => {
+    filterOptions.querySelectorAll('.filter-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+    filterVal = opt.dataset.val;
+    filterButton.textContent = opt.textContent;
+    filterWrapper.classList.remove('open');
+    renderGrid();
+  };
+});
+
+// Open expanded shoe modal
+function openShoe(idx) {
+  curIdx = idx;
+  curImg = 0;
+  showExpanded();
+}
+
+// Show expanded shoe details
+function showExpanded() {
+  const shoe = currentList[curIdx];
+  if (!shoe) return;
+
+  mainImage.src = shoe.images[curImg] || 'https://via.placeholder.com/600x400?text=No+Image';
+
+  shoeDetails.innerHTML = `
+    <h2>${shoe.title}</h2>
+    <p><strong>Price:</strong> ${shoe.price}</p>
+    <p><strong>Condition:</strong> ${shoe.info.condition || 'N/A'}</p>
+    <p><strong>Size:</strong> ${shoe.info.size || 'N/A'}</p>
+    <p><strong>Color:</strong> ${shoe.info.color || 'N/A'}</p>
+    <p><strong>Material:</strong> ${shoe.info.material || 'N/A'}</p>
+    <p><strong>Shipping:</strong> ${shoe.info.shipping || 'N/A'}</p>
+    <p><strong>Box:</strong> ${shoe.info.box || 'N/A'}</p>
+    <p><strong>Authenticity:</strong> ${shoe.info.authenticity || 'N/A'}</p>
+    <a href="${shoe.buyLink}" class="buy-link" target="_blank" rel="noopener noreferrer">Buy now</a>
+  `;
+
+  expanded.classList.add('active');
+}
+
+// Carousel controls
+prevArrow.onclick = () => {
+  const imgs = currentList[curIdx]?.images || [];
+  curImg = imgs.length ? (curImg - 1 + imgs.length) % imgs.length : 0;
+  showExpanded();
+};
+nextArrow.onclick = () => {
+  const imgs = currentList[curIdx]?.images || [];
+  curImg = imgs.length ? (curImg + 1) % imgs.length : 0;
+  showExpanded();
+};
+
+// Close modal on background click or Escape key
+expanded.onclick = e => {
+  if (e.target === expanded) expanded.classList.remove('active');
+};
+document.onkeydown = e => {
+  if (e.key === 'Escape') expanded.classList.remove('active');
+};
