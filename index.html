@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SoleZone | Home</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3534/3534066.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <title>SoleZone | Home</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3534/3534066.png" type="image/png"/>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- ===== Header ===== -->
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
     <button class="menu-toggle" aria-label="Toggle menu">☰</button>
@@ -28,20 +27,20 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- ===== Hero ===== -->
   <section class="hero">
     <div class="hero-content">
-      <h1>Discover Your Next Trainers</h1>
-      <p>Authentic. Stylish. Delivered fast.</p>
+      <h1>Discover Your Next Trainer</h1>
+      <p>Authentic • Fast shipping • Secure checkout</p>
     </div>
   </section>
 
-  <!-- MAIN CONTENT -->
+  <!-- ===== Main Content ===== -->
   <div class="container">
 
-    <!-- FEATURES -->
+    <!-- Features -->
     <section>
-      <h2>Why Choose SoleZone?</h2>
+      <h2>Why Choose SoleZone?</h2>
       <div class="features">
         <div class="feature">
           <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png" alt="Authentic">
@@ -55,15 +54,15 @@
         </div>
         <div class="feature">
           <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Secure">
-          <h3>Secure Payments</h3>
+          <h3>Secure Payments</h3>
           <p>Buyer‑protection on every order.</p>
         </div>
       </div>
     </section>
 
-    <!-- NEW ARRIVALS -->
+    <!-- Arrivals -->
     <section>
-      <h2>New Arrivals</h2>
+      <h2>New Arrivals</h2>
       <div class="arrivals">
         <img src="https://images.unsplash.com/photo-1610394212959-df9b20e8cd5e?auto=format&fit=crop&w=600&q=80" alt="Sneaker 1">
         <img src="https://images.unsplash.com/photo-1600180758890-bb5a1c8e3a9b?auto=format&fit=crop&w=600&q=80" alt="Sneaker 2">
@@ -72,21 +71,38 @@
       </div>
     </section>
 
-    <!-- TESTIMONIAL -->
+    <!-- Testimonial -->
     <section>
-      <h2>What Customers Say</h2>
+      <h2>What Customers Say</h2>
       <div class="testimonial">
-        <p>"Quick delivery and exactly as described—awesome experience!"</p>
-        <span>— Jamie P.</span>
+        <p>“Quick delivery and exactly as described—awesome experience!”</p>
+        <span>— Jamie P.</span>
       </div>
     </section>
 
   </div>
 
-  <!-- FOOTER -->
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+  <!-- ===== Footer ===== -->
+  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
-  <!-- JS FILE -->
-  <script src="js/global.js"></script>
+  <!-- ===== Scripts ===== -->
+  <script>
+    /* Mobile dropdown toggle */
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+      const dd = document.getElementById('dropdownMenu');
+      dd.style.display = (dd.style.display === 'flex') ? 'none' : 'flex';
+    });
+
+    /* Fade‑in sections on scroll */
+    document.querySelectorAll('section').forEach(sec => {
+      const obs = new IntersectionObserver(e => {
+        if (e[0].isIntersecting) {
+          sec.classList.add('visible');
+          obs.disconnect();
+        }
+      }, {threshold: .2});
+      obs.observe(sec);
+    });
+  </script>
 </body>
 </html>
