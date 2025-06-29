@@ -1,8 +1,14 @@
-// index.js - handles mobile menu toggle on homepage
+function toggleMenu() {
+  const d = document.getElementById('dropdownMenu');
+  d.style.display = d.style.display === 'flex' ? 'none' : 'flex';
+}
 
-const menuToggle = document.querySelector('.menu-toggle');
-const dropdownMenu = document.getElementById('dropdownMenu');
-
-menuToggle.addEventListener('click', () => {
-  dropdownMenu.classList.toggle('show');
+document.querySelectorAll('section').forEach(sec => {
+  const obs = new IntersectionObserver(e => {
+    if (e[0].isIntersecting) {
+      sec.classList.add('visible');
+      obs.disconnect();
+    }
+  }, { threshold: 0.2 });
+  obs.observe(sec);
 });
