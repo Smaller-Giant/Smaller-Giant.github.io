@@ -68,7 +68,9 @@ function renderGrid() {
 searchInput.oninput = renderGrid;
 
 // Condition filter logic
-filterButton.onclick = () => filterWrapper.classList.toggle('open');
+filterButton.onclick = () => {
+  filterWrapper.classList.toggle('open');
+};
 
 filterOptions.querySelectorAll('.filter-option').forEach(opt => {
   opt.onclick = () => {
