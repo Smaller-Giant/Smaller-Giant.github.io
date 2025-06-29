@@ -1,31 +1,22 @@
-// Dropdown mobile menu toggle
-const menuToggle = document.querySelector('.menu-toggle');
-const dropdownMenu = document.getElementById('dropdownMenu');
-
-menuToggle.addEventListener('click', () => {
-  if (dropdownMenu.style.display === 'flex') {
-    dropdownMenu.style.display = 'none';
-  } else {
-    dropdownMenu.style.display = 'flex';
+function toggleMenu() {
+  const dd = document.getElementById('dropdownMenu');
+  dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
+}
+document.addEventListener('click', e => {
+  const mt = document.querySelector('.menu-toggle');
+  const dd = document.getElementById('dropdownMenu');
+  if (!mt.contains(e.target) && !dd.contains(e.target)) {
+    dd.style.display = 'none';
   }
 });
-
-// Close dropdown menu when clicking outside
-document.addEventListener('click', (e) => {
-  if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-    dropdownMenu.style.display = 'none';
-  }
-});
-
-// Scroll animation for sections (fadeInUp)
-document.querySelectorAll('section').forEach(section => {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+window.addEventListener('load', () => {
+  document.querySelectorAll('section').forEach(sec => {
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        sec.classList.add('visible');
+        obs.disconnect();
       }
-    });
-  }, { threshold: 0.2 });
-  observer.observe(section);
+    }, { threshold: 0.2 });
+    obs.observe(sec);
+  });
 });
