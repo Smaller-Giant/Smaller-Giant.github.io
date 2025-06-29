@@ -124,11 +124,23 @@ section.visible { opacity: 1; transform: translateY(0); }
 .filter-button::after { content: '▼'; float: right; font-size: .8rem; transition: transform .2s; }
 .filter-wrapper.open .filter-button::after { transform: rotate(180deg); }
 .filter-options {
-  display: none; position: absolute; top: calc(100% + 4px);
-  width: 100%; background: rgba(30,30,30,0.95); border-radius:8px;
-  max-height: 150px; overflow: auto; z-index: 100;
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: rgba(30,30,30,.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.6);
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 100;
 }
-.filter-wrapper.open .filter-options { display: block; }
+
+.filter-wrapper.open .filter-options {
+  display: block;
+}
+
 .filter-option {
   padding:8px 12px; cursor:pointer; transition: background .3s;
 }
