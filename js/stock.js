@@ -67,11 +67,6 @@ function renderGrid() {
 // Live search
 searchInput.oninput = renderGrid;
 
-// Condition filter logic
-filterButton.onclick = () => {
-  filterWrapper.classList.toggle('open');
-};
-
 // Toggle filter dropdown
 filterButton.onclick = (e) => {
   e.stopPropagation();
@@ -82,6 +77,10 @@ filterButton.onclick = (e) => {
 document.addEventListener('click', function (e) {
   if (!filterWrapper.contains(e.target)) {
     filterWrapper.classList.remove('open');
+  }
+});
+
+};
   }
 });
 
