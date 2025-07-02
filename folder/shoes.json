@@ -18,7 +18,8 @@
       "box": "Includes original box and tags",
       "authenticity": "Authenticity guaranteed"
     },
-    "buyLink": "https://www.vinted.co.uk/member/233654539"
+    "buyLink": "https://www.vinted.co.uk/member/233654539",
+    "slug": "nike-dunks"
   },
   {
     "title": "Nike Dunks",
@@ -33,7 +34,8 @@
       "box": "No original box",
       "authenticity": "Guaranteed"
     },
-    "buyLink": "#"
+    "buyLink": "#",
+    "slug": "nike-dunks-2"
   },
   {
     "title": "Dunk Low Panda",
@@ -48,7 +50,8 @@
       "box": "No box included",
       "authenticity": "Verified seller"
     },
-    "buyLink": "#"
+    "buyLink": "#",
+    "slug": "dunk-low-panda"
   },
   {
     "title": "Dunks",
@@ -63,7 +66,8 @@
       "box": "Original box",
       "authenticity": "Authenticity guaranteed"
     },
-    "buyLink": "#"
+    "buyLink": "#",
+    "slug": "dunks"
   },
   {
     "title": "Nike Blocks",
@@ -78,6 +82,7 @@
       "box": "With box",
       "authenticity": "Certified authentic"
     },
-    "buyLink": "#"
+    "buyLink": "#",
+    "slug": "nike-blocks"
   }
 ]
