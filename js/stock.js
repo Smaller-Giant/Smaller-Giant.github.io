@@ -22,7 +22,7 @@ const cartTotal = document.getElementById('cart-total');
 const cartBtn = document.getElementById('cart-btn');
 const cartDrawer = document.getElementById('cart-drawer');
 
-// Load products from shoes.json in 'folder' directory
+// Load products from shoes.json
 fetch('folder/shoes.json')
   .then(res => res.json())
   .then(data => {
@@ -127,17 +127,16 @@ function showExpanded(index) {
 
   arrowLeft.onclick = () => {
     const imgs = product.images;
-    const currentIndex = imgs.indexOf(mainImage.src.split('/').pop());
-    let newIndex = imgs.indexOf(mainImage.src);
-    if (newIndex === -1) newIndex = 0;
-    else newIndex = (newIndex - 1 + imgs.length) % imgs.length;
-    mainImage.src = imgs[newIndex];
+    let currentIndex = imgs.indexOf(mainImage.src.split('/').pop());
+    if (currentIndex === -1) currentIndex = 0;
+    currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+    mainImage.src = imgs[currentIndex];
   };
   arrowRight.onclick = () => {
     const imgs = product.images;
-    let currentIndex = imgs.indexOf(mainImage.src);
+    let currentIndex = imgs.indexOf(mainImage.src.split('/').pop());
     if (currentIndex === -1) currentIndex = 0;
-    else currentIndex = (currentIndex + 1) % imgs.length;
+    currentIndex = (currentIndex + 1) % imgs.length;
     mainImage.src = imgs[currentIndex];
   };
 }
