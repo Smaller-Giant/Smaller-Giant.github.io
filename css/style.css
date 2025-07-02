@@ -194,3 +194,54 @@ footer { text-align:center; padding:20px 0; color:#aaa; border-top:1px solid #33
 /* Animations */
 @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+
+.cart-icon {
+  cursor: pointer;
+  margin-left: 1rem;
+  font-weight: bold;
+  color: white;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  width: 300px;
+  max-height: 80vh;
+  background: #111;
+  color: white;
+  padding: 1rem;
+  box-shadow: -3px 0 10px rgba(0,0,0,0.4);
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.cart-drawer.hidden {
+  display: none;
+}
+
+.cart-drawer h3 {
+  margin-top: 0;
+}
+
+.cart-drawer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-drawer li {
+  margin-bottom: 0.5rem;
+}
+
+.cart-drawer button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
