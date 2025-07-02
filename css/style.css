@@ -217,3 +217,77 @@ footer { text-align:center; padding:20px 0; color:#aaa; border-top:1px solid #33
   background: #111;
   color: white;
   padding
+
+
+  .item-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+.item-card:hover {
+  box-shadow: 0 0 15px #4caf50aa;
+}
+.expanded-info {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #4caf50;
+  color: #ccc;
+}
+.image-slider {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image-slider img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.prev-btn, .next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #4caf50;
+  font-size: 1.5rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  user-select: none;
+  transition: background 0.3s;
+  z-index: 2;
+}
+.prev-btn:hover, .next-btn:hover {
+  background: #4caf50;
+  color: #111;
+}
+.prev-btn {
+  left: 8px;
+}
+.next-btn {
+  right: 8px;
+}
+.buy-link {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: #4caf50;
+  color: #111;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+.buy-link:hover {
+  background: #388e3c;
+}
