@@ -1,138 +1,99 @@
-function slugify(text) {
-  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
-}
+/* js/product.js */
 
-// Get product name slug from URL param 'product'
-const urlParams = new URLSearchParams(window.location.search);
-const productSlug = urlParams.get('product');
+const imageGallery  = document.getElementById('imageGallery');
+const productInfo   = document.getElementById('productInfo');
+const cartDrawer    = document.getElementById('cartDrawer');
+const cartCountEl   = document.getElementById('cartCount');
+const cartIcon      = document.getElementById('cartIcon');
 
-const imageGallery = document.getElementById('imageGallery');
-const productInfo = document.getElementById('productInfo');
-const cartCountEl = document.getElementById('cartCount');
-const cartIcon = document.getElementById('cartIcon');
+const slugify = txt=>txt.toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'');
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = JSON.parse(localStorage.getItem('cart')||'[]');
 updateCartCount();
 
-if (!productSlug) {
-  productInfo.innerHTML = '<p>Invalid product specified.</p>';
-  imageGallery.innerHTML = '';
-} else {
-  fetch('folder/shoes.json')
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to load shoes data');
-      return res.json();
+/* ---- load product by slug ------------------------------------------- */
+const slug = new URLSearchParams(location.search).get('product');
+if(!slug){ productInfo.textContent='Product not specified.'; }
+else{
+  fetch('shoes.json')
+    .then(r=>r.json())
+    .then(list=>{
+      const p=list.find(x=>x.slug===slug);
+      if(!p){ productInfo.textContent='Product not found.'; document.title='Not found'; return; }
+
+      document.title = `${p.title} - SoleZone`;
+      renderProduct(p);
     })
-    .then(data => {
-      // Add slugs and normalize data
-      const products = data.map((item, i) => ({
-        ...item,
-        slug: slugify(item.title),
-        priceNum: parseFloat(item.price.replace('£', '')) || 0,
-        images: item.images.length ? item.images : ['images/placeholder.jpg']
-      }));
-
-      // Find product by slug
-      const product = products.find(p => p.slug === productSlug);
-
-      if (!product) {
-        productInfo.innerHTML = '<p>Product not found.</p>';
-        imageGallery.innerHTML = '';
-        document.title = 'Product Not Found - SoleZone';
-        return;
-      }
-
-      // Update tab title dynamically
-      document.title = `${product.title} - SoleZone`;
-
-      renderProduct(product);
-    })
-    .catch(err => {
-      console.error(err);
-      productInfo.innerHTML = '<p>Failed to load product data.</p>';
-      imageGallery.innerHTML = '';
-    });
+    .catch(()=>productInfo.textContent='Error loading product.');
 }
 
-function renderProduct(product) {
-  // Main image + thumbnails
-  let mainImgSrc = product.images[0];
+/* ---- functions ------------------------------------------------------ */
+function renderProduct(p){
+  /* gallery */
   imageGallery.innerHTML = `
-    <img id="mainImage" class="main-image" src="${mainImgSrc}" alt="${product.title} main image" />
-    <div class="thumbnail-row">
-      ${product.images
-        .map(
-          (img, i) =>
-            `<img src="${img}" alt="Thumbnail ${i + 1}" class="thumbnail${i === 0 ? ' selected' : ''}" data-src="${img}" />`
-        )
-        .join('')}
+    <img id="mainImg" src="${p.images[0]||'images/placeholder.jpg'}" style="width:100%;border-radius:12px;object-fit:contain;max-height:420px;background:#222">
+    <div class="thumbnail-row" style="display:flex;gap:10px;margin-top:12px;overflow-x:auto;">
+      ${p.images.map((src,i)=>`<img data-s="${src}" class="thumb${i?'':' sel'}" style="width:70px;height:70px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i?'transparent':'#4caf50'}">`).join('')}
     </div>
   `;
-
-  // Thumbnail click to swap main image
-  const thumbnails = imageGallery.querySelectorAll('.thumbnail');
-  const mainImageEl = document.getElementById('mainImage');
-  thumbnails.forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      mainImageEl.src = thumb.dataset.src;
-      thumbnails.forEach(t => t.classList.remove('selected'));
-      thumb.classList.add('selected');
-    });
+  const mainImg = document.getElementById('mainImg');
+  imageGallery.querySelectorAll('.thumb').forEach(t=>{
+    t.src=t.dataset.s;
+    t.onclick=()=>{
+      mainImg.src=t.dataset.s;
+      imageGallery.querySelectorAll('.thumb').forEach(x=>x.style.borderColor='transparent');
+      t.style.borderColor='#4caf50';
+    };
   });
 
-  // Product info details layout
+  /* info */
   productInfo.innerHTML = `
-    <h2>${product.title}</h2>
-    <p><strong>Price:</strong> £${product.priceNum.toFixed(2)}</p>
-    <p><strong>Size:</strong> ${product.info.size}</p>
-    <p><strong>Condition:</strong> ${product.info.condition}</p>
-    <p><strong>Color:</strong> ${product.info.color}</p>
-    <p><strong>Material:</strong> ${product.info.material}</p>
-    <p><strong>Shipping:</strong> ${product.info.shipping}</p>
-    <p><strong>Box:</strong> ${product.info.box}</p>
-    <p><strong>Authenticity:</strong> ${product.info.authenticity}</p>
-    <a href="${product.buyLink}" target="_blank" rel="noopener noreferrer" class="buy-link">Buy Now</a>
-    <button id="addToCartBtn">Add to Cart</button>
+    <h2 style="color:#4caf50;margin-top:0;">${p.title}</h2>
+    <p><strong>Price:</strong> £${p.price.replace('£','')}</p>
+    <p><strong>Size:</strong> ${p.info.size}</p>
+    <p><strong>Condition:</strong> ${p.info.condition}</p>
+    <p><strong>Color:</strong> ${p.info.color}</p>
+    <p><strong>Material:</strong> ${p.info.material}</p>
+    <p><strong>Shipping:</strong> ${p.info.shipping}</p>
+    <p><strong>Box:</strong> ${p.info.box}</p>
+    <p><strong>Authenticity:</strong> ${p.info.authenticity}</p>
+    <a href="${p.buyLink}" target="_blank" class="buy-link">Buy Now</a>
+    <button id="addCart" style="margin-top:16px;">Add to Cart</button>
   `;
+  document.getElementById('addCart').onclick=()=>addToCart(p);
+}
 
-  // Add to cart functionality
-  document.getElementById('addToCartBtn').addEventListener('click', () => {
-    addToCart(product);
+function addToCart(p){
+  const existing = cart.find(i=>i.slug===p.slug);
+  existing ? existing.qty++ :
+    cart.push({slug:p.slug,title:p.title,price:parseFloat(p.price.replace('£','')),qty:1,image:p.images[0]});
+  saveCart();
+  alert(`Added "${p.title}" to cart`);
+}
+
+function updateCartCount(){ cartCountEl.textContent=cart.reduce((s,i)=>s+i.qty,0); }
+function saveCart(){ localStorage.setItem('cart',JSON.stringify(cart)); updateCartCount(); }
+
+/* Drawer render/handlers */
+cartIcon.onclick=()=>{ cartDrawer.classList.toggle('hidden'); renderDrawer(); };
+function renderDrawer(){
+  if(cart.length===0){ cartDrawer.innerHTML='<h3>Your Cart</h3><p>Empty.</p>'; return; }
+  cartDrawer.innerHTML = `
+    <h3>Your Cart</h3>
+    <ul style="list-style:none;padding:0;margin:0;">
+      ${cart.map((it,i)=>`
+        <li style="display:flex;gap:8px;margin-bottom:14px;">
+          <img src="${it.image}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+          <div style="flex:1;">
+            <strong>${it.title}</strong><br>£${it.price.toFixed(2)} × ${it.qty}
+          </div>
+          <button data-i="${i}" style="background:#f44336;border:none;color:#fff;border-radius:4px;cursor:pointer;">✕</button>
+        </li>`).join('')}
+    </ul>
+    <button id="closeDrawer" style="width:100%;padding:10px;background:#4caf50;border:none;color:#111;font-weight:600;border-radius:6px;">Close</button>
+  `;
+  cartDrawer.querySelectorAll('button[data-i]').forEach(btn=>{
+    btn.onclick=()=>{ cart.splice(+btn.dataset.i,1); saveCart(); renderDrawer(); };
   });
+  cartDrawer.querySelector('#closeDrawer').onclick=()=>cartDrawer.classList.add('hidden');
 }
-
-function updateCartCount() {
-  cartCountEl.textContent = cart.reduce((acc, item) => acc + item.qty, 0);
-}
-
-function addToCart(product) {
-  const existing = cart.find(item => item.slug === product.slug);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({
-      slug: product.slug,
-      id: product.id || '',
-      title: product.title,
-      price: product.priceNum,
-      qty: 1,
-      image: product.images[0]
-    });
-  }
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
-  alert(`Added "${product.title}" to cart!`);
-}
-
-// Cart icon click: simple cart overview alert
-cartIcon.addEventListener('click', () => {
-  if (cart.length === 0) {
-    alert('Your cart is empty.');
-    return;
-  }
-  let summary = 'Your Cart:\n\n';
-  cart.forEach((item, i) => {
-    summary += `${i + 1}. ${item.title} — £${item.price.toFixed(2)} ×${item.qty}\n`;
-  });
-  alert(summary);
-});
