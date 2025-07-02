@@ -1,39 +1,59 @@
-// product.js
-const productDetails = document.getElementById('product-details');
-
-const urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get('id');
-
-fetch('folder/shoes.json')
-  .then(res => res.json())
-  .then(products => {
-    // Add IDs for lookup
-    products = products.map((p, i) => ({ ...p, id: `shoe${i + 1}` }));
-
-    const product = products.find(p => p.id === productId);
-
-    if (!product) {
-      productDetails.innerHTML = '<p>Product not found.</p>';
-      return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Details</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/product.js"></script>
+  <style>
+    /* Basic styles for image gallery */
+    .image-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
     }
+    .gallery-img {
+      max-width: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .gallery-img:hover {
+      transform: scale(1.1);
+    }
+    .buy-link {
+      display: inline-block;
+      padding: 12px 20px;
+      background-color: #4caf50;
+      color: #111;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .buy-link:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
 
-    productDetails.innerHTML = `
-      <h2>${product.title}</h2>
-      <div class="image-gallery">
-        ${product.images.length ? product.images.map(src => `<img src="${src}" alt="${product.title}" class="gallery-img">`).join('') : '<p>No images available</p>'}
-      </div>
-      <p><strong>Price:</strong> £${parseFloat(product.price.replace('£','')).toFixed(2)}</p>
-      <p><strong>Size:</strong> ${product.info.size}</p>
-      <p><strong>Condition:</strong> ${product.info.condition}</p>
-      <p><strong>Color:</strong> ${product.info.color}</p>
-      <p><strong>Material:</strong> ${product.info.material}</p>
-      <p><strong>Shipping:</strong> ${product.info.shipping}</p>
-      <p><strong>Box:</strong> ${product.info.box}</p>
-      <p><strong>Authenticity:</strong> ${product.info.authenticity}</p>
-      <a href="${product.buyLink}" class="buy-link" target="_blank" rel="noopener noreferrer">Buy Now</a>
-    `;
-  })
-  .catch(() => {
-    productDetails.innerHTML = '<p>Failed to load product details.</p>';
-  });
+  <header>
+    <h1>SoleZone</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
+  <main class="container">
+    <div id="product-details">Loading product...</div>
+  </main>
+
+</body>
+</html>
