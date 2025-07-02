@@ -3,59 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Product Details</title>
+  <title>Product Details | SoleZone</title>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/product.js"></script>
   <style>
-    /* Basic styles for image gallery */
-    .image-gallery {
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #eee;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #222;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      color: #4caf50;
+      font-size: 1.6rem;
+      cursor: default;
+    }
+    header nav a {
+      color: #eee;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    header nav a:hover {
+      color: #4caf50;
+    }
+    main.container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    #product-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 40px;
+      background: #222;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
     }
-    .gallery-img {
-      max-width: 100px;
-      border-radius: 8px;
-      object-fit: cover;
+    .product-images {
+      flex: 1 1 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .product-images img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: contain;
+      background: #111;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-    .gallery-img:hover {
-      transform: scale(1.1);
+    .product-images img:hover {
+      transform: scale(1.05);
+    }
+    .product-info {
+      flex: 1 1 450px;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-info h1 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #4caf50;
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+    .product-info p {
+      margin: 6px 0;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    .product-info strong {
+      color: #a5d6a7;
+    }
+    .buy-link, #addToCartBtn {
+      margin-top: 25px;
+      padding: 14px 25px;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      width: fit-content;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
     }
     .buy-link {
-      display: inline-block;
-      padding: 12px 20px;
       background-color: #4caf50;
       color: #111;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 20px;
-      transition: background-color 0.3s ease;
+      margin-right: 15px;
     }
     .buy-link:hover {
       background-color: #388e3c;
     }
     #addToCartBtn {
-      margin-top: 15px;
-      padding: 12px 20px;
-      background-color: #2196F3;
+      background-color: #2196f3;
       color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
     }
     #addToCartBtn:hover {
       background-color: #1769aa;
     }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #product-container {
+        flex-direction: column;
+      }
+      .product-images, .product-info {
+        flex: 1 1 100%;
+      }
+    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>SoleZone</h1>
     <nav>
@@ -68,6 +145,5 @@
   <main class="container">
     <div id="product-container">Loading product...</div>
   </main>
-
 </body>
 </html>
