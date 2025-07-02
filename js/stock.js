@@ -1,182 +1,134 @@
-let products = [];
-let filteredProducts = [];
-let cart = [];
-let currentExpandedIndex = 0;
+const shoes = [
+  {
+    "title": "Nike Dunks",
+    "price": "£45",
+    "images": [
+      "images/IMG-20250620-WA0001.jpg",
+      "images/IMG-20250620-WA0002.jpg",
+      "images/IMG-20250620-WA0003.jpg",
+      "images/IMG-20250620-WA0006.jpg",
+      "images/IMG-20250620-WA0007.jpg"
+    ],
+    "info": {
+      "size": "UK 6",
+      "condition": "New",
+      "color": "White/Black",
+      "material": "Leather and mesh",
+      "shipping": "Ships in 1-2 days",
+      "box": "Includes original box and tags",
+      "authenticity": "Authenticity guaranteed"
+    },
+    "buyLink": "https://www.vinted.co.uk/member/233654539"
+  },
+  // ... rest of shoes
+];
 
 const stockGrid = document.getElementById('stockGrid');
-const noResults = document.getElementById('noResults');
-const searchInput = document.getElementById('searchInput');
-const filterWrapper = document.getElementById('filterWrapper');
-const filterButton = document.getElementById('filterButton');
-const filterOptions = document.getElementById('filterOptions');
 
-const expandedPanel = document.getElementById('expandedPanel');
-const mainImage = document.getElementById('mainImage');
-const shoeDetails = document.getElementById('shoeDetails');
-const arrowLeft = document.querySelector('.arrow-left');
-const arrowRight = document.querySelector('.arrow-right');
+let expandedIndex = null;
 
-const cartCount = document.getElementById('cart-count');
-const cartItems = document.getElementById('cart-items');
-const cartTotal = document.getElementById('cart-total');
-const cartBtn = document.getElementById('cart-btn');
-const cartDrawer = document.getElementById('cart-drawer');
-
-// Load products from shoes.json
-fetch('folder/shoes.json')
-  .then(res => res.json())
-  .then(data => {
-    products = data.map((item, i) => ({
-      ...item,
-      id: `shoe${i + 1}`,
-      price: parseFloat(item.price.replace('£', '')) * 100 || 0,
-      images: item.images.length ? item.images : ['images/placeholder.jpg']
-    }));
-    filteredProducts = [...products];
-    renderStock();
-  })
-  .catch(err => {
-    console.error('Failed to load shoes.json', err);
-    noResults.textContent = 'Failed to load products.';
-    noResults.style.display = 'block';
-  });
-
-// Render shoe cards in grid
-function renderStock() {
+function renderShoes() {
   stockGrid.innerHTML = '';
-  if (filteredProducts.length === 0) {
-    noResults.style.display = 'block';
-    return;
-  }
-  noResults.style.display = 'none';
-
-  filteredProducts.forEach((product, index) => {
+  shoes.forEach((shoe, index) => {
     const card = document.createElement('div');
     card.className = 'item-card';
-    card.dataset.index = index;
-    card.innerHTML = `
-      <img src="${product.images[0]}" alt="${product.title}" />
-      <h3>${product.title}</h3>
-      <p>${product.price ? `£${(product.price / 100).toFixed(2)}` : product.price}</p>
-      <p><strong>Condition:</strong> ${product.info.condition}</p>
+    
+    let imagesHtml = '';
+    if(shoe.images.length > 0) {
+      imagesHtml = `
+        <div class="image-slider" data-index="0">
+          <img src="${shoe.images[0]}" alt="${shoe.title}" class="main-image" />
+          <button class="prev-btn" aria-label="Previous image">&#10094;</button>
+          <button class="next-btn" aria-label="Next image">&#10095;</button>
+        </div>
+      `;
+    } else {
+      imagesHtml = `<div class="image-slider no-images">No images available</div>`;
+    }
+    
+    let infoHtml = '';
+    for(const key in shoe.info) {
+      infoHtml += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${shoe.info[key]}</p>`;
+    }
+    
+    const expandedHtml = `
+      <div class="expanded-info" style="display:none;">
+        ${imagesHtml}
+        <h3>${shoe.title}</h3>
+        <p><strong>Price:</strong> ${shoe.price}</p>
+        ${infoHtml}
+        <a href="${shoe.buyLink}" target="_blank" class="buy-link">Buy Now</a>
+      </div>
     `;
-    card.addEventListener('click', () => openExpanded(index));
+    
+    card.innerHTML = `
+      <h3>${shoe.title}</h3>
+      <p>${shoe.price}</p>
+      ${expandedHtml}
+    `;
+
+    // Expand/collapse logic on click
+    card.addEventListener('click', (e) => {
+      // Avoid toggling if clicking inside buttons inside expanded-info (like buy button or arrows)
+      if(e.target.closest('.expanded-info')) return;
+
+      if(expandedIndex === index) {
+        collapseCard(index);
+      } else {
+        if(expandedIndex !== null) collapseCard(expandedIndex);
+        expandCard(index);
+      }
+    });
+
     stockGrid.appendChild(card);
   });
+
+  // After render, add event listeners for image sliders
+  addImageSliderListeners();
 }
 
-// Search & filter logic
-searchInput.addEventListener('input', applyFilters);
-filterButton.addEventListener('click', () => {
-  filterWrapper.classList.toggle('open');
-});
-filterOptions.addEventListener('click', e => {
-  if (!e.target.classList.contains('filter-option')) return;
-  [...filterOptions.children].forEach(child => child.classList.remove('selected'));
-  e.target.classList.add('selected');
-  filterButton.textContent = e.target.textContent;
-  filterWrapper.classList.remove('open');
-  applyFilters();
-});
-
-function applyFilters() {
-  const searchTerm = searchInput.value.toLowerCase();
-  const selectedCondition = filterOptions.querySelector('.selected')?.dataset.val || '';
-
-  filteredProducts = products.filter(product => {
-    const matchesSearch = product.title.toLowerCase().includes(searchTerm);
-    const matchesCondition = selectedCondition === '' || product.info.condition.toLowerCase() === selectedCondition.toLowerCase();
-    return matchesSearch && matchesCondition;
-  });
-
-  renderStock();
-}
-
-// Expanded view modal
-function openExpanded(index) {
-  currentExpandedIndex = index;
-  showExpanded(currentExpandedIndex);
-  expandedPanel.classList.add('active');
-}
-
-function showExpanded(index) {
-  const product = filteredProducts[index];
-  mainImage.src = product.images[0];
-  mainImage.alt = product.title;
-
-  // Build details HTML
-  shoeDetails.innerHTML = `
-    <h2>${product.title}</h2>
-    <p><strong>Price:</strong> £${(product.price / 100).toFixed(2)}</p>
-    <p><strong>Size:</strong> ${product.info.size}</p>
-    <p><strong>Condition:</strong> ${product.info.condition}</p>
-    <p><strong>Color:</strong> ${product.info.color}</p>
-    <p><strong>Material:</strong> ${product.info.material}</p>
-    <p><strong>Shipping:</strong> ${product.info.shipping}</p>
-    <p><strong>Box:</strong> ${product.info.box}</p>
-    <p><strong>Authenticity:</strong> ${product.info.authenticity}</p>
-    <a href="${product.buyLink}" class="buy-link" target="_blank" rel="noopener noreferrer">Buy Now</a>
-    <button id="addToCartBtn">Add to Cart</button>
-  `;
-
-  document.getElementById('addToCartBtn').onclick = () => addToCart(product.id);
-
-  // Setup image navigation arrows
-  arrowLeft.style.display = product.images.length > 1 ? 'flex' : 'none';
-  arrowRight.style.display = product.images.length > 1 ? 'flex' : 'none';
-
-  arrowLeft.onclick = () => {
-    const imgs = product.images;
-    let currentIndex = imgs.indexOf(mainImage.src.split('/').pop());
-    if (currentIndex === -1) currentIndex = 0;
-    currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
-    mainImage.src = imgs[currentIndex];
-  };
-  arrowRight.onclick = () => {
-    const imgs = product.images;
-    let currentIndex = imgs.indexOf(mainImage.src.split('/').pop());
-    if (currentIndex === -1) currentIndex = 0;
-    currentIndex = (currentIndex + 1) % imgs.length;
-    mainImage.src = imgs[currentIndex];
-  };
-}
-
-// Close expanded view on background click
-expandedPanel.addEventListener('click', e => {
-  if (e.target === expandedPanel) {
-    expandedPanel.classList.remove('active');
+function expandCard(index) {
+  const card = stockGrid.children[index];
+  const expanded = card.querySelector('.expanded-info');
+  if(expanded) {
+    expanded.style.display = 'block';
+    expandedIndex = index;
   }
-});
-
-// Cart functions
-function addToCart(productId) {
-  const product = products.find(p => p.id === productId);
-  if (!product) return;
-  cart.push(product);
-  updateCart();
-  alert(`Added "${product.title}" to cart!`);
 }
 
-function updateCart() {
-  if (!cartCount || !cartItems || !cartTotal) return;
+function collapseCard(index) {
+  const card = stockGrid.children[index];
+  const expanded = card.querySelector('.expanded-info');
+  if(expanded) {
+    expanded.style.display = 'none';
+    expandedIndex = null;
+  }
+}
 
-  cartCount.textContent = cart.length;
-  cartItems.innerHTML = '';
+function addImageSliderListeners() {
+  const sliders = document.querySelectorAll('.image-slider');
+  sliders.forEach(slider => {
+    const images = shoes.find(shoe => shoe.images.length > 0).images;
+    let currentIndex = 0;
 
-  let total = 0;
-  cart.forEach(item => {
-    total += item.price;
-    const li = document.createElement('li');
-    li.textContent = `${item.title} - £${(item.price / 100).toFixed(2)}`;
-    cartItems.appendChild(li);
+    const mainImage = slider.querySelector('.main-image');
+    const prevBtn = slider.querySelector('.prev-btn');
+    const nextBtn = slider.querySelector('.next-btn');
+
+    if(!mainImage) return;
+
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      mainImage.src = images[currentIndex];
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % images.length;
+      mainImage.src = images[currentIndex];
+    });
   });
-
-  cartTotal.textContent = `Total: £${(total / 100).toFixed(2)}`;
 }
 
-// Toggle cart drawer
-if (cartBtn && cartDrawer) {
-  cartBtn.addEventListener('click', () => {
-    cartDrawer.classList.toggle('hidden');
-  });
-}
+renderShoes();
