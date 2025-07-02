@@ -1,1 +1,39 @@
+// product.js
+const productDetails = document.getElementById('product-details');
+
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id');
+
+fetch('folder/shoes.json')
+  .then(res => res.json())
+  .then(products => {
+    // Add IDs for lookup
+    products = products.map((p, i) => ({ ...p, id: `shoe${i + 1}` }));
+
+    const product = products.find(p => p.id === productId);
+
+    if (!product) {
+      productDetails.innerHTML = '<p>Product not found.</p>';
+      return;
+    }
+
+    productDetails.innerHTML = `
+      <h2>${product.title}</h2>
+      <div class="image-gallery">
+        ${product.images.length ? product.images.map(src => `<img src="${src}" alt="${product.title}" class="gallery-img">`).join('') : '<p>No images available</p>'}
+      </div>
+      <p><strong>Price:</strong> £${parseFloat(product.price.replace('£','')).toFixed(2)}</p>
+      <p><strong>Size:</strong> ${product.info.size}</p>
+      <p><strong>Condition:</strong> ${product.info.condition}</p>
+      <p><strong>Color:</strong> ${product.info.color}</p>
+      <p><strong>Material:</strong> ${product.info.material}</p>
+      <p><strong>Shipping:</strong> ${product.info.shipping}</p>
+      <p><strong>Box:</strong> ${product.info.box}</p>
+      <p><strong>Authenticity:</strong> ${product.info.authenticity}</p>
+      <a href="${product.buyLink}" class="buy-link" target="_blank" rel="noopener noreferrer">Buy Now</a>
+    `;
+  })
+  .catch(() => {
+    productDetails.innerHTML = '<p>Failed to load product details.</p>';
+  });
 
