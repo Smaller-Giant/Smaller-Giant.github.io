@@ -1,153 +1,74 @@
-const menuToggle = document.querySelector('.menu-toggle'),
-      dropdownMenu = document.getElementById('dropdownMenu'),
-      searchInput = document.getElementById('searchInput'),
-      filterWrapper = document.getElementById('filterWrapper'),
-      filterButton = document.getElementById('filterButton'),
-      filterOptions = document.getElementById('filterOptions'),
-      stockGrid = document.getElementById('stockGrid'),
-      noResults = document.getElementById('noResults'),
-      expanded = document.getElementById('expandedPanel'),
-      mainImage = document.getElementById('mainImage'),
-      shoeDetails = document.getElementById('shoeDetails'),
-      prevArrow = expanded.querySelector('.arrow-left'),
-      nextArrow = expanded.querySelector('.arrow-right');
+const products = [
+  {
+    id: "shoe1",
+    name: "Nike Air Max 90",
+    price: 11000, // in pence (Stripe uses smallest currency unit)
+    image: "images/nike1.jpg"
+  },
+  {
+    id: "shoe2",
+    name: "Adidas Ultraboost",
+    price: 12000,
+    image: "images/adidas1.jpg"
+  },
+  {
+    id: "shoe3",
+    name: "Jordan 1 Low",
+    price: 9500,
+    image: "images/jordan1.jpg"
+  }
+];
 
-let shoes = [], filterVal = '', currentList = [], curIdx = 0, curImg = 0;
+const cart = [];
 
-// Mobile menu toggle
-menuToggle.onclick = () => dropdownMenu.classList.toggle('show');
-
-// Load shoes JSON
-fetch('folder/shoes.json?v=' + Date.now())
-  .then(res => res.json())
-  .then(data => {
-    shoes = data;
-    renderGrid();
-  })
-  .catch(() => stockGrid.innerHTML = '<p style="color:#f44;">Failed loading shoes.</p>');
-
-// Populate grid
-function renderGrid() {
-  const term = searchInput.value.trim().toLowerCase();
-  currentList = shoes.filter(shoe => {
-    const matchSearch = shoe.title.toLowerCase().includes(term),
-          matchFilter = !filterVal || shoe.info.condition === filterVal;
-    return matchSearch && matchFilter;
-  });
-  stockGrid.innerHTML = '';
-  if (!currentList.length) return noResults.style.display = 'block';
-  noResults.style.display = 'none';
-  currentList.forEach((shoe, i) => {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.tabIndex = 0;
+function renderStock() {
+  const container = document.getElementById("stock-list");
+  products.forEach(product => {
+    const card = document.createElement("div");
+    card.className = "shoe-card";
     card.innerHTML = `
-      <img src="${shoe.images[0] || 'https://via.placeholder.com/300x160?text=No+Image'}" alt="${shoe.title}">
-      <h3>${shoe.title}</h3>
-      <p>${shoe.price}</p>`;
-    card.onclick = () => openShoe(i);
-    card.onkeydown = e => {
-      if (e.key === 'Enter' || e.key === ' ') openShoe(i);
-    };
-    stockGrid.appendChild(card);
+      <img src="${product.image}" alt="${product.name}" />
+      <h4>${product.name}</h4>
+      <p>£${(product.price / 100).toFixed(2)}</p>
+      <button onclick="addToCart('${product.id}')">Add to Cart</button>
+    `;
+    container.appendChild(card);
   });
 }
 
-// Live search filtering
-searchInput.oninput = renderGrid;
+function addToCart(productId) {
+  const product = products.find(p => p.id === productId);
+  cart.push(product);
+  updateCartDisplay();
+}
 
-// Filter dropdown toggle
-// Toggle filter dropdown
-filterButton.addEventListener('click', (e) => {
-  e.stopPropagation();
-  filterWrapper.classList.toggle('open');
-});
+function updateCartDisplay() {
+  const cartCount = document.getElementById("cart-count");
+  const cartItems = document.getElementById("cart-items");
+  cartCount.textContent = cart.length;
 
-// Close filter dropdown when clicking outside
-document.addEventListener('click', (e) => {
-  if (!filterWrapper.contains(e.target)) {
-    filterWrapper.classList.remove('open');
-  }
-});
-
-// Handle filter option selection
-filterOptions.querySelectorAll('.filter-option').forEach(option => {
-  option.addEventListener('click', () => {
-    // Clear existing selection
-    filterOptions.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('selected'));
-    option.classList.add('selected');
-
-    // Update filter value
-    filterVal = option.dataset.val;
-    filterButton.textContent = option.textContent;
-
-    // Close dropdown and re-render
-    filterWrapper.classList.remove('open');
-    renderGrid();
+  cartItems.innerHTML = "";
+  cart.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = `${item.name} - £${(item.price / 100).toFixed(2)}`;
+    cartItems.appendChild(li);
   });
-});
-
-
-// Close filter when clicking outside
-document.addEventListener('click', function (e) {
-  if (!filterWrapper.contains(e.target)) {
-    filterWrapper.classList.remove('open');
-  }
-});
-
-// Filter selection
-filterOptions.querySelectorAll('.filter-option').forEach(opt => {
-  opt.onclick = () => {
-    filterOptions.querySelectorAll('.filter-option').forEach(o => o.classList.remove('selected'));
-    opt.classList.add('selected');
-    filterVal = opt.dataset.val;
-    filterButton.textContent = opt.textContent;
-    filterWrapper.classList.remove('open');
-    renderGrid();
-  };
-});
-
-// Expand a shoe
-function openShoe(idx) {
-  curIdx = idx;
-  curImg = 0;
-  showExpanded();
 }
 
-function showExpanded() {
-  const shoe = currentList[curIdx];
-  if (!shoe) return;
-  mainImage.src = shoe.images[curImg] || 'https://via.placeholder.com/600x400?text=No+Image';
-  shoeDetails.innerHTML = `
-    <h2>${shoe.title}</h2>
-    <p><strong>Price:</strong> ${shoe.price}</p>
-    <p><strong>Condition:</strong> ${shoe.info.condition || 'N/A'}</p>
-    <p><strong>Size:</strong> ${shoe.info.size || 'N/A'}</p>
-    <p><strong>Color:</strong> ${shoe.info.color || 'N/A'}</p>
-    <p><strong>Material:</strong> ${shoe.info.material || 'N/A'}</p>
-    <p><strong>Shipping:</strong> ${shoe.info.shipping || 'N/A'}</p>
-    <p><strong>Box:</strong> ${shoe.info.box || 'N/A'}</p>
-    <p><strong>Authenticity:</strong> ${shoe.info.authenticity || 'N/A'}</p>
-    <a href="${shoe.buyLink}" class="buy-link" target="_blank">Buy now</a>`;
-  expanded.classList.add('active');
-}
+document.getElementById("cart-btn").addEventListener("click", () => {
+  document.getElementById("cart-drawer").classList.toggle("hidden");
+});
 
-// Image carousel controls
-prevArrow.onclick = () => {
-  const imgs = currentList[curIdx]?.images || [];
-  curImg = imgs.length ? (curImg - 1 + imgs.length) % imgs.length : 0;
-  showExpanded();
-};
-nextArrow.onclick = () => {
-  const imgs = currentList[curIdx]?.images || [];
-  curImg = imgs.length ? (curImg + 1) % imgs.length : 0;
-  showExpanded();
-};
+document.getElementById("checkout-btn").addEventListener("click", async () => {
+  const response = await fetch("/create-checkout-session", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ items: cart })
+  });
+  const session = await response.json();
+  window.location.href = session.url;
+});
 
-// Close modal
-expanded.onclick = e => {
-  if (e.target === expanded) expanded.classList.remove('active');
-};
-document.onkeydown = e => {
-  if (e.key === 'Escape') expanded.classList.remove('active');
-};
+renderStock();
