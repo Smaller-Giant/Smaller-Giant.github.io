@@ -7,27 +7,61 @@
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/product.js"></script>
   <style>
-    /* You can keep your existing product-specific styles here or move to css/product.css */
-    .product-images {
+    /* Product page specific styles */
+    main.container {
       display: flex;
-      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 40px;
+      min-height: 60vh;
+    }
+    .image-gallery {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      margin-bottom: 20px;
     }
-    .product-images img {
-      max-width: 120px;
-      max-height: 120px;
-      border-radius: 10px;
+    .main-image {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 12px;
+      object-fit: contain;
+      border: 2px solid #4caf50;
+      cursor: default;
+    }
+    .thumbnail-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .thumbnail {
+      width: 60px;
+      height: 60px;
       object-fit: cover;
+      border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
     }
-    .product-images img:hover {
-      transform: scale(1.05);
+    .thumbnail.selected {
+      border-color: #4caf50;
+    }
+    .product-info {
+      flex: 1;
+      color: #eee;
+      max-width: 400px;
+    }
+    .product-info h2 {
+      color: #4caf50;
+      margin-bottom: 12px;
+    }
+    .product-info p {
+      margin-bottom: 8px;
+      font-size: 1rem;
+      line-height: 1.4;
     }
     .buy-link {
       display: inline-block;
-      margin-top: 15px;
+      margin-top: 20px;
       padding: 12px 24px;
       background-color: #4caf50;
       color: #111;
@@ -49,9 +83,38 @@
       cursor: pointer;
       font-weight: 600;
       transition: background-color 0.3s ease;
+      display: block;
+      width: 100%;
+      max-width: 400px;
     }
     #addToCartBtn:hover {
       background-color: #1769aa;
+    }
+
+    /* Cart icon in header */
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      color: #4caf50;
+      font-weight: 700;
+      font-size: 1.2rem;
+      user-select: none;
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: #f44336;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -66,18 +129,19 @@
       <a href="index.html">Home</a>
       <a href="stock.html">Stock</a>
       <a href="contact.html">Contact</a>
+      <div class="cart-icon" id="cartIcon" title="View Cart">
+        🛒 Cart <span class="cart-count" id="cartCount">0</span>
+      </div>
     </nav>
   </header>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Product Details</h1>
-      <p>Discover your next perfect trainers</p>
-    </div>
-  </section>
-
   <main class="container">
-    <div id="product-container">Loading product...</div>
+    <div class="image-gallery" id="imageGallery">
+      <!-- Main image and thumbnails will be inserted here -->
+    </div>
+    <div class="product-info" id="productInfo">
+      Loading product...
+    </div>
   </main>
 
 </body>
