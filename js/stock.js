@@ -1,134 +1,127 @@
-const shoes = [
-  {
-    "title": "Nike Dunks",
-    "price": "£45",
-    "images": [
-      "images/IMG-20250620-WA0001.jpg",
-      "images/IMG-20250620-WA0002.jpg",
-      "images/IMG-20250620-WA0003.jpg",
-      "images/IMG-20250620-WA0006.jpg",
-      "images/IMG-20250620-WA0007.jpg"
-    ],
-    "info": {
-      "size": "UK 6",
-      "condition": "New",
-      "color": "White/Black",
-      "material": "Leather and mesh",
-      "shipping": "Ships in 1-2 days",
-      "box": "Includes original box and tags",
-      "authenticity": "Authenticity guaranteed"
-    },
-    "buyLink": "https://www.vinted.co.uk/member/233654539"
-  },
-  // ... rest of shoes
-];
-
 const stockGrid = document.getElementById('stockGrid');
-
+let shoes = [];
 let expandedIndex = null;
+
+// Load shoes.json dynamically
+async function loadShoes() {
+  try {
+    const response = await fetch('shoes.json');
+    if (!response.ok) throw new Error('Failed to fetch shoes.json');
+    shoes = await response.json();
+    renderShoes();
+  } catch (err) {
+    console.error(err);
+    stockGrid.innerHTML = '<p style="color:#f44336;">Failed to load shoes data.</p>';
+  }
+}
 
 function renderShoes() {
   stockGrid.innerHTML = '';
   shoes.forEach((shoe, index) => {
     const card = document.createElement('div');
     card.className = 'item-card';
-    
-    let imagesHtml = '';
-    if(shoe.images.length > 0) {
-      imagesHtml = `
-        <div class="image-slider" data-index="0">
-          <img src="${shoe.images[0]}" alt="${shoe.title}" class="main-image" />
-          <button class="prev-btn" aria-label="Previous image">&#10094;</button>
-          <button class="next-btn" aria-label="Next image">&#10095;</button>
-        </div>
-      `;
-    } else {
-      imagesHtml = `<div class="image-slider no-images">No images available</div>`;
-    }
-    
+    if (expandedIndex === index) card.classList.add('expanded');
+
+    // Show first image or placeholder
+    const firstImage = (shoe.images && shoe.images.length > 0) ? shoe.images[0] : 'images/no-image.png';
+
+    // Build details HTML
     let infoHtml = '';
-    for(const key in shoe.info) {
-      infoHtml += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${shoe.info[key]}</p>`;
+    for (const key in shoe.info) {
+      infoHtml += `<p><strong>${capitalize(key)}:</strong> ${shoe.info[key]}</p>`;
     }
-    
-    const expandedHtml = `
-      <div class="expanded-info" style="display:none;">
-        ${imagesHtml}
+
+    card.innerHTML = `
+      <div class="card-main" style="flex:1 1 auto;">
+        <img src="${firstImage}" alt="${shoe.title}" />
         <h3>${shoe.title}</h3>
-        <p><strong>Price:</strong> ${shoe.price}</p>
-        ${infoHtml}
-        <a href="${shoe.buyLink}" target="_blank" class="buy-link">Buy Now</a>
+        <p class="price">${shoe.price}</p>
+      </div>
+      <div class="card-expanded-content" style="flex:2 1 300px; display:none; flex-direction: column; overflow-y: auto;">
+        ${shoe.images && shoe.images.length > 1 ? imageSliderHtml(shoe.images, index) : ''}
+        <div class="details">
+          ${infoHtml}
+          <a href="${shoe.buyLink}" target="_blank" class="buy-link">Buy Now</a>
+        </div>
       </div>
     `;
-    
-    card.innerHTML = `
-      <h3>${shoe.title}</h3>
-      <p>${shoe.price}</p>
-      ${expandedHtml}
-    `;
 
-    // Expand/collapse logic on click
     card.addEventListener('click', (e) => {
-      // Avoid toggling if clicking inside buttons inside expanded-info (like buy button or arrows)
-      if(e.target.closest('.expanded-info')) return;
-
-      if(expandedIndex === index) {
-        collapseCard(index);
-      } else {
-        if(expandedIndex !== null) collapseCard(expandedIndex);
-        expandCard(index);
-      }
+      // Prevent toggle if clicking inside expanded content (like slider buttons)
+      if (e.target.closest('.card-expanded-content')) return;
+      toggleExpand(index);
     });
 
     stockGrid.appendChild(card);
   });
 
-  // After render, add event listeners for image sliders
-  addImageSliderListeners();
+  updateExpandedView();
+  addSliderListeners();
 }
 
-function expandCard(index) {
-  const card = stockGrid.children[index];
-  const expanded = card.querySelector('.expanded-info');
-  if(expanded) {
-    expanded.style.display = 'block';
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function imageSliderHtml(images, shoeIndex) {
+  // Slider container with arrows and image
+  return `
+    <div class="image-slider" data-shoe-index="${shoeIndex}" data-current-index="0" style="position: relative; margin-bottom: 12px;">
+      <button class="prev-btn" aria-label="Previous image" style="position: absolute; top:50%; left: 5px; transform: translateY(-50%); background: rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;">&#10094;</button>
+      <img src="${images[0]}" alt="Shoe Image" style="width:100%; border-radius: 10px;" />
+      <button class="next-btn" aria-label="Next image" style="position: absolute; top:50%; right: 5px; transform: translateY(-50%); background: rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; width:30px; height:30px; cursor:pointer;">&#10095;</button>
+    </div>
+  `;
+}
+
+function toggleExpand(index) {
+  if (expandedIndex === index) {
+    expandedIndex = null;
+  } else {
     expandedIndex = index;
   }
+  updateExpandedView();
 }
 
-function collapseCard(index) {
-  const card = stockGrid.children[index];
-  const expanded = card.querySelector('.expanded-info');
-  if(expanded) {
-    expanded.style.display = 'none';
-    expandedIndex = null;
-  }
-}
-
-function addImageSliderListeners() {
-  const sliders = document.querySelectorAll('.image-slider');
-  sliders.forEach(slider => {
-    const images = shoes.find(shoe => shoe.images.length > 0).images;
-    let currentIndex = 0;
-
-    const mainImage = slider.querySelector('.main-image');
-    const prevBtn = slider.querySelector('.prev-btn');
-    const nextBtn = slider.querySelector('.next-btn');
-
-    if(!mainImage) return;
-
-    prevBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      mainImage.src = images[currentIndex];
-    });
-
-    nextBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      currentIndex = (currentIndex + 1) % images.length;
-      mainImage.src = images[currentIndex];
-    });
+function updateExpandedView() {
+  Array.from(stockGrid.children).forEach((card, idx) => {
+    const main = card.querySelector('.card-main');
+    const expandedContent = card.querySelector('.card-expanded-content');
+    if (idx === expandedIndex) {
+      card.classList.add('expanded');
+      expandedContent.style.display = 'flex';
+    } else {
+      card.classList.remove('expanded');
+      expandedContent.style.display = 'none';
+    }
   });
 }
 
-renderShoes();
+// Image slider buttons
+function addSliderListeners() {
+  const sliders = document.querySelectorAll('.image-slider');
+  sliders.forEach(slider => {
+    const shoeIndex = parseInt(slider.dataset.shoeIndex);
+    const images = shoes[shoeIndex].images || [];
+    let currentIndex = 0;
+
+    const img = slider.querySelector('img');
+    const prevBtn = slider.querySelector('.prev-btn');
+    const nextBtn = slider.querySelector('.next-btn');
+
+    prevBtn.onclick = (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      img.src = images[currentIndex];
+    };
+
+    nextBtn.onclick = (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % images.length;
+      img.src = images[currentIndex];
+    };
+  });
+}
+
+// Start app
+loadShoes();
