@@ -2,42 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SoleZone - Our Stock</title>
-  <link rel="stylesheet" href="/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SoleZone | Stock</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/stock.js"></script>
 </head>
 <body>
-  <!-- NAVIGATION -->
+
   <header>
-    <nav class="nav">
-      <h1 class="logo">SoleZone</h1>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="stock.html" class="active">Stock</a>
-        <a href="contact.html">Contact</a>
-        <div class="cart-icon" id="cart-btn">🛒 (<span id="cart-count">0</span>)</div>
-      </div>
+    <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stock.html" class="active">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
     </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html" class="active">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </header>
 
-  <!-- HERO -->
   <section class="hero">
-    <h2>Our Stock</h2>
-    <p>Browse all available trainers.</p>
+    <div class="hero-content">
+      <h1>Our Stock</h1>
+      <p>Browse all available trainers.</p>
+    </div>
   </section>
 
-  <!-- STOCK LIST -->
-  <main id="stock-list" class="stock-grid">
-    <!-- Items will be inserted here dynamically -->
-  </main>
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search shoes…" />
+      <div class="filter-wrapper" id="filterWrapper">
+        <button class="filter-button" id="filterButton">All Conditions</button>
+        <div class="filter-options" id="filterOptions">
+          <div class="filter-option selected" data-val="">All Conditions</div>
+          <div class="filter-option" data-val="New">New</div>
+          <div class="filter-option" data-val="Used">Used</div>
+        </div>
+      </div>
+    </div>
 
-  <!-- CART DRAWER -->
-  <aside id="cart-drawer" class="cart-drawer hidden">
-    <h3>Your Cart</h3>
-    <ul id="cart-items"></ul>
-    <button id="checkout-btn">Checkout</button>
-  </aside>
+    <div class="stock-grid" id="stockGrid"></div>
+    <div class="no-results" id="noResults">No shoes found.</div>
 
-  <script src="/js/stock.js"></script>
+    <div id="cartPanel">
+      <h2>Your Cart</h2>
+      <ul id="cartItems"></ul>
+      <p id="cartTotal">Total: £0.00</p>
+      <button id="checkoutBtn">Checkout</button>
+    </div>
+  </div>
+
+  <div id="expandedPanel">
+    <div class="expanded-content">
+      <div class="image-viewer">
+        <div class="arrow arrow-left">&#10094;</div>
+        <img src="" alt="" id="mainImage"/>
+        <div class="arrow arrow-right">&#10095;</div>
+      </div>
+      <div class="details" id="shoeDetails"></div>
+    </div>
+  </div>
+
+  <footer>This site is for display only. All orders will be handled via a secure checkout.</footer>
 </body>
 </html>
