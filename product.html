@@ -5,6 +5,196 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SoleZone Product</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Ensure header style consistent with main site */
+    header {
+      position: fixed; top: 0; width: 100%; z-index: 1000;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(0,0,0,0.85); padding: 12px 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+    header h1 {
+      font-size: 1.4rem;
+      color: #eee;
+      margin: 0;
+      display: flex; flex-direction: column;
+      line-height: 1.2;
+    }
+    header h1 .slogan {
+      font-weight: 300;
+      font-size: 0.75rem;
+      color: #4caf50;
+    }
+    nav {
+      display: flex; gap: 18px; align-items: center;
+    }
+    nav a {
+      position: relative; padding-bottom: 2px; color: #eee;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      height: 2px;
+      width: 0;
+      background: #4caf50;
+      transition: width 0.3s;
+    }
+    nav a:hover, nav a.active {
+      color: #fff;
+    }
+    nav a:hover::after, nav a.active::after {
+      width: 100%;
+    }
+    #cartIcon {
+      cursor: pointer;
+      color: #eee;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+      font-weight: 600;
+    }
+    #cartCount {
+      background: #4caf50;
+      color: #111;
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-size: 0.8rem;
+      line-height: 1;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* Main container with padding so content is below fixed header */
+    main.container {
+      max-width: 900px;
+      margin: 90px auto 60px;
+      padding: 0 20px;
+      display: flex;
+      gap: 40px;
+      color: #eee;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Image gallery on left */
+    #imageGallery {
+      flex: 1;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #imageGallery .main-image {
+      width: 100%;
+      height: 400px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #222;
+      box-shadow: 0 0 10px #4caf50aa;
+    }
+    .thumbnail-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+    }
+    .thumbnail {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      opacity: 0.7;
+      border: 2px solid transparent;
+      transition: opacity 0.2s, border-color 0.3s;
+      flex-shrink: 0;
+    }
+    .thumbnail.selected {
+      border-color: #4caf50;
+      opacity: 1;
+    }
+    .thumbnail:hover {
+      opacity: 1;
+    }
+
+    /* Product info on right */
+    #productInfo {
+      flex: 1;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(30,30,30,0.8);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #4caf50aa;
+    }
+    #productInfo h2 {
+      color: #4caf50;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    #productInfo p {
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #ccc;
+    }
+    #productInfo strong {
+      color: #eee;
+    }
+    .buy-link {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #4caf50;
+      color: #111;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      transition: background-color 0.3s;
+      display: inline-block;
+      width: fit-content;
+    }
+    .buy-link:hover {
+      background: #388e3c;
+    }
+    #addToCartBtn {
+      margin-top: 15px;
+      padding: 12px 24px;
+      font-weight: 600;
+      background: #222;
+      color: #4caf50;
+      border: 2px solid #4caf50;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      width: fit-content;
+    }
+    #addToCartBtn:hover {
+      background: #4caf50;
+      color: #111;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 768px) {
+      main.container {
+        flex-direction: column;
+        margin-top: 120px;
+      }
+      #imageGallery, #productInfo {
+        max-width: 100%;
+      }
+      #imageGallery .main-image {
+        height: 300px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -18,17 +208,16 @@
     <a href="stock.html">Stock</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <div id="cartIcon">🛒 <span id="cartCount">0</span></div>
+  <div id="cartIcon" title="View Cart">
+    🛒 <span id="cartCount">0</span>
+  </div>
 </header>
 
 <main class="container">
-  <div class="product-page">
-    <div id="imageGallery" class="image-gallery">Loading images...</div>
-    <div id="productInfo">Loading product info...</div>
-  </div>
+  <div id="imageGallery" class="image-gallery">Loading images...</div>
+  <div id="productInfo">Loading product info...</div>
 </main>
 
 <script src="js/product.js" defer></script>
-
 </body>
 </html>
