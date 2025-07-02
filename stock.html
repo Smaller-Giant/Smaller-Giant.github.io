@@ -19,26 +19,25 @@
       <a href="stock.html" class="active">Stock</a>
       <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
+      <div id="cart-btn" class="cart-icon" style="cursor:pointer; margin-left: 20px;">
+        🛒 (<span id="cart-count">0</span>)
+      </div>
     </nav>
-    </nav>
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html">Home</a>
-    <a href="stock.html" class="active">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </div>
-</header>
-
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html" class="active">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </header>
 
   <!-- ---------- HERO SECTION ---------- -->
-  <!-- ---------- HERO SECTION ---------- -->
-<section class="hero">
-  <div class="hero-content">
-    <h1>Our Stock</h1>
-    <p>Browse all available trainers.</p>
-  </div>
-</section>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Our Stock</h1>
+      <p>Browse all available trainers.</p>
+    </div>
+  </section>
 
   <!-- ---------- MAIN CONTENT ---------- -->
   <div class="container">
@@ -50,6 +49,9 @@
           <div class="filter-option selected" data-val="">All Conditions</div>
           <div class="filter-option" data-val="New">New</div>
           <div class="filter-option" data-val="Used">Used</div>
+          <div class="filter-option" data-val="Like new">Like new</div>
+          <div class="filter-option" data-val="Brand new">Brand new</div>
+          <div class="filter-option" data-val="Used - Good">Used - Good</div>
         </div>
       </div>
     </div>
@@ -70,8 +72,23 @@
     </div>
   </div>
 
-  <!-- ---------- FOOTER ---------- -->
-  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
+  <!-- ---------- CART DRAWER ---------- -->
+  <div id="cart-drawer" class="cart-drawer hidden" style="position:fixed; top:56px; right:0; background:#222; width:320px; max-width:90vw; height:calc(100vh - 56px); color:#eee; padding:20px; box-shadow: -4px 0 8px rgba(0,0,0,0.7); overflow-y:auto; z-index:1500; transition: transform 0.3s ease; transform: translateX(100%);">
+    <h3>Your Cart</h3>
+    <ul id="cart-items" style="list-style:none; padding-left:0;"></ul>
+    <p id="cart-total" style="font-weight:bold; margin-top: 1em;"></p>
+    <button disabled title="Checkout coming soon" style="background:#4caf50; border:none; padding:12px 16px; color:#111; border-radius:8px; cursor:not-allowed; width:100%; margin-top:20px;">Checkout</button>
+  </div>
+
+  <style>
+    /* Cart drawer show/hide styles */
+    .cart-drawer.hidden {
+      transform: translateX(100%);
+    }
+    .cart-drawer.show {
+      transform: translateX(0);
+    }
+  </style>
 
 </body>
 </html>
