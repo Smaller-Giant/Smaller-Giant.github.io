@@ -44,8 +44,8 @@ if (!shoeId) {
 function renderProduct(product) {
   productContainer.innerHTML = `
     <h1>${product.title}</h1>
-    <div class="product-images">
-      ${product.images.map((img, idx) => `<img src="${img}" alt="${product.title} image ${idx+1}" />`).join('')}
+    <div class="image-gallery">
+      ${product.images.map((img, idx) => `<img src="${img}" alt="${product.title} image ${idx+1}" class="gallery-img" />`).join('')}
     </div>
     <p><strong>Price:</strong> £${(product.price / 100).toFixed(2)}</p>
     <p><strong>Size:</strong> ${product.info.size}</p>
@@ -64,4 +64,3 @@ function renderProduct(product) {
     // TODO: Add to cart logic to persist across pages
   });
 }
-
