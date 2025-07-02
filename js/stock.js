@@ -23,12 +23,14 @@ let cart = [];
 
 function renderStock() {
   const container = document.getElementById("stock-list");
+  container.innerHTML = ""; // Clear existing content
+
   products.forEach(product => {
     const card = document.createElement("div");
-    card.className = "shoe-card";
+    card.className = "item-card";
     card.innerHTML = `
       <img src="${product.image}" alt="${product.name}" />
-      <h4>${product.name}</h4>
+      <h3>${product.name}</h3>
       <p>£${(product.price / 100).toFixed(2)}</p>
       <button onclick="addToCart('${product.id}')">Add to Cart</button>
     `;
@@ -38,6 +40,8 @@ function renderStock() {
 
 function addToCart(productId) {
   const product = products.find(p => p.id === productId);
+  if (!product) return;
+
   cart.push(product);
   updateCart();
 }
@@ -51,7 +55,7 @@ function updateCart() {
   cartItems.innerHTML = "";
 
   let total = 0;
-  cart.forEach(item => {
+  cart.forEach((item, index) => {
     total += item.price;
     const li = document.createElement("li");
     li.textContent = `${item.name} - £${(item.price / 100).toFixed(2)}`;
@@ -61,8 +65,11 @@ function updateCart() {
   cartTotal.textContent = `Total: £${(total / 100).toFixed(2)}`;
 }
 
+// Toggle cart drawer visibility
 document.getElementById("cart-btn").addEventListener("click", () => {
-  document.getElementById("cart-drawer").classList.toggle("hidden");
+  const drawer = document.getElementById("cart-drawer");
+  drawer.classList.toggle("hidden");
 });
 
 renderStock();
+updateCart();
