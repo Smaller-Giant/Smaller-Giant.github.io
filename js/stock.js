@@ -11,7 +11,7 @@ const filterButton = document.getElementById('filterButton');
 const filterOptions = document.getElementById('filterOptions');
 
 // Load products from shoes.json (adjust path if needed)
-fetch('shoes.json')
+fetch('/folder/shoes.json')
   .then(res => {
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
     return res.json();
