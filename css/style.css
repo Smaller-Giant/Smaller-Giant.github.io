@@ -460,3 +460,22 @@ loadShoes();
   background-color: #388e3c;
 }
 
+
+
+  /* --- cart drawer (shared) --- */
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: 320px; max-width: 90vw;
+  height: 100vh;
+  background: #111;
+  color:#eee;
+  padding: 20px;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.6);
+  overflow-y: auto;
+  transition: transform .3s;
+  transform: translateX(100%);
+  z-index: 1500;
+}
+.cart-drawer.hidden { transform: translateX(100%); }
+.cart-drawer:not(.hidden){ transform: translateX(0); }
