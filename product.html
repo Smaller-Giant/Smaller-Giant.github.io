@@ -3,228 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Product Details - SoleZone</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/product.js"></script>
-  <style>
-    body {
-      background: #111;
-      color: #eee;
-      font-family: 'Poppins', sans-serif;
-      padding-top: 70px; /* avoid header overlap */
-      margin: 0;
-    }
-
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      background: rgba(0,0,0,0.85);
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    header h1 {
-      font-size: 1.4rem;
-      margin: 0;
-      color: #eee;
-    }
-    header h1 span {
-      display: block;
-      font-size: 0.75rem;
-      color: #4caf50;
-      font-weight: 300;
-      margin-top: 2px;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    nav a {
-      color: #eee;
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 2px;
-      transition: color 0.3s ease;
-      font-weight: 600;
-    }
-    nav a:hover, nav a.active {
-      color: #fff;
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      height: 2px;
-      width: 0;
-      background: #4caf50;
-      transition: width 0.3s ease;
-    }
-    nav a:hover::after, nav a.active::after {
-      width: 100%;
-    }
-
-    /* Cart Icon */
-    .cart-icon {
-      font-size: 1.3rem;
-      color: #4caf50;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-    }
-    .cart-count {
-      background: #eee;
-      color: #111;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 12px;
-      min-width: 20px;
-      text-align: center;
-      font-size: 0.85rem;
-      user-select: none;
-    }
-
-    main.container {
-      max-width: 900px;
-      margin: 40px auto;
-      display: flex;
-      gap: 40px;
-      flex-wrap: wrap;
-      color: #eee;
-      padding: 0 20px;
-    }
-
-    /* Image gallery styles */
-    #imageGallery {
-      flex: 1 1 320px;
-    }
-
-    #imageGallery .main-image {
-      width: 100%;
-      border-radius: 12px;
-      object-fit: contain;
-      box-shadow: 0 0 15px #4caf50aa;
-    }
-
-    #imageGallery .thumbnail-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    #imageGallery .thumbnail {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
-      object-fit: cover;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-
-    #imageGallery .thumbnail.selected,
-    #imageGallery .thumbnail:hover {
-      border-color: #4caf50;
-    }
-
-    /* Product info */
-    #productInfo {
-      flex: 1 1 300px;
-    }
-
-    #productInfo h2 {
-      color: #4caf50;
-      margin-bottom: 12px;
-    }
-
-    #productInfo p {
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-
-    #productInfo .buy-link {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: #4caf50;
-      color: #111;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 20px;
-      transition: background-color 0.3s ease;
-    }
-
-    #productInfo .buy-link:hover {
-      background-color: #388e3c;
-    }
-
-    #addToCartBtn {
-      margin-top: 15px;
-      padding: 12px 24px;
-      background-color: #2196F3;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
-
-    #addToCartBtn:hover {
-      background-color: #1769aa;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      main.container {
-        flex-direction: column;
-        gap: 24px;
-      }
-      #imageGallery, #productInfo {
-        flex: none;
-        width: 100%;
-      }
-      #imageGallery .thumbnail {
-        width: 50px;
-        height: 50px;
-      }
-    }
-  </style>
+  <title>SoleZone Product</title>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
-  <header>
-    <h1>
-      SoleZone
-      <span>Premium Trainers from leading brands</span>
-    </h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html">Stock</a>
-      <a href="contact.html">Contact</a>
-      <div class="cart-icon" id="cartIcon" title="View Cart" aria-label="Shopping Cart">
-        🛒 <span id="cartCount" class="cart-count">0</span>
-      </div>
-    </nav>
-  </header>
+<header>
+  <h1>
+    SoleZone
+    <span class="slogan">Premium trainers from leading brands</span>
+  </h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <div id="cartIcon">🛒 <span id="cartCount">0</span></div>
+</header>
 
-  <main class="container">
-    <div id="imageGallery">
-      <!-- main image and thumbnails inserted by JS -->
-    </div>
-    <div id="productInfo">
-      Loading product...
-    </div>
-  </main>
+<main class="container">
+  <div class="product-page">
+    <div id="imageGallery" class="image-gallery">Loading images...</div>
+    <div id="productInfo">Loading product info...</div>
+  </div>
+</main>
+
+<script src="js/product.js" defer></script>
 
 </body>
 </html>
