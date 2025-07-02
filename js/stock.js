@@ -10,9 +10,12 @@ const filterWrapper = document.getElementById('filterWrapper');
 const filterButton = document.getElementById('filterButton');
 const filterOptions = document.getElementById('filterOptions');
 
-// Load products from shoes.json
-fetch('folder/shoes.json')
-  .then(res => res.json())
+// Load products from shoes.json (adjust path if needed)
+fetch('shoes.json')
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    return res.json();
+  })
   .then(data => {
     products = data.map((item, i) => ({
       ...item,
@@ -24,7 +27,7 @@ fetch('folder/shoes.json')
     renderStock();
   })
   .catch(err => {
-    console.error('Failed to load shoes.json', err);
+    console.error('Failed to load shoes.json:', err);
     noResults.textContent = 'Failed to load products.';
     noResults.style.display = 'block';
   });
@@ -88,8 +91,8 @@ function applyFilters() {
   filteredProducts = products.filter(product => {
     const matchesSearch = product.title.toLowerCase().includes(searchTerm);
 
-    // If selectedCondition is empty string or "All", ignore condition filtering
-    const matchesCondition = selectedCondition === '' || selectedCondition.toLowerCase() === 'all' || 
+    // If selectedCondition is empty or "All Conditions", skip condition filtering
+    const matchesCondition = selectedCondition === '' || selectedCondition.toLowerCase() === 'all' ||
       product.info.condition.toLowerCase() === selectedCondition.toLowerCase();
 
     return matchesSearch && matchesCondition;
