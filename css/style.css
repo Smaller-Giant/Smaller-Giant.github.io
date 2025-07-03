@@ -8,7 +8,7 @@ body { font-family: 'Poppins', sans-serif; background: #111; color: #eee; min-he
 
 /* Header/Nav */
 header {
-  position: fixed; top: 0; width: 100%; z-index: 1000;
+  position: fixed; top: 0; width: 96%; z-index: 1000;
   display: flex; justify-content: space-between; align-items: center;
   background: rgba(0,0,0,0.85); padding: 12px 20px;
 }
