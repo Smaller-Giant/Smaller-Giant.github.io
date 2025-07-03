@@ -32,9 +32,13 @@
   </header>
 
   <!-- ---------- MAIN CONTENT ---------- -->
-  <main class="container" style="display:flex;gap:40px;flex-wrap:wrap;">
-    <div id="imageGallery" style="flex:1 1 360px;"></div>
-    <div id="productInfo"  style="flex:1 1 320px;"></div>
+  <main class="container product-main">
+    <div class="image-slider" id="imageSlider">
+      <button class="prev-btn" aria-label="Previous image">&#10094;</button>
+      <img src="" alt="Product image" id="sliderImage" />
+      <button class="next-btn" aria-label="Next image">&#10095;</button>
+    </div>
+    <section id="productInfo" class="product-info"></section>
   </main>
 
   <!-- ---------- CART DRAWER ---------- -->
