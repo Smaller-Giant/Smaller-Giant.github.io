@@ -3,178 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Product Detail - SoleZone</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <title>SoleZone - Product</title>
+  <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* Override or add product page specific styles here if needed */
-    body {
-      background: #111;
-      color: #eee;
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      margin: 0;
-      padding-top: 56px; /* Header height */
+    /* Basket icon tweaks to fix offscreen */
+    header nav {
+      gap: 12px; /* smaller gap for nav items */
     }
-    main.product-page {
-      max-width: 900px;
-      margin: 30px auto 60px;
-      padding: 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
-      justify-content: center;
+    .cart-icon {
+      margin-left: 0.5rem !important;
     }
-    .image-slider {
-      flex: 1 1 380px;
-      max-width: 450px;
-      height: 420px;
-      background: #222;
-      border-radius: 12px;
+    /* Re-add hero/banner style */
+    .hero {
+      margin-top: 56px;
+      height: 40vh;
+      min-height: 280px;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
       position: relative;
-    }
-    .image-slider img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: 12px;
-    }
-    .prev-btn, .next-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.6);
-      border: none;
-      color: #4caf50;
-      font-size: 2rem;
-      padding: 8px 14px;
-      cursor: pointer;
-      border-radius: 6px;
-      user-select: none;
-      transition: background 0.3s;
-      z-index: 10;
-    }
-    .prev-btn:hover, .next-btn:hover {
-      background: #4caf50;
-      color: #111;
-    }
-    .prev-btn { left: 12px; }
-    .next-btn { right: 12px; }
-
-    .product-info {
-      flex: 1 1 350px;
-      max-width: 400px;
-      color: #eee;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-    .product-info h2 {
-      color: #4caf50;
-      margin-bottom: 16px;
-      font-weight: 600;
-    }
-    .product-info p {
-      margin-bottom: 10px;
-    }
-    .product-info strong {
-      color: #a5d6a7;
-    }
-    .buy-link, #addCart {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 28px;
-      background-color: #4caf50;
-      color: #111;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s;
-      cursor: pointer;
-      border: none;
+      color: #fff;
       text-align: center;
     }
-    .buy-link:hover, #addCart:hover {
-      background-color: #388e3c;
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
     }
-    /* Responsive */
-    @media (max-width: 768px) {
-      main.product-page {
-        flex-direction: column;
-        margin-top: 100px;
-        gap: 30px;
-      }
-      .image-slider, .product-info {
-        max-width: 100%;
-        flex: 1 1 100%;
-      }
-      .image-slider {
-        height: 320px;
-      }
+    .hero-content {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fadeInUp 1s 0.3s forwards;
     }
   </style>
 </head>
 <body>
-  <!-- Header remains unchanged, assumed to be included site-wide -->
 
-  <main class="product-page" role="main">
-    <section class="image-slider" aria-label="Product images">
-      <button class="prev-btn" aria-label="Previous image">&#10094;</button>
-      <img src="images/shoe1-1.jpg" alt="SoleZone Air Trainer, black and green" />
-      <button class="next-btn" aria-label="Next image">&#10095;</button>
-    </section>
+<header>
+  <h1>SoleZone <span>Premium Trainers</span></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="contact.html">Contact</a>
+    <div class="cart-icon" title="View Cart" tabindex="0" role="button">
+      🛒 <span id="cartCount">0</span>
+    </div>
+  </nav>
+</header>
 
-    <section class="product-info">
-      <h2>SoleZone Air Trainer</h2>
-      <p><strong>Price:</strong> £85</p>
-      <p><strong>Condition:</strong> New</p>
-      <p><strong>Description:</strong> High quality premium trainers with breathable fabric, cushioned sole, and durable build. Perfect for daily wear and running.</p>
-      <p><strong>Available Sizes:</strong> 6, 7, 8, 9, 10, 11</p>
-      
-      <!-- Add to cart button -->
-      <button id="addCart" type="button">Add to Cart</button>
+<!-- Hero/banner -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Discover Your Next Trainers</h1>
+    <p>Authentic • Fast shipping • Secure checkout</p>
+  </div>
+</section>
 
-      <!-- Buy now link -->
-      <a href="https://buy.solezone.com/air-trainer" target="_blank" class="buy-link" rel="noopener noreferrer">Buy Now</a>
-    </section>
-  </main>
+<!-- Product main content -->
+<main class="product-main" id="productMain">
+  <!-- dynamically loaded product info and images will go here -->
+</main>
 
-  <script>
-    // Simple image slider logic for product images
-    (function(){
-      const slider = document.querySelector('.image-slider');
-      if (!slider) return;
+<script>
+  // Extract product id or index from URL, example ?id=3
+  function getProductIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+  }
 
-      const images = [
-        'images/shoe1-1.jpg',
-        'images/shoe1-2.jpg',
-        'images/shoe1-3.jpg'
-      ];
+  async function loadProduct() {
+    try {
+      const response = await fetch('folder/shoes.json'); // <-- use folder path you said
+      if (!response.ok) throw new Error('Failed to load shoes.json');
+      const shoes = await response.json();
 
-      let currentIndex = 0;
-      const imgEl = slider.querySelector('img');
-      const prevBtn = slider.querySelector('.prev-btn');
-      const nextBtn = slider.querySelector('.next-btn');
-
-      function updateImage() {
-        imgEl.src = images[currentIndex];
+      const productId = getProductIdFromURL();
+      if (!productId || isNaN(productId) || productId < 0 || productId >= shoes.length) {
+        document.getElementById('productMain').innerHTML = '<p style="color:#f44336;">Product not found.</p>';
+        return;
       }
 
-      prevBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
-        updateImage();
-      });
+      const shoe = shoes[productId];
 
-      nextBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        currentIndex = (currentIndex + 1) % images.length;
-        updateImage();
-      });
-    })();
-  </script>
+      // Build image slider HTML dynamically
+      const imagesHtml = shoe.images && shoe.images.length > 0
+        ? `
+          <div class="image-slider" id="imageSlider">
+            <button class="prev-btn" aria-label="Previous Image">&#10094;</button>
+            <img src="${shoe.images[0]}" alt="${shoe.title}" />
+            <button class="next-btn" aria-label="Next Image">&#10095;</button>
+          </div>
+        `
+        : `<img src="images/no-image.png" alt="No image available" style="max-width: 100%; border-radius: 12px;" />`;
+
+      // Build info HTML
+      let infoHtml = '';
+      for (const key in shoe.info) {
+        infoHtml += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${shoe.info[key]}</p>`;
+      }
+
+      // Put all together in productMain container
+      document.getElementById('productMain').innerHTML = `
+        <div class="image-slider-container">
+          ${imagesHtml}
+        </div>
+        <div class="product-info">
+          <h2>${shoe.title}</h2>
+          <p class="price">${shoe.price}</p>
+          ${infoHtml}
+          <a href="${shoe.buyLink}" target="_blank" class="buy-link">Buy Now</a>
+          <button id="addCart">Add to Cart</button>
+        </div>
+      `;
+
+      // Setup slider functionality
+      setupSlider(shoe.images || []);
+
+    } catch (error) {
+      console.error(error);
+      document.getElementById('productMain').innerHTML = '<p style="color:#f44336;">Failed to load product.</p>';
+    }
+  }
+
+  function setupSlider(images) {
+    if (!images || images.length === 0) return;
+
+    const slider = document.getElementById('imageSlider');
+    const img = slider.querySelector('img');
+    const prevBtn = slider.querySelector('.prev-btn');
+    const nextBtn = slider.querySelector('.next-btn');
+    let currentIndex = 0;
+
+    prevBtn.onclick = (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      img.src = images[currentIndex];
+    };
+    nextBtn.onclick = (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % images.length;
+      img.src = images[currentIndex];
+    };
+  }
+
+  // Initialize product loading
+  loadProduct();
+</script>
+
 </body>
 </html>
