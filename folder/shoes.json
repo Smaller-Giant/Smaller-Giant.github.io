@@ -1,6 +1,7 @@
 [
   {
     "title": "Nike Dunks",
+    "slug": "nike-dunks",
     "price": "£45",
     "images": [
       "images/IMG-20250620-WA0001.jpg",
@@ -18,11 +19,11 @@
       "box": "Includes original box and tags",
       "authenticity": "Authenticity guaranteed"
     },
-    "buyLink": "https://www.vinted.co.uk/member/233654539",
-    "slug": "nike-dunks"
+    "buyLink": "https://www.vinted.co.uk/member/233654539"
   },
   {
     "title": "Nike Dunks",
+    "slug": "nike-dunks-cream",
     "price": "£45",
     "images": [],
     "info": {
@@ -34,11 +35,11 @@
       "box": "No original box",
       "authenticity": "Guaranteed"
     },
-    "buyLink": "#",
-    "slug": "nike-dunks-2"
+    "buyLink": "#"
   },
   {
     "title": "Dunk Low Panda",
+    "slug": "dunk-low-panda",
     "price": "£47.99",
     "images": [],
     "info": {
@@ -50,11 +51,11 @@
       "box": "No box included",
       "authenticity": "Verified seller"
     },
-    "buyLink": "#",
-    "slug": "dunk-low-panda"
+    "buyLink": "#"
   },
   {
     "title": "Dunks",
+    "slug": "dunks-red-black",
     "price": "£55",
     "images": [],
     "info": {
@@ -66,11 +67,11 @@
       "box": "Original box",
       "authenticity": "Authenticity guaranteed"
     },
-    "buyLink": "#",
-    "slug": "dunks"
+    "buyLink": "#"
   },
   {
     "title": "Nike Blocks",
+    "slug": "nike-blocks",
     "price": "£45",
     "images": [],
     "info": {
@@ -82,7 +83,6 @@
       "box": "With box",
       "authenticity": "Certified authentic"
     },
-    "buyLink": "#",
-    "slug": "nike-blocks"
+    "buyLink": "#"
   }
 ]
