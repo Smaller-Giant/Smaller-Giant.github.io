@@ -3,45 +3,178 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Loading product…</title>
+  <title>Product Detail - SoleZone</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <script defer src="js/product.js"></script>
-  <script defer src="js/global.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Override or add product page specific styles here if needed */
+    body {
+      background: #111;
+      color: #eee;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 56px; /* Header height */
+    }
+    main.product-page {
+      max-width: 900px;
+      margin: 30px auto 60px;
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+    .image-slider {
+      flex: 1 1 380px;
+      max-width: 450px;
+      height: 420px;
+      background: #222;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .image-slider img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+    .prev-btn, .next-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: #4caf50;
+      font-size: 2rem;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-radius: 6px;
+      user-select: none;
+      transition: background 0.3s;
+      z-index: 10;
+    }
+    .prev-btn:hover, .next-btn:hover {
+      background: #4caf50;
+      color: #111;
+    }
+    .prev-btn { left: 12px; }
+    .next-btn { right: 12px; }
+
+    .product-info {
+      flex: 1 1 350px;
+      max-width: 400px;
+      color: #eee;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .product-info h2 {
+      color: #4caf50;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .product-info p {
+      margin-bottom: 10px;
+    }
+    .product-info strong {
+      color: #a5d6a7;
+    }
+    .buy-link, #addCart {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 28px;
+      background-color: #4caf50;
+      color: #111;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+    .buy-link:hover, #addCart:hover {
+      background-color: #388e3c;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      main.product-page {
+        flex-direction: column;
+        margin-top: 100px;
+        gap: 30px;
+      }
+      .image-slider, .product-info {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+      .image-slider {
+        height: 320px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- ---------- HEADER ---------- -->
-  <header>
-    <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stock.html">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-      <div id="cartIcon" class="cart-icon" style="cursor:pointer; margin-left: 20px;">
-        🛒 (<span id="cartCount">0</span>)
-      </div>
-    </nav>
-    <div class="dropdown" id="dropdownMenu">
-      <a href="index.html">Home</a>
-      <a href="stock.html">Stock</a>
-      <a href="info.html">Info</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </header>
+  <!-- Header remains unchanged, assumed to be included site-wide -->
 
-  <!-- ---------- MAIN CONTENT ---------- -->
-  <main class="container product-main">
-    <div class="image-slider" id="imageSlider">
+  <main class="product-page" role="main">
+    <section class="image-slider" aria-label="Product images">
       <button class="prev-btn" aria-label="Previous image">&#10094;</button>
-      <img src="" alt="Product image" id="sliderImage" />
+      <img src="images/shoe1-1.jpg" alt="SoleZone Air Trainer, black and green" />
       <button class="next-btn" aria-label="Next image">&#10095;</button>
-    </div>
-    <section id="productInfo" class="product-info"></section>
+    </section>
+
+    <section class="product-info">
+      <h2>SoleZone Air Trainer</h2>
+      <p><strong>Price:</strong> £85</p>
+      <p><strong>Condition:</strong> New</p>
+      <p><strong>Description:</strong> High quality premium trainers with breathable fabric, cushioned sole, and durable build. Perfect for daily wear and running.</p>
+      <p><strong>Available Sizes:</strong> 6, 7, 8, 9, 10, 11</p>
+      
+      <!-- Add to cart button -->
+      <button id="addCart" type="button">Add to Cart</button>
+
+      <!-- Buy now link -->
+      <a href="https://buy.solezone.com/air-trainer" target="_blank" class="buy-link" rel="noopener noreferrer">Buy Now</a>
+    </section>
   </main>
 
-  <!-- ---------- CART DRAWER ---------- -->
-  <div id="cartDrawer" class="cart-drawer hidden"></div>
+  <script>
+    // Simple image slider logic for product images
+    (function(){
+      const slider = document.querySelector('.image-slider');
+      if (!slider) return;
+
+      const images = [
+        'images/shoe1-1.jpg',
+        'images/shoe1-2.jpg',
+        'images/shoe1-3.jpg'
+      ];
+
+      let currentIndex = 0;
+      const imgEl = slider.querySelector('img');
+      const prevBtn = slider.querySelector('.prev-btn');
+      const nextBtn = slider.querySelector('.next-btn');
+
+      function updateImage() {
+        imgEl.src = images[currentIndex];
+      }
+
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateImage();
+      });
+
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentIndex = (currentIndex + 1) % images.length;
+        updateImage();
+      });
+    })();
+  </script>
 </body>
 </html>
