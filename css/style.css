@@ -622,3 +622,31 @@ loadShoes();
   }
 }
 
+
+
+
+/* Fix banner alignment: keep it centered and prevent shifting right */
+.hero, .stock-hero {
+  justify-content: center !important; /* center horizontally */
+  padding: 0 20px; /* add horizontal padding to avoid content flush with edges */
+  box-sizing: border-box; /* ensure padding included */
+}
+
+/* Constrain hero content width and center it */
+.hero-content, .stock-hero-content {
+  max-width: 900px !important;
+  margin: 0 auto !important;
+  width: 100%;
+}
+
+/* Move cart icon left so fully visible */
+.cart-icon {
+  margin-left: 0.5rem !important;
+  position: relative;
+  left: 0 !important;
+  /* Remove any possible right overflow */
+  max-width: 40px;
+  white-space: nowrap;
+}
+
+
