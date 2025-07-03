@@ -15,7 +15,7 @@ updateCartCount();
 const slug = new URLSearchParams(location.search).get('product');
 if(!slug){ productInfo.textContent='Product not specified.'; }
 else{
-  fetch('shoes.json')
+  fetch('folder/shoes.json')
     .then(r=>r.json())
     .then(list=>{
       const p=list.find(x=>x.slug===slug);
