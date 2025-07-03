@@ -6,25 +6,38 @@
   <title>Loading product…</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/product.js"></script>
+  <script defer src="js/global.js"></script>
 </head>
 <body>
+  <!-- ---------- HEADER ---------- -->
   <header>
     <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <nav>
       <a href="index.html">Home</a>
       <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
       <a href="contact.html">Contact</a>
-      <div id="cartIcon" class="cart-icon">🛒 <span id="cartCount">0</span></div>
+      <div id="cartIcon" class="cart-icon" style="cursor:pointer; margin-left: 20px;">
+        🛒 (<span id="cartCount">0</span>)
+      </div>
     </nav>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="index.html">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </header>
 
+  <!-- ---------- MAIN CONTENT ---------- -->
   <main class="container" style="display:flex;gap:40px;flex-wrap:wrap;">
     <div id="imageGallery" style="flex:1 1 360px;"></div>
     <div id="productInfo"  style="flex:1 1 320px;"></div>
   </main>
 
+  <!-- ---------- CART DRAWER ---------- -->
   <div id="cartDrawer" class="cart-drawer hidden"></div>
-
-  <script src="js/product.js" defer></script>
 </body>
 </html>
