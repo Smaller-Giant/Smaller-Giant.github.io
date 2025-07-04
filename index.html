@@ -53,27 +53,10 @@
     </section>
   </div>
 
-  <!-- ---------- FOOTER ---------- -->
-  <div id="footer"></div>
+  <!-- ---------- FOOTER (optional, remove if not needed) ---------- -->
+  <!-- <div id="footer"></div> -->
 
   <!-- ---------- JS ---------- -->
   <script src="js/global.js"></script>
-  <script>
-    async function loadIncludes() {
-      async function insert(id, file) {
-        const res = await fetch(file);
-        if (!res.ok) {
-          console.error(`Failed to load ${file}: ${res.status}`);
-          return;
-        }
-        const html = await res.text();
-        document.getElementById(id).innerHTML = html;
-      }
-      await insert("header", "includes/header.html");
-      await insert("hero", "includes/hero.html");
-      await insert("footer", "includes/footer.html");
-    }
-    loadIncludes();
-  </script>
 </body>
 </html>
