@@ -158,7 +158,7 @@ nav a.active::after {
   padding: 0 20px;
   box-sizing: border-box;
   position: relative;
-  top: -25px; /* Move hero background up by about 2.5cm */
+  top: -15px; /* Moved down 10px from before */
 }
 .hero-content {
   max-width: 900px;
