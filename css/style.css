@@ -47,8 +47,8 @@ header h1 span {
 /* Desktop nav */
 nav {
   display: flex;
-  gap: 5px;
-  align-items: right;
+  gap: 10px;
+  align-items: center;
 }
 nav a {
   position: relative;
@@ -61,7 +61,7 @@ nav a::after {
   content: '';
   position: absolute;
   bottom: 0px;
-  left: 0;
+  left: 25;
   height: 2px;
   width: 0;
   background: #4caf50;
