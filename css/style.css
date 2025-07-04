@@ -101,9 +101,9 @@ section.visible { opacity: 1; transform: translateY(0); }
 .feature p { color: #ccc; }
 
 /* Stock page search & filter */
-.search-bar { display: flex; gap:12px; flex-wrap: wrap; margin-bottom: 15px; }
+.search-bar { display: flex; gap:12px; flex-wrap: wrap; margin-bottom: 13px; }
 .search-bar input {
-  flex: 1; padding:10px 14px; font-size:.95rem; border: none;
+  flex: 1; padding:10px 11px; font-size:.95rem; border: none;
   background: rgba(255,255,255,.08); color:#eee; border-radius:12px;
   backdrop-filter: blur(10px); height:38px;
 }
