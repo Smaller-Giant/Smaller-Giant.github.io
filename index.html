@@ -1,3 +1,5 @@
+#Homepage
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +10,33 @@
 </head>
 <body onload="scrollTo(0,0)">
 
-  <!-- ---------- HEADER INCLUDE ---------- -->
-  <div id="header-placeholder"></div>
+  <!-- ---------- HEADER ---------- -->
+  <header>
+    <h1>SoleZone <span>Premium Trainers from leading brands</span></h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-  <!-- ---------- HERO INCLUDE (with custom text) ---------- -->
-  <div id="hero-placeholder" data-title="Discover Your Next Trainers" data-subtitle="Authentic • Fast shipping • Secure checkout"></div>
+  <!-- ---------- DROPDOWN MENU ---------- -->
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html" class="active">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <!-- ---------- HERO SECTION ---------- -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Discover Your Next Trainers</h1>
+      <p>Authentic • Fast shipping • Secure checkout</p>
+    </div>
+  </section>
 
   <!-- ---------- MAIN CONTENT ---------- -->
   <div class="container">
@@ -26,7 +50,7 @@
         <div class="feature">
           <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Icon">
           <h3>Verified</h3>
-          <p>Every trainer is authentic.</p>
+          <p>Every trainer is authenic.</p>
         </div>
         <div class="feature">
           <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png" alt="Icon">
@@ -53,8 +77,8 @@
     </section>
   </div>
 
-  <!-- ---------- FOOTER INCLUDE ---------- -->
-  <div id="footer-placeholder"></div>
+  <!-- ---------- FOOTER ---------- -->
+  <footer>This site is for display only. All orders handled through Vinted or eBay.</footer>
 
   <!-- ---------- JS ---------- -->
   <script src="js/global.js"></script>
