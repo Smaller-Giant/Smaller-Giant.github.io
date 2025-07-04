@@ -1,3 +1,4 @@
+// Menu toggle for mobile dropdown
 function toggleMenu() {
   const dd = document.getElementById('dropdownMenu');
   dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
@@ -7,24 +8,18 @@ const menuToggle = document.querySelector('.menu-toggle');
 const dropdownMenu = document.getElementById('dropdownMenu');
 
 menuToggle.addEventListener('click', () => {
-  // toggle a class to show/hide dropdown
   dropdownMenu.classList.toggle('show');
 });
 
-// Optional: close dropdown when clicking outside
+// Close dropdown if clicking outside
 document.addEventListener('click', (e) => {
   if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
     dropdownMenu.classList.remove('show');
+    dropdownMenu.style.display = 'none';
   }
 });
 
-document.addEventListener('click', e => {
-  const mt = document.querySelector('.menu-toggle');
-  const dd = document.getElementById('dropdownMenu');
-  if (!mt.contains(e.target) && !dd.contains(e.target)) {
-    dd.style.display = 'none';
-  }
-});
+// Animate sections when in viewport
 window.addEventListener('load', () => {
   document.querySelectorAll('section').forEach(sec => {
     const obs = new IntersectionObserver(entries => {
@@ -37,12 +32,13 @@ window.addEventListener('load', () => {
   });
 });
 
-
+// Optional: Another include loader (if you want)
+// If you don't want this, you can remove it and keep only includes.js loader above
 function loadIncludes() {
   const includes = {
-    '#header-placeholder': 'includes/header.html',
-    '#hero-placeholder': 'includes/hero.html',
-    '#footer-placeholder': 'includes/footer.html'
+    '#header': 'includes/header.html',
+    '#hero': 'includes/hero.html',
+    '#footer': 'includes/footer.html'
   };
 
   for (const [selector, url] of Object.entries(includes)) {
@@ -53,17 +49,17 @@ function loadIncludes() {
         .then(html => {
           el.innerHTML = html;
 
-          if (selector === '#hero-placeholder') {
-            // Optionally customize title/subtitle per page
+          // Customize hero content if needed
+          if (selector === '#hero') {
             const title = el.dataset.title || 'Discover Your Next Trainers';
             const subtitle = el.dataset.subtitle || 'Authentic • Fast shipping • Secure checkout';
-            el.querySelector('#hero-title').textContent = title;
-            el.querySelector('#hero-subtitle').textContent = subtitle;
+            if (el.querySelector('#hero-title')) el.querySelector('#hero-title').textContent = title;
+            if (el.querySelector('#hero-subtitle')) el.querySelector('#hero-subtitle').textContent = subtitle;
           }
-        });
+        })
+        .catch(console.error);
     }
   }
 }
 
 document.addEventListener('DOMContentLoaded', loadIncludes);
-
