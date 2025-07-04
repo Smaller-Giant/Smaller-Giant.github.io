@@ -1,65 +1,70 @@
-// Menu toggle for mobile dropdown
+// Function to load an HTML snippet and insert it into the page
+async function loadInclude(selector, filePath) {
+  const container = document.querySelector(selector);
+  if (!container) return;
+
+  try {
+    const response = await fetch(filePath);
+    if (!response.ok) throw new Error('Failed to load ' + filePath);
+    const content = await response.text();
+    container.innerHTML = content;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Load header and hero includes on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  loadInclude('#header', 'includes/header.html');
+  loadInclude('#hero', 'includes/hero.html');
+});
+
+// Dropdown menu toggle for mobile
 function toggleMenu() {
   const dd = document.getElementById('dropdownMenu');
-  dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
+  if (!dd) return;
+  if (dd.style.display === 'flex' || dd.classList.contains('show')) {
+    dd.style.display = 'none';
+    dd.classList.remove('show');
+  } else {
+    dd.style.display = 'flex';
+    dd.classList.add('show');
+  }
 }
 
-const menuToggle = document.querySelector('.menu-toggle');
-const dropdownMenu = document.getElementById('dropdownMenu');
+// Attach event listener for menu toggle after header loads
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait a moment to ensure header is loaded
+  setTimeout(() => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
 
-menuToggle.addEventListener('click', () => {
-  dropdownMenu.classList.toggle('show');
+    if (menuToggle && dropdownMenu) {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      // Close dropdown if clicking outside
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+          dropdownMenu.style.display = 'none';
+          dropdownMenu.classList.remove('show');
+        }
+      });
+    }
+  }, 200);
 });
 
-// Close dropdown if clicking outside
-document.addEventListener('click', (e) => {
-  if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-    dropdownMenu.classList.remove('show');
-    dropdownMenu.style.display = 'none';
-  }
-});
-
-// Animate sections when in viewport
+// Animate sections when they come into viewport
 window.addEventListener('load', () => {
-  document.querySelectorAll('section').forEach(sec => {
-    const obs = new IntersectionObserver(entries => {
+  document.querySelectorAll('section').forEach(section => {
+    const observer = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) {
-        sec.classList.add('visible');
-        obs.disconnect();
+        section.classList.add('visible');
+        observer.disconnect();
       }
     }, { threshold: 0.2 });
-    obs.observe(sec);
+    observer.observe(section);
   });
 });
-
-// Optional: Another include loader (if you want)
-// If you don't want this, you can remove it and keep only includes.js loader above
-function loadIncludes() {
-  const includes = {
-    '#header': 'includes/header.html',
-    '#hero': 'includes/hero.html',
-    '#footer': 'includes/footer.html'
-  };
-
-  for (const [selector, url] of Object.entries(includes)) {
-    const el = document.querySelector(selector);
-    if (el) {
-      fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          el.innerHTML = html;
-
-          // Customize hero content if needed
-          if (selector === '#hero') {
-            const title = el.dataset.title || 'Discover Your Next Trainers';
-            const subtitle = el.dataset.subtitle || 'Authentic • Fast shipping • Secure checkout';
-            if (el.querySelector('#hero-title')) el.querySelector('#hero-title').textContent = title;
-            if (el.querySelector('#hero-subtitle')) el.querySelector('#hero-subtitle').textContent = subtitle;
-          }
-        })
-        .catch(console.error);
-    }
-  }
-}
-
-document.addEventListener('DOMContentLoaded', loadIncludes);
