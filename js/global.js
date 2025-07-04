@@ -1,4 +1,4 @@
-// Function to load an HTML snippet and insert it into the page
+// Load HTML includes (header and hero)
 async function loadInclude(selector, filePath) {
   const container = document.querySelector(selector);
   if (!container) return;
@@ -13,45 +13,32 @@ async function loadInclude(selector, filePath) {
   }
 }
 
-// Load header and hero includes on DOM ready
-document.addEventListener('DOMContentLoaded', () => {
-  loadInclude('#header', 'includes/header.html');
-  loadInclude('#hero', 'includes/hero.html');
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadInclude('#header', 'includes/header.html');
+  await loadInclude('#hero', 'includes/hero.html');
+
+  setupDropdown(); // setup dropdown only after header is loaded
 });
 
-// Dropdown menu toggle for mobile
-function toggleMenu() {
-  const menu = document.getElementById('dropdownMenu');
-  if (menu) menu.classList.toggle('show');
-}
+// Setup mobile dropdown toggle and outside click close
+function setupDropdown() {
+  const menuToggle = document.getElementById('menuToggle');
+  const dropdownMenu = document.getElementById('dropdownMenu');
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function (e) {
-  const toggle = document.getElementById('menuToggle');
-  const dropdown = document.getElementById('dropdownMenu');
+  if (!menuToggle || !dropdownMenu) return;
 
-  if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-    dropdown.classList.remove('show');
-  }
-});
+  menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle('show');
+  });
 
-
-    if (menuToggle && dropdownMenu) {
-      menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMenu();
-      });
-
-      // Close dropdown if clicking outside
-      document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-          dropdownMenu.style.display = 'none';
-          dropdownMenu.classList.remove('show');
-        }
-      });
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!menuToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+      dropdownMenu.classList.remove('show');
     }
-  }, 200);
-});
+  });
+}
 
 // Animate sections when they come into viewport
 window.addEventListener('load', () => {
