@@ -21,23 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Dropdown menu toggle for mobile
 function toggleMenu() {
-  const dd = document.getElementById('dropdownMenu');
-  if (!dd) return;
-  if (dd.style.display === 'flex' || dd.classList.contains('show')) {
-    dd.style.display = 'none';
-    dd.classList.remove('show');
-  } else {
-    dd.style.display = 'flex';
-    dd.classList.add('show');
-  }
+  const menu = document.getElementById('dropdownMenu');
+  if (menu) menu.classList.toggle('show');
 }
 
-// Attach event listener for menu toggle after header loads
-document.addEventListener('DOMContentLoaded', () => {
-  // Wait a moment to ensure header is loaded
-  setTimeout(() => {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const dropdownMenu = document.getElementById('dropdownMenu');
+// Close dropdown when clicking outside
+document.addEventListener('click', function (e) {
+  const toggle = document.getElementById('menuToggle');
+  const dropdown = document.getElementById('dropdownMenu');
+
+  if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.remove('show');
+  }
+});
+
 
     if (menuToggle && dropdownMenu) {
       menuToggle.addEventListener('click', (e) => {
