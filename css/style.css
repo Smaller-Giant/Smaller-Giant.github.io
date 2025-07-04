@@ -63,7 +63,7 @@ nav a::after {
   bottom: 0px;
   left: 0;
   height: 2px;
-  width: 0;
+  width: 20;
   background: #4caf50;
   transition: width 0.3s;
 }
