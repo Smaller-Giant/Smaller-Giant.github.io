@@ -55,7 +55,7 @@ nav a {
   transition: color 0.3s;
   font-weight: 500;
   color: #ccc;
-  right: 0;
+ 
 }
 
 nav a::after {
