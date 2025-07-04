@@ -9,10 +9,37 @@
 <body onload="scrollTo(0,0)">
 
   <!-- ---------- HEADER ---------- -->
-  <div id="header"></div>
+  <header>
+    <h1>SoleZone <span>Premium Trainers</span></h1>
+
+    <nav id="desktop-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="stock.html">Stock</a>
+      <a href="info.html">Info</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="header-right">
+      <div class="cart-icon">🛒</div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+
+  <!-- ---------- MOBILE DROPDOWN ---------- -->
+  <div class="dropdown">
+    <a href="index.html" class="active">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
 
   <!-- ---------- HERO SECTION ---------- -->
-  <div id="hero"></div>
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Discover Your Next Trainers</h1>
+      <p>Authentic • Fast shipping • Secure checkout</p>
+    </div>
+  </div>
 
   <!-- ---------- MAIN CONTENT ---------- -->
   <div class="container">
@@ -52,9 +79,6 @@
       </div>
     </section>
   </div>
-
-  <!-- ---------- FOOTER (optional, remove if not needed) ---------- -->
-  <!-- <div id="footer"></div> -->
 
   <!-- ---------- JS ---------- -->
   <script src="js/global.js"></script>
