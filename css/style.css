@@ -11,7 +11,7 @@ body {
   background: #111;
   color: #eee;
   min-height: 100vh;
-  padding-top: 56px; /* offset for fixed header */
+  padding-top: 100px; /* offset for fixed header */
 }
 a {
   color: inherit;
@@ -41,13 +41,13 @@ header h1 span {
   color: #4caf50;
   font-weight: 300;
   display: block;
-  margin-top: 2px;
+  margin-top: 0px;
 }
 
 /* Desktop nav */
 nav {
   display: flex;
-  gap: 18px;
+  gap: 0px;
   align-items: center;
 }
 nav a {
