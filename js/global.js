@@ -36,3 +36,34 @@ window.addEventListener('load', () => {
     obs.observe(sec);
   });
 });
+
+
+function loadIncludes() {
+  const includes = {
+    '#header-placeholder': 'includes/header.html',
+    '#hero-placeholder': 'includes/hero.html',
+    '#footer-placeholder': 'includes/footer.html'
+  };
+
+  for (const [selector, url] of Object.entries(includes)) {
+    const el = document.querySelector(selector);
+    if (el) {
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          el.innerHTML = html;
+
+          if (selector === '#hero-placeholder') {
+            // Optionally customize title/subtitle per page
+            const title = el.dataset.title || 'Discover Your Next Trainers';
+            const subtitle = el.dataset.subtitle || 'Authentic • Fast shipping • Secure checkout';
+            el.querySelector('#hero-title').textContent = title;
+            el.querySelector('#hero-subtitle').textContent = subtitle;
+          }
+        });
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadIncludes);
+
