@@ -1,4 +1,4 @@
-// Function to load an HTML snippet and insert it into the page
+// Load an HTML snippet and insert into the given element by selector
 async function loadInclude(selector, filePath) {
   const container = document.querySelector(selector);
   if (!container) return;
@@ -13,9 +13,9 @@ async function loadInclude(selector, filePath) {
   }
 }
 
-// Load includes when DOM is ready
+// Load includes once DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-  loadInclude('header', 'includes/header.html');
-  loadInclude('footer', 'includes/footer.html');
-  loadInclude('.hero', 'includes/hero.html');
+  loadInclude('#header', 'includes/header.html');
+  loadInclude('#hero', 'includes/hero.html');
+  loadInclude('#footer', 'includes/footer.html');
 });
