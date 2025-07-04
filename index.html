@@ -11,14 +11,6 @@
   <!-- ---------- HEADER ---------- -->
   <div id="header"></div>
 
-  <!-- ---------- DROPDOWN MENU ---------- -->
-  <div class="dropdown" id="dropdownMenu">
-    <a href="index.html" class="active">Home</a>
-    <a href="stock.html">Stock</a>
-    <a href="info.html">Info</a>
-    <a href="contact.html">Contact</a>
-  </div>
-
   <!-- ---------- HERO SECTION ---------- -->
   <div id="hero"></div>
 
@@ -27,17 +19,17 @@
     <section>
       <div class="features">
         <div class="feature">
-          <img src="https://cdn-icons-png.flaticon.com/512/864/864685.png" alt="Icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/864/864685.png" alt="Icon" />
           <h3>Top Brands</h3>
           <p>Only the best – Nike, Adidas, New Balance & more.</p>
         </div>
         <div class="feature">
-          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Icon" />
           <h3>Verified</h3>
-          <p>Every trainer is authenic.</p>
+          <p>Every trainer is authentic.</p>
         </div>
         <div class="feature">
-          <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png" alt="Icon">
+          <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png" alt="Icon" />
           <h3>Fast Delivery</h3>
           <p>Shipped quickly through trusted couriers.</p>
         </div>
@@ -67,16 +59,19 @@
   <!-- ---------- JS ---------- -->
   <script src="js/global.js"></script>
   <script>
-    // Inject shared includes
     async function loadIncludes() {
-      const insert = async (id, file) => {
+      async function insert(id, file) {
         const res = await fetch(file);
+        if (!res.ok) {
+          console.error(`Failed to load ${file}: ${res.status}`);
+          return;
+        }
         const html = await res.text();
         document.getElementById(id).innerHTML = html;
-      };
-      insert("header", "includes/header.html");
-      insert("hero", "includes/hero.html");
-      insert("footer", "includes/footer.html");
+      }
+      await insert("header", "includes/header.html");
+      await insert("hero", "includes/hero.html");
+      await insert("footer", "includes/footer.html");
     }
     loadIncludes();
   </script>
