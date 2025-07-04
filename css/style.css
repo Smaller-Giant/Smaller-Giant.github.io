@@ -26,15 +26,18 @@ header {
   z-index: 1000;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* space-between removed to keep header-left and header-right aligned */
   background: rgba(0, 0, 0, 0.85);
   padding: 12px 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
+
+/* Site title on left */
 header h1 {
   font-size: 1.4rem;
   color: #eee;
   user-select: none;
+  flex-shrink: 0;
 }
 header h1 span {
   font-size: 0.75rem;
@@ -44,12 +47,28 @@ header h1 span {
   margin-top: 0px;
 }
 
-/* Desktop nav */
-nav {
+/* Wrap left and right groups for layout */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-grow: 1;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* push right side to right */
+}
+
+/* Move nav inside .header-right for layout */
+.header-right nav {
   display: flex;
   gap: 15px;
   align-items: center;
 }
+
+/* Nav links */
 nav a {
   position: relative;
   padding-bottom: 2px;
@@ -63,7 +82,7 @@ nav a::after {
   bottom: 0px;
   left: 0;
   height: 2px;
-  width: 20;
+  width: 0; /* fix: start with zero width */
   background: #4caf50;
   transition: width 0.3s;
 }
@@ -77,11 +96,6 @@ nav a.active::after {
 }
 
 /* Cart icon and mobile toggle */
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 .cart-icon {
   font-weight: bold;
   color: white;
@@ -132,8 +146,9 @@ nav a.active::after {
 }
 
 /* === Hero Section === */
+/* Reduced margin-top from 40px to 10px to bring hero up closer to header */
 .hero {
-  margin-top: 40px;
+  margin-top: 10px;
   height: 30vh;
   min-height: 310px;
   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
@@ -256,6 +271,7 @@ section.visible {
 
 /* === Responsive === */
 @media (max-width: 768px) {
+  /* Hide desktop nav, show hamburger */
   nav {
     display: none;
   }
