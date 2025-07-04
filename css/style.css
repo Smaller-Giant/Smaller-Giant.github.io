@@ -26,13 +26,10 @@ header {
   z-index: 1000;
   display: flex;
   align-items: center;
-  /* space-between removed to keep header-left and header-right aligned */
-  background: rgba(0, 0, 0, 0.85);
   padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.85);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
-
-/* Site title on left */
 header h1 {
   font-size: 1.4rem;
   color: #eee;
@@ -47,28 +44,20 @@ header h1 span {
   margin-top: 0px;
 }
 
-/* Wrap left and right groups for layout */
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex-grow: 1;
-}
+/* Group nav and cart on the right */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-left: auto; /* push right side to right */
+  margin-left: auto; /* Pushes this group to the right */
 }
 
-/* Move nav inside .header-right for layout */
-.header-right nav {
+/* Desktop nav */
+nav {
   display: flex;
   gap: 15px;
   align-items: center;
 }
-
-/* Nav links */
 nav a {
   position: relative;
   padding-bottom: 2px;
@@ -82,7 +71,7 @@ nav a::after {
   bottom: 0px;
   left: 0;
   height: 2px;
-  width: 0; /* fix: start with zero width */
+  width: 20;
   background: #4caf50;
   transition: width 0.3s;
 }
@@ -146,9 +135,12 @@ nav a.active::after {
 }
 
 /* === Hero Section === */
-/* Reduced margin-top from 40px to 10px to bring hero up closer to header */
 .hero {
-  margin-top: 10px;
+  /* Move hero up to touch bottom of header */
+  margin-top: 0; /* remove any default margin */
+  /* Optionally add a little padding if you want some spacing */
+  padding-top: 10px;
+
   height: 30vh;
   min-height: 310px;
   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
@@ -158,7 +150,8 @@ nav a.active::after {
   justify-content: center;
   color: #fff;
   text-align: center;
-  padding: 0 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   box-sizing: border-box;
 }
 .hero-content {
@@ -271,7 +264,6 @@ section.visible {
 
 /* === Responsive === */
 @media (max-width: 768px) {
-  /* Hide desktop nav, show hamburger */
   nav {
     display: none;
   }
