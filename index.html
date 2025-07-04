@@ -8,11 +8,19 @@
 </head>
 <body onload="scrollTo(0,0)">
 
-  <!-- ---------- HEADER INCLUDE ---------- -->
-  <div id="header-placeholder"></div>
+  <!-- ---------- HEADER ---------- -->
+  <div id="header"></div>
 
-  <!-- ---------- HERO INCLUDE (with custom text) ---------- -->
-  <div id="hero-placeholder" data-title="Discover Your Next Trainers" data-subtitle="Authentic • Fast shipping • Secure checkout"></div>
+  <!-- ---------- DROPDOWN MENU ---------- -->
+  <div class="dropdown" id="dropdownMenu">
+    <a href="index.html" class="active">Home</a>
+    <a href="stock.html">Stock</a>
+    <a href="info.html">Info</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <!-- ---------- HERO SECTION ---------- -->
+  <div id="hero"></div>
 
   <!-- ---------- MAIN CONTENT ---------- -->
   <div class="container">
@@ -26,7 +34,7 @@
         <div class="feature">
           <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Icon">
           <h3>Verified</h3>
-          <p>Every trainer is authentic.</p>
+          <p>Every trainer is authenic.</p>
         </div>
         <div class="feature">
           <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png" alt="Icon">
@@ -53,10 +61,24 @@
     </section>
   </div>
 
-  <!-- ---------- FOOTER INCLUDE ---------- -->
-  <div id="footer-placeholder"></div>
+  <!-- ---------- FOOTER ---------- -->
+  <div id="footer"></div>
 
   <!-- ---------- JS ---------- -->
   <script src="js/global.js"></script>
+  <script>
+    // Inject shared includes
+    async function loadIncludes() {
+      const insert = async (id, file) => {
+        const res = await fetch(file);
+        const html = await res.text();
+        document.getElementById(id).innerHTML = html;
+      };
+      insert("header", "includes/header.html");
+      insert("hero", "includes/hero.html");
+      insert("footer", "includes/footer.html");
+    }
+    loadIncludes();
+  </script>
 </body>
 </html>
