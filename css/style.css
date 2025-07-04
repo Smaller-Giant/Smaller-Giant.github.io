@@ -134,7 +134,7 @@ nav a.active::after {
 /* === Hero Section === */
 .hero {
   margin-top: 56px;
-  height: 40vh;
+  height: 30vh;
   min-height: 280px;
   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
               url('https://images.unsplash.com/photo-1606813903282-03b8f12f5b79?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
